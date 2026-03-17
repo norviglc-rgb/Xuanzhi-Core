@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "main-agent-step.schema.json",
+  "title": "Main Agent Step",
+  "description": "A controller-routable step proposal emitted by the main agent. This object is a bounded execution contract, not a runtime state record, trace event, or review report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "trace_id",
+    "task_id",
+    "step_id",
+    "task_type",
+    "goal",
+    "reasoning_summary",
+    "context_summary",
+    "assumptions",
+    "evidence",
+    "action",
+    "success_criteria",
+    "rollback_plan",
+    "risk",
+    "confidence",
+    "resources",
+    "executor_hint",
+    "approval_hint",
+    "idempotency_hint",
+    "reporting_hint",
+    "next_decision_hint"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of this step schema."
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Correlation identifier linking this step to the wider task or decision chain."
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical identifier of the parent task."
+    },
+    "step_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical identifier of this step."
+    },
+    "parent_step_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional identifier of the parent step if this step is nested."
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "development",
+        "long_running_dev_task",
+        "research",
+        "planning",
+        "governance",
+        "workflow_design",
+        "workflow_run",
+        "knowledge_maintenance",
+        "communication_draft",
+        "memory_update",
+        "review",
+        "other"
+      ],
+      "description": "Normalized task category used for routing and step interpretation."
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Immediate objective of this step."
+    },
+    "reasoning_summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Concise explanation of why this step exists. Must remain summary-level and must not contain raw chain-of-thought."
+    },
+    "context_summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relevant current context compressed for execution and review."
+    },
+    "assumptions": {
+      "type": "array",
+      "description": "Explicit assumptions this step depends on.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "description": "Evidence or references supporting this step.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "ref",
+          "summary"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "memory",
+              "user_statement",
+              "file",
+              "tool_result",
+              "spec",
+              "repo",
+              "other"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "name",
+        "args"
+      ],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "knowledge",
+            "workflow",
+            "development",
+            "governance",
+            "memory",
+            "gitlab",
+            "agent_registry",
+            "alerts",
+            "review",
+            "other"
+          ],
+          "description": "High-level controller-facing action family."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Concrete action name within the selected category."
+        },
+        "args": {
+          "type": "object",
+          "description": "Structured arguments for the action.",
+          "additionalProperties": true
+        }
+      }
+    },
+    "success_criteria": {
+      "type": "array",
+      "description": "Concrete conditions that define successful completion of the step.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "rollback_plan": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Short rollback or recovery plan if this step fails or causes undesired effects."
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "risk_level",
+        "risk_score_hint",
+        "risk_summary",
+        "risk_reasons"
+      ],
+      "properties": {
+        "risk_level": {
+          "type": "string",
+          "enum": [
+            "R0",
+            "R1",
+            "R2",
+            "R3"
+          ],
+          "description": "Risk class for a controller-routable executable step proposal. R4 is intentionally excluded here because R4 is treated as an emergency block/escalation class rather than a normal executable step."
+        },
+        "risk_score_hint": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Advisory risk score hint estimated by the main agent. This is not the authoritative final controller score."
+        },
+        "risk_summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Concise description of the main risk judgment."
+        },
+        "risk_reasons": {
+          "type": "array",
+          "description": "Explicit reasons contributing to the current risk judgment.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "score",
+        "notes"
+      ],
+      "properties": {
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Advisory confidence estimate for this step proposal. This is not approval and not a substitute for risk assessment."
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short explanation of why the confidence level is what it is."
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "estimated_runtime_seconds",
+        "estimated_cost",
+        "cost_tier",
+        "complexity_hint"
+      ],
+      "properties": {
+        "estimated_runtime_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Estimated runtime in seconds."
+        },
+        "estimated_cost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Estimated cost of executing this step in the local cost model."
+        },
+        "cost_tier": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "complexity_hint": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        }
+      }
+    },
+    "executor_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recommended_executor",
+        "reason"
+      ],
+      "properties": {
+        "recommended_executor": {
+          "type": "string",
+          "enum": [
+            "xuanzhi",
+            "claude_code",
+            "fastgpt",
+            "specialized_executor"
+          ],
+          "description": "Advisory executor recommendation for this step."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why this executor is recommended."
+        }
+      }
+    },
+    "approval_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_required",
+        "reason"
+      ],
+      "properties": {
+        "approval_required": {
+          "type": "boolean",
+          "description": "Advisory judgment on whether approval is likely required."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reason for the approval recommendation."
+        }
+      }
+    },
+    "idempotency_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "is_idempotent",
+        "reason"
+      ],
+      "properties": {
+        "is_idempotent": {
+          "type": "boolean",
+          "description": "Whether repeating the step is expected to produce the same effect without unintended duplication."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reason for the idempotency judgment."
+        }
+      }
+    },
+    "reporting_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "must_report",
+        "reason"
+      ],
+      "properties": {
+        "must_report": {
+          "type": "boolean",
+          "description": "Whether this step should explicitly produce a reportable summary or status output."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reason for the reporting recommendation."
+        }
+      }
+    },
+    "next_decision_hint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "on_success",
+        "on_failure"
+      ],
+      "properties": {
+        "on_success": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Suggested next decision if the step succeeds."
+        },
+        "on_failure": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Suggested next decision if the step fails."
+        }
+      }
+    }
+  }
+}
