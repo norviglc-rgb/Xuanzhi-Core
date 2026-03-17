@@ -1,0 +1,376 @@
+version: "1.0.0"
+policy_name: "state_transitions"
+description: >
+  Machine-readable baseline transition policy for Xuanzhi workspace runtime states.
+  This file defines allowed transitions and key guards for task_state, step_state,
+  review_state, approval_state, epic_state, and milestone_state.
+
+task_state:
+  created:
+    allowed_to:
+      - intake
+
+  intake:
+    allowed_to:
+      - planning
+      - cancelled
+
+  planning:
+    allowed_to:
+      - planned
+      - blocked
+      - cancelled
+
+  planned:
+    allowed_to:
+      - running
+      - waiting_resource
+      - blocked
+      - cancelled
+
+  running:
+    allowed_to:
+      - waiting_review
+      - waiting_approval
+      - waiting_external
+      - waiting_user
+      - waiting_resource
+      - paused
+      - blocked
+      - stalled
+      - completed
+      - failed
+      - cancelled
+
+  waiting_review:
+    allowed_to:
+      - running
+      - replanning
+      - escalating
+      - completed
+    guards:
+      - review_state must be review_passed before direct transition to completed
+      - review_state must be review_failed before normal transition to replanning
+      - review_state must be review_conflicted before normal transition to escalating
+
+  waiting_approval:
+    allowed_to:
+      - running
+      - replanning
+      - escalating
+      - cancelled
+    guards:
+      - approval_state must be approval_granted before transition to running
+      - approval_state must be approval_rejected before normal transition to replanning
+      - approval_state must be approval_escalated before normal transition to escalating
+
+  waiting_external:
+    allowed_to:
+      - running
+      - blocked
+      - stalled
+      - cancelled
+
+  waiting_user:
+    allowed_to:
+      - running
+      - blocked
+      - cancelled
+
+  waiting_resource:
+    allowed_to:
+      - running
+      - blocked
+      - stalled
+      - cancelled
+
+  paused:
+    allowed_to:
+      - running
+      - cancelled
+      - archived
+
+  blocked:
+    allowed_to:
+      - replanning
+      - escalating
+      - cancelled
+      - archived
+
+  stalled:
+    allowed_to:
+      - running
+      - replanning
+      - escalating
+      - failed
+      - cancelled
+    guards:
+      - stalled should be used only when clearer wait or block states do not apply
+
+  replanning:
+    allowed_to:
+      - planned
+      - running
+      - blocked
+      - escalating
+      - cancelled
+
+  escalating:
+    allowed_to:
+      - replanning
+      - cancelled
+      - archived
+
+  completed:
+    allowed_to:
+      - cooldown
+      - archived
+
+  failed:
+    allowed_to:
+      - replanning
+      - escalating
+      - cooldown
+      - archived
+
+  cancelled:
+    allowed_to:
+      - archived
+
+  archived:
+    allowed_to: []
+
+  cooldown:
+    allowed_to:
+      - replanning
+      - archived
+
+step_state:
+  step_created:
+    allowed_to:
+      - step_ready
+      - step_cancelled
+
+  step_ready:
+    allowed_to:
+      - step_running
+      - step_blocked
+      - step_cancelled
+
+  step_running:
+    allowed_to:
+      - step_waiting_review
+      - step_waiting_approval
+      - step_retrying
+      - step_blocked
+      - step_completed
+      - step_failed
+      - step_cancelled
+
+  step_waiting_review:
+    allowed_to:
+      - step_running
+      - step_replanned
+      - step_completed
+    guards:
+      - review_state should be review_passed before direct transition to step_completed
+      - review_state should be review_failed before normal transition to step_replanned
+
+  step_waiting_approval:
+    allowed_to:
+      - step_running
+      - step_replanned
+      - step_cancelled
+    guards:
+      - approval_state should be approval_granted before transition to step_running
+      - approval_state should be approval_rejected or approval_escalated before normal transition away from approval wait
+
+  step_retrying:
+    allowed_to:
+      - step_running
+      - step_failed
+      - step_replanned
+    guards:
+      - retry_count must remain within bounded retry policy
+
+  step_replanned:
+    allowed_to:
+      - step_ready
+      - step_running
+      - step_cancelled
+
+  step_blocked:
+    allowed_to:
+      - step_ready
+      - step_replanned
+      - step_cancelled
+
+  step_completed:
+    allowed_to: []
+
+  step_failed:
+    allowed_to:
+      - step_retrying
+      - step_replanned
+      - step_cancelled
+
+  step_cancelled:
+    allowed_to: []
+
+review_state:
+  review_not_required:
+    allowed_to: []
+
+  review_pending:
+    allowed_to:
+      - review_running
+      - review_failed
+      - review_conflicted
+
+  review_running:
+    allowed_to:
+      - review_passed
+      - review_failed
+      - review_conflicted
+
+  review_passed:
+    allowed_to: []
+
+  review_failed:
+    allowed_to: []
+
+  review_conflicted:
+    allowed_to: []
+
+approval_state:
+  approval_not_required:
+    allowed_to: []
+
+  approval_pending:
+    allowed_to:
+      - approval_running
+      - approval_rejected
+      - approval_escalated
+
+  approval_running:
+    allowed_to:
+      - approval_granted
+      - approval_rejected
+      - approval_escalated
+
+  approval_granted:
+    allowed_to: []
+
+  approval_rejected:
+    allowed_to: []
+
+  approval_escalated:
+    allowed_to: []
+
+epic_state:
+  epic_created:
+    allowed_to:
+      - epic_running
+      - epic_cancelled
+
+  epic_running:
+    allowed_to:
+      - epic_paused
+      - epic_blocked
+      - epic_completed
+      - epic_failed
+      - epic_cancelled
+
+  epic_paused:
+    allowed_to:
+      - epic_running
+      - epic_cancelled
+      - epic_archived
+
+  epic_blocked:
+    allowed_to:
+      - epic_running
+      - epic_failed
+      - epic_cancelled
+      - epic_archived
+
+  epic_completed:
+    allowed_to:
+      - epic_archived
+
+  epic_failed:
+    allowed_to:
+      - epic_running
+      - epic_archived
+
+  epic_cancelled:
+    allowed_to:
+      - epic_archived
+
+  epic_archived:
+    allowed_to: []
+
+milestone_state:
+  milestone_created:
+    allowed_to:
+      - milestone_running
+      - milestone_cancelled
+
+  milestone_running:
+    allowed_to:
+      - milestone_waiting_review
+      - milestone_waiting_approval
+      - milestone_blocked
+      - milestone_replanning
+      - milestone_completed
+      - milestone_failed
+      - milestone_cancelled
+
+  milestone_waiting_review:
+    allowed_to:
+      - milestone_running
+      - milestone_replanning
+      - milestone_completed
+      - milestone_failed
+
+  milestone_waiting_approval:
+    allowed_to:
+      - milestone_running
+      - milestone_replanning
+      - milestone_cancelled
+
+  milestone_blocked:
+    allowed_to:
+      - milestone_running
+      - milestone_replanning
+      - milestone_failed
+      - milestone_cancelled
+
+  milestone_replanning:
+    allowed_to:
+      - milestone_running
+      - milestone_cancelled
+
+  milestone_completed:
+    allowed_to: []
+
+  milestone_failed:
+    allowed_to:
+      - milestone_replanning
+      - milestone_cancelled
+
+  milestone_cancelled:
+    allowed_to: []
+
+global_rules:
+  max_retry: 2
+  stalled_threshold: "2h"
+  active_run_window: "24h"
+  controller_scan_cadence: "5m"
+
+interpretation_rules:
+  - "State domains must remain separate; do not collapse task, step, review, approval, and lifecycle semantics into a single generic state."
+  - "Replanning is the default bounded recovery path after review failure, approval rejection, or bounded repeated failure."
+  - "Escalation should be used when current authority or governance path is insufficient, not merely when execution is difficult."
+  - "Stalled should be used only after checking whether waiting_external, waiting_user, waiting_resource, blocked, or paused is a clearer diagnosis."
+  - "A lower-level failure does not automatically imply epic failure."
