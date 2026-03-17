@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/workflow_registry.schema.json",
+  "title": "Xuanzhi Workflow Registry Entry",
+  "description": "Structured registry entry for a governed workflow in the Xuanzhi workspace.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workflow_id",
+    "name",
+    "description",
+    "workflow_type",
+    "owner_type",
+    "owner_ref",
+    "trigger_types",
+    "permissions",
+    "resource_limits",
+    "risk_level",
+    "approved",
+    "version",
+    "health_status",
+    "lifecycle_state",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "updated_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of this registry schema."
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Globally unique identifier of the workflow within the workspace."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name of the workflow."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Compact governance-relevant description of the workflow."
+    },
+    "workflow_type": {
+      "type": "string",
+      "enum": [
+        "automation_workflow",
+        "scheduled_workflow",
+        "agent_tool_workflow",
+        "data_pipeline_workflow",
+        "maintenance_workflow",
+        "governance_workflow"
+      ],
+      "description": "Canonical governance-facing type of the workflow."
+    },
+    "owner_type": {
+      "type": "string",
+      "enum": [
+        "user",
+        "workspace",
+        "system",
+        "team",
+        "service"
+      ],
+      "description": "Structured ownership class of the workflow."
+    },
+    "owner_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable reference to the owner."
+    },
+    "trigger_types": {
+      "type": "array",
+      "description": "Declared trigger surfaces for this workflow.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "manual",
+          "schedule",
+          "event",
+          "api",
+          "agent",
+          "webhook"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "permissions": {
+      "type": "array",
+      "description": "Declared permissions or control surfaces the workflow may touch or invoke.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Bounded resource posture of the workflow.",
+      "properties": {
+        "max_runtime_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_concurrency": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_limit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "external_service_classes": {
+          "type": "array",
+          "description": "Optional list of external service classes used by the workflow.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": []
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "description": "Categorical risk class of the workflow under normal expected use."
+    },
+    "risk_summary": {
+      "type": "string",
+      "description": "Optional concise explanation of workflow risk posture."
+    },
+    "approved": {
+      "type": "boolean",
+      "description": "Whether this workflow has passed the required governance approval gate."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Declared version of the governed workflow definition."
+    },
+    "definition_ref": {
+      "type": "string",
+      "description": "Optional pointer to the authoritative workflow definition or implementation location."
+    },
+    "health_status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "unhealthy",
+        "unknown"
+      ],
+      "description": "Governance-facing health signal for the workflow."
+    },
+    "lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "registered",
+        "approved",
+        "active",
+        "paused",
+        "deprecated",
+        "revoked",
+        "archived"
+      ],
+      "description": "Durable administrative lifecycle state of the workflow entry."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the registry entry was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the registry entry was last updated."
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Actor that created the registry entry."
+    },
+    "updated_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Actor that last updated the registry entry."
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the workflow was approved."
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Optional actor that approved the workflow."
+    },
+    "revoked_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the workflow was revoked."
+    },
+    "archived_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the workflow was archived."
+    },
+    "last_checked_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when workflow health was last checked."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional bounded operational note."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle_state": {
+            "const": "active"
+          }
+        },
+        "required": [
+          "lifecycle_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "approved": {
+            "const": true
+          }
+        },
+        "required": [
+          "approved"
+        ],
+        "description": "A workflow must be approved before it may be active."
+      }
+    }
+  ]
+}
