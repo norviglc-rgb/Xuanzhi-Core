@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/agent_registry.schema.json",
+  "title": "Xuanzhi Agent Registry Entry",
+  "description": "Structured registry entry for a governed agent in the Xuanzhi workspace.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "agent_id",
+    "name",
+    "description",
+    "agent_type",
+    "owner_type",
+    "owner_ref",
+    "capability_scope",
+    "permissions",
+    "risk_ceiling",
+    "isolation_level",
+    "resource_limits",
+    "health_status",
+    "heartbeat_interval_seconds",
+    "last_seen_at",
+    "lifecycle_state",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "updated_by"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Version of this registry schema."
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Globally unique identifier of the agent within the workspace."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable display name of the agent."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Compact governance-relevant description of the agent's role."
+    },
+    "agent_type": {
+      "type": "string",
+      "enum": [
+        "governance_agent",
+        "orchestration_agent",
+        "execution_agent",
+        "review_agent",
+        "workflow_agent",
+        "utility_agent",
+        "research_agent"
+      ],
+      "description": "Canonical governance-facing type of the agent."
+    },
+    "owner_type": {
+      "type": "string",
+      "enum": [
+        "user",
+        "workspace",
+        "system",
+        "team",
+        "service"
+      ],
+      "description": "Structured ownership class of the agent."
+    },
+    "owner_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable reference to the owner."
+    },
+    "capability_scope": {
+      "type": "array",
+      "description": "Declared role-fit and intended work categories of the agent.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "permissions": {
+      "type": "array",
+      "description": "Declared permissions or control surfaces the agent is allowed to touch.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "risk_ceiling": {
+      "type": "string",
+      "enum": [
+        "R0",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "description": "Highest risk class the agent may handle on a normal path."
+    },
+    "isolation_level": {
+      "type": "string",
+      "enum": [
+        "shared",
+        "bounded",
+        "isolated",
+        "high_isolation"
+      ],
+      "description": "Operational containment posture of the agent."
+    },
+    "resource_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Bounded resource posture of the agent.",
+      "properties": {
+        "max_runtime_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_concurrency": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_limit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tool_classes": {
+          "type": "array",
+          "description": "Optional list of tool classes this agent may use.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": []
+    },
+    "health_status": {
+      "type": "string",
+      "enum": [
+        "healthy",
+        "degraded",
+        "unhealthy",
+        "unknown"
+      ],
+      "description": "Governance-facing health signal for the agent."
+    },
+    "heartbeat_interval_seconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Expected heartbeat cadence in seconds."
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last observed healthy or responsive timestamp."
+    },
+    "lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "registered",
+        "approved",
+        "active",
+        "paused",
+        "deprecated",
+        "revoked",
+        "archived"
+      ],
+      "description": "Durable administrative lifecycle state of the registry entry."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the registry entry was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the registry entry was last updated."
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Actor that created the registry entry."
+    },
+    "updated_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Actor that last updated the registry entry."
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the entry was approved."
+    },
+    "approved_by": {
+      "type": "string",
+      "description": "Optional actor that approved the entry."
+    },
+    "revoked_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the entry was revoked."
+    },
+    "archived_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional timestamp when the entry was archived."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional bounded operational note."
+    }
+  }
+}
