@@ -106,9 +106,9 @@ Use GitLab for:
 
 GitLab is part of the development execution environment, not a replacement for top-layer governance.
 
-### LiteLLM
+### Higress
 
-Use LiteLLM as the routing and model access control layer where applicable.
+Use Higress as the routing and model access control layer where applicable.
 
 Typical responsibilities include:
 
