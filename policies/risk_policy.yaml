@@ -1,0 +1,346 @@
+version: "1.0.0"
+policy_name: "risk_policy"
+description: >
+  Machine-readable baseline risk policy for Xuanzhi workspace.
+  This file defines categorical risk handling, sensitive-object rules,
+  veto/block triggers, approval posture defaults, and escalation triggers.
+
+risk_levels:
+  R0:
+    summary: "Read-only or near-zero-side-effect work."
+    default_posture:
+      approval_required: false
+      escalation_likely: false
+      normal_execution_allowed: true
+
+  R1:
+    summary: "Low-risk reversible modification with bounded local impact."
+    default_posture:
+      approval_required: false
+      escalation_likely: false
+      normal_execution_allowed: true
+
+  R2:
+    summary: "Meaningful change with non-trivial impact, broader scope, or moderate uncertainty."
+    default_posture:
+      approval_required: conditional
+      escalation_likely: false
+      normal_execution_allowed: true
+
+  R3:
+    summary: "High-risk, sensitive, destructive, authority-heavy, or hard-to-reverse work."
+    default_posture:
+      approval_required: true
+      escalation_likely: conditional
+      normal_execution_allowed: conditional
+
+  R4:
+    summary: "Emergency block class."
+    default_posture:
+      approval_required: false
+      escalation_likely: true
+      normal_execution_allowed: false
+
+sensitive_objects:
+  - memory
+  - knowledge
+  - configuration
+  - ci_cd
+  - nginx
+  - docker_runtime
+  - registries
+  - workflow_activation
+  - permission_bearing_objects
+  - subagent_authority
+
+destructive_actions:
+  - delete
+  - overwrite
+  - revoke
+  - disable
+  - broad_remove
+  - destructive_rewrite
+
+authority_sensitive_actions:
+  - registry_admission
+  - permission_change
+  - workflow_activation
+  - lifecycle_activation
+  - authority_expansion
+  - subagent_creation
+  - subagent_authority_change
+
+default_rules:
+  - id: "r0_normal_path"
+    when:
+      risk_level: "R0"
+    then:
+      normal_execution_allowed: true
+      approval_required: false
+      escalate: false
+
+  - id: "r1_normal_path"
+    when:
+      risk_level: "R1"
+    then:
+      normal_execution_allowed: true
+      approval_required: false
+      escalate: false
+
+  - id: "r2_conditional_approval"
+    when:
+      risk_level: "R2"
+    then:
+      normal_execution_allowed: true
+      approval_required: conditional
+      escalate: false
+
+  - id: "r3_strong_governance"
+    when:
+      risk_level: "R3"
+    then:
+      normal_execution_allowed: conditional
+      approval_required: true
+      escalate: conditional
+
+  - id: "r4_stop"
+    when:
+      risk_level: "R4"
+    then:
+      normal_execution_allowed: false
+      immediate_block: true
+      escalate: true
+      human_intervention_likely: true
+
+sensitive_object_rules:
+  - id: "sensitive_object_raises_scrutiny"
+    when:
+      target_class_in: sensitive_objects
+    then:
+      raise_scrutiny: true
+      approval_required: conditional
+
+  - id: "destructive_sensitive_object_high_risk"
+    when:
+      target_class_in: sensitive_objects
+      action_in: destructive_actions
+    then:
+      minimum_risk_level: "R3"
+      approval_required: true
+      escalate: conditional
+
+  - id: "destructive_sensitive_object_poorly_justified_stop"
+    when:
+      target_class_in: sensitive_objects
+      action_in: destructive_actions
+      justification_quality: "poor"
+    then:
+      minimum_risk_level: "R4"
+      immediate_block: true
+      escalate: true
+
+authority_rules:
+  - id: "authority_sensitive_action_raises_risk"
+    when:
+      action_in: authority_sensitive_actions
+    then:
+      minimum_risk_level: "R2"
+      approval_required: true
+
+  - id: "authority_sensitive_with_unclear_authority"
+    when:
+      action_in: authority_sensitive_actions
+      authority_clarity: "unclear"
+    then:
+      minimum_risk_level: "R3"
+      escalate: true
+
+  - id: "authority_sensitive_with_clear_overreach"
+    when:
+      action_in: authority_sensitive_actions
+      authority_clarity: "overreach"
+    then:
+      minimum_risk_level: "R4"
+      immediate_block: true
+      escalate: true
+
+uncertainty_rules:
+  - id: "high_impact_low_information"
+    when:
+      uncertainty_level: "high"
+      impact_scope: "high"
+    then:
+      minimum_risk_level: "R3"
+      approval_required: true
+      escalate: conditional
+
+  - id: "high_impact_low_information_sensitive_target"
+    when:
+      uncertainty_level: "high"
+      impact_scope: "high"
+      target_class_in: sensitive_objects
+    then:
+      minimum_risk_level: "R4"
+      immediate_block: true
+      escalate: true
+
+  - id: "unclear_reversibility_raises_risk"
+    when:
+      reversibility: "unclear"
+      impact_scope: "medium_or_high"
+    then:
+      minimum_risk_level: "R2"
+
+veto_rules:
+  - id: "clearly_destructive_without_justification"
+    when:
+      destructive: true
+      justification_quality: "poor"
+    then:
+      veto: true
+      immediate_block: true
+      escalate: true
+
+  - id: "clearly_unauthorized"
+    when:
+      authority_clarity: "overreach"
+    then:
+      veto: true
+      immediate_block: true
+      escalate: true
+
+  - id: "high_cost_low_roi"
+    when:
+      cost_profile: "high"
+      roi_judgement: "clearly_low"
+    then:
+      veto: true
+      normal_execution_allowed: false
+      escalate: conditional
+
+  - id: "materially_underspecified_high_downside"
+    when:
+      specification_quality: "poor"
+      impact_scope: "high"
+    then:
+      veto: true
+      normal_execution_allowed: false
+      escalate: true
+
+approval_rules:
+  - id: "r2_sensitive_target_approval"
+    when:
+      risk_level: "R2"
+      target_class_in: sensitive_objects
+    then:
+      approval_required: true
+
+  - id: "r3_always_requires_approval"
+    when:
+      risk_level: "R3"
+    then:
+      approval_required: true
+
+  - id: "r4_not_normal_approval_path"
+    when:
+      risk_level: "R4"
+    then:
+      approval_required: false
+      immediate_block: true
+      escalate: true
+
+escalation_rules:
+  - id: "r4_always_escalates"
+    when:
+      risk_level: "R4"
+    then:
+      escalate: true
+
+  - id: "review_conflict_with_high_risk"
+    when:
+      review_state: "review_conflicted"
+      risk_level_in:
+        - "R3"
+        - "R4"
+    then:
+      escalate: true
+
+  - id: "approval_unresolvable"
+    when:
+      approval_state: "approval_escalated"
+    then:
+      escalate: true
+
+  - id: "bounded_recovery_exhausted"
+    when:
+      retry_exhausted: true
+      risk_level_in:
+        - "R2"
+        - "R3"
+        - "R4"
+    then:
+      escalate: true
+
+memory_rules:
+  - id: "destructive_memory_change"
+    when:
+      target_class: "memory"
+      action_in: destructive_actions
+    then:
+      minimum_risk_level: "R3"
+      approval_required: true
+      escalate: conditional
+
+  - id: "poorly_justified_memory_delete"
+    when:
+      target_class: "memory"
+      action_in: destructive_actions
+      justification_quality: "poor"
+    then:
+      minimum_risk_level: "R4"
+      immediate_block: true
+      escalate: true
+
+registry_rules:
+  - id: "registry_change_requires_scrutiny"
+    when:
+      target_class: "registries"
+    then:
+      minimum_risk_level: "R2"
+      approval_required: true
+
+  - id: "workflow_activation_requires_scrutiny"
+    when:
+      target_class: "workflow_activation"
+    then:
+      minimum_risk_level: "R2"
+      approval_required: true
+
+  - id: "subagent_authority_expansion_high_risk"
+    when:
+      target_class: "subagent_authority"
+    then:
+      minimum_risk_level: "R3"
+      approval_required: true
+      escalate: conditional
+
+reporting_rules:
+  - id: "r3_requires_stronger_reporting"
+    when:
+      risk_level: "R3"
+    then:
+      stronger_reporting: true
+
+  - id: "r4_requires_stronger_reporting"
+    when:
+      risk_level: "R4"
+    then:
+      stronger_reporting: true
+
+interpretation_rules:
+  - "Risk categories are behavior-shaping, not decorative."
+  - "R4 is a stop-and-escalate class, not a normal executable path."
+  - "Sensitive targets increase scrutiny but do not automatically imply R4."
+  - "Low information plus high impact should raise risk posture, not lower it."
+  - "Executor capability does not imply approval."
+  - "Veto means the current path should not proceed as proposed."
