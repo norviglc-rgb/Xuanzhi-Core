@@ -1,148 +1,148 @@
-# AGENT_REGISTRY_SPEC.md
+# 代理注册表规范
 
-## Purpose
+## 目的
 
-This document defines the specification for the Agent Registry in the Xuanzhi workspace.
+本文档定义玄织工作空间代理注册表的规范。
 
-Its purpose is to provide a durable governed record of recognized agents and their control-relevant metadata.
+其目的在于提供已认可代理及其控制相关元数据的持久受治理记录。
 
-The Agent Registry exists to support:
+代理注册表的存在是为了支持：
 
-- accountability
-- ownership clarity
-- authority boundaries
-- executor fit
-- lifecycle governance
-- auditability
-- future machine-readable validation
+- 问责
+- 所有权清晰度
+- 权限边界
+- 执行器适配
+- 生命周期治理
+- 可审计性
+- 未来机器可读验证
 
-This document is normative for agent registry semantics.
+本文档对代理注册表语义具有规范性。
 
-It is not a runtime heartbeat log.
-It is not a trace store.
-It is not a prompt file.
-It is not a substitute for execution routing or live state inspection.
+它不是运行时心跳日志。
+它不是追踪存储。
+它不是提示文件。
+它不是执行路由或实时状态检查的替代品。
 
-Its job is to define what an agent registry entry is, what fields it must preserve, and how agent registration relates to governance.
-
----
-
-## Core Principle
-
-An agent is not governed simply because it exists.
-
-An agent becomes governable when it is:
-
-- identifiable
-- owned
-- bounded
-- classifiable
-- auditable
-- lifecycle-controlled
-
-The Agent Registry exists to prevent agent drift into anonymous, overpowered, or weakly accountable execution.
-
-A good registry should answer:
-
-- what this agent is
-- who owns it
-- what it is allowed to do
-- how risky it is allowed to be
-- how isolated it is
-- what state of registration it is in
-- whether it is healthy enough to trust
-
-A bad registry stores vague descriptions without influencing control.
+其任务是定义代理注册表条目是什么、它必须保留什么字段、以及代理注册与治理的关系。
 
 ---
 
-## Registry Role
+## 核心原则
 
-The Agent Registry is the durable metadata system for recognized agents.
+代理不会因为存在而被治理。
 
-It should be used for:
+代理在以下情况下变得可治理：
 
-- agent admission
-- governance review
-- risk-boundary enforcement
-- ownership tracking
-- lifecycle management
-- future validator and controller logic
-- reporting on recognized agents
+- 可标识
+- 有所有者
+- 界定清晰
+- 可分类
+- 可审计
+- 生命周期受控
 
-It should not be used for:
+代理注册表的存在是为了防止代理漂移到匿名、越权或弱问责的执行中。
 
-- full runtime logs
-- transient internal thoughts
-- raw execution transcripts
-- all live scheduling state
-- large operational documentation dumps
+好的注册表应回答：
 
-Registry stores durable truth about agent identity and governance posture, not ephemeral process noise.
+- 这个代理是什么
+- 谁拥有它
+- 它被允许做什么
+- 它被允许承担多大风险
+- 它的隔离程度如何
+- 它处于什么注册状态
+- 它是否足够健康以信任
+
+坏的注册表存储模糊描述却不影响控制。
 
 ---
 
-## Canonical Agent Types
+## 注册表角色
 
-This workspace recognizes the following canonical `agent_type` values:
+代理注册表是已认可代理的持久元数据系统。
 
-- `governance_agent`
-- `orchestration_agent`
-- `execution_agent`
-- `review_agent`
-- `workflow_agent`
-- `utility_agent`
-- `research_agent`
+它应用于：
 
-These categories are governance-facing categories, not decorative labels.
+- 代理准入
+- 治理评审
+- 风险边界执行
+- 所有权追踪
+- 生命周期管理
+- 未来验证器和控制器逻辑
+- 已认可代理的汇报
+
+它不应用于：
+
+- 完整的运行时日志
+- 瞬态内部思想
+- 原始执行转录
+- 所有实时调度状态
+- 大型操作文档转储
+
+注册表存储关于代理身份和治理姿态的持久真实，而非短暂的过程噪音。
+
+---
+
+## 标准代理类型
+
+本工作空间认可以下标准 `agent_type` 值：
+
+- `governance_agent`（治理代理）
+- `orchestration_agent`（编排代理）
+- `execution_agent`（执行代理）
+- `review_agent`（评审代理）
+- `workflow_agent`（工作流代理）
+- `utility_agent`（工具代理）
+- `research_agent`（研究代理）
+
+这些类别是面向治理的类别，而非装饰性标签。
 
 ### `governance_agent`
 
-An agent whose primary role is control, routing, judgment, policy-aware guidance, or governance enforcement.
+主要角色是控制、路由、判断、策略感知指导或治理执行的代理。
 
-Example:
+示例：
 
-- Xuanzhi
+- 玄织
 
 ### `orchestration_agent`
 
-An agent whose primary role is coordinating work among tasks, steps, executors, workflows, or controlled resources.
+主要角色是协调任务、步骤、执行器、工作流或受控资源之间工作的代理。
 
 ### `execution_agent`
 
-An agent whose primary role is performing implementation or task execution.
+主要角色是执行实现或任务执行的代理。
 
-Example:
+示例：
 
-- a development executor such as Claude Code in registry-facing contexts
+- 在注册表相关上下文中的开发执行器，如 Claude Code
 
 ### `review_agent`
 
-An agent whose primary role is evaluating quality, coherence, readiness, or delivery results.
+主要角色是评估质量、连贯性、就绪性或交付结果的代理。
 
-A review agent may recommend blocking or escalation, but does not automatically possess final veto authority.
+评审代理可以建议阻塞或升级，但不自动拥有最终否决权限。
 
 ### `workflow_agent`
 
-An agent whose primary role is operating inside or through workflow systems, especially for repeatable or pipeline-like execution.
+主要角色是在工作流系统内部或通过工作流系统操作的代理，特别是对于可重复或类管道执行。
 
 ### `utility_agent`
 
-An agent that provides bounded helper behavior, transformation, or support capabilities rather than broad governance or broad execution authority.
+提供有界辅助行为、转换或支持能力而非广泛治理或广泛执行权限的代理。
 
 ### `research_agent`
 
-An agent whose primary role is structured investigation, synthesis, comparison, or evidence gathering.
+主要角色是结构化调查、综合、比较或证据收集的代理。
 
 ---
 
-## Registry Entry Identity
+## 注册表条目标识
 
-Each agent registry entry must be uniquely identifiable.
+每个代理注册表条目必须唯一可标识。
 
-### Required identity rule
+### 必需标识规则
 
-Every registered agent must have:
+每个已注册代理必须具有：
 
 - `agent_id`
 - `name`
@@ -150,213 +150,213 @@ Every registered agent must have:
 
 ### `agent_id`
 
-`agent_id` must be globally unique within the workspace.
+`agent_id` 必须在工作空间内全局唯一。
 
-It should be stable across sessions and should not be casually recycled.
+它应跨会话稳定，且不应被随意回收。
 
 ### `name`
 
-`name` is the human-readable display name of the agent.
+`name` 是代理的人类可读显示名称。
 
 ### `description`
 
-A concise description of the agent's role and purpose should be present.
+应存在代理角色和目的的简明描述。
 
-This description should be compact, not a long manifesto.
+此描述应紧凑，而非冗长的宣言。
 
 ---
 
-## Ownership Model
+## 所有权模型
 
-Every registered agent must have a clear ownership record.
+每个已注册代理必须有清晰的所有权记录。
 
-### Required ownership fields
+### 必需所有权字段
 
 - `owner_type`
 - `owner_ref`
 
-### Ownership meaning
+### 所有权含义
 
-Ownership defines who is responsible for the existence and governance of the agent.
+所有权定义谁负责代理的存在和治理。
 
-Ownership is not the same as who triggered the last action.
+所有权与谁触发最后一个动作不同。
 
 ### `owner_type`
 
-Typical examples may include:
+典型示例可能包括：
 
-- `user`
-- `workspace`
-- `system`
-- `team`
-- `service`
+- `user`（用户）
+- `workspace`（工作空间）
+- `system`（系统）
+- `team`（团队）
+- `service`（服务）
 
-This set may be narrowed or formalized in machine-readable schema later.
+此集合可能稍后在模式中硬化。
 
 ### `owner_ref`
 
-A stable reference to the owner.
+对所有者的稳定引用。
 
-Examples:
+示例：
 
-- user identifier
-- workspace identifier
-- service identifier
-- system authority reference
+- 用户标识符
+- 工作空间标识符
+- 服务标识符
+- 系统权限引用
 
-If an agent has no clear owner, it should not be treated as a fully governed registry object.
+如果代理没有明确的所有者，它不应被视为完全受治理的注册表对象。
 
 ---
 
-## Capability and Permission Model
+## 能力与权限模型
 
-Capabilities and permissions are not the same.
+能力和权限不同。
 
-The registry should keep them distinct.
+注册表应保持它们分离。
 
 ### `capability_scope`
 
-Describes what kinds of work the agent is intended to handle.
+描述代理预期处理什么类型的工作。
 
-Examples:
+示例：
 
-- governance coordination
-- development implementation
-- review
-- research
-- workflow dispatch
-- utility transformation
+- 治理协调
+- 开发实现
+- 评审
+- 研究
+- 工作流调度
+- 工具转换
 
-Capability scope describes role fit, not permission grant.
+能力范围描述角色适配，而非权限授予。
 
 ### `permissions`
 
-Describes what the agent is actually allowed to touch or invoke.
+描述代理实际被允许触及或调用什么。
 
-Examples may include permission over:
+示例可能包括对以下内容的权限：
 
-- repos
-- workflows
-- memory surfaces
-- registries
-- integrations
-- specific tool classes
+- 仓库
+- 工作流
+- 记忆面
+- 注册表
+- 集成
+- 特定工具类别
 
-Permissions should be stored as structured governance metadata, not assumed from prose role description alone.
+权限应作为结构化治理元数据存储，而非仅从散文角色描述假设。
 
-### Distinction rule
+### 区分规则
 
-- `capability_scope` = what the agent is meant for
-- `permissions` = what the agent is allowed to do
+- `capability_scope` = 代理的用途
+- `permissions` = 代理被允许做什么
 
-Do not collapse them.
+不要合并它们。
 
 ---
 
-## Risk Boundary Model
+## 风险边界模型
 
-Every registered agent must have an explicit risk boundary.
+每个已注册代理必须有明确的风险边界。
 
-### Required field
+### 必需字段
 
 - `risk_ceiling`
 
 ### `risk_ceiling`
 
-The highest risk level the agent is permitted to handle on a normal path.
+代理在正常路径上被允许处理的最高风险等级。
 
-This field is governance-critical.
+此字段是治理关键的。
 
-It should align with the workspace risk model.
+它应与工作空间风险模型对齐。
 
-### Risk boundary rule
+### 风险边界规则
 
-If a proposed action exceeds the agent's `risk_ceiling`, the normal path should not proceed without stricter handling such as:
+如果提议的动作超过代理的 `risk_ceiling`，正常路径不应在没有更严格处理的情况下继续，例如：
 
-- rejection
-- rerouting
-- escalation
-- stronger approval
+- 拒绝
+- 重新路由
+- 升级
+- 更强的审批
 
-### Principle
+### 原则
 
-Executor capability does not override risk ceiling.
+执行器能力不覆盖风险上限。
 
 ---
 
-## Isolation Model
+## 隔离模型
 
-Every registered agent must have an isolation posture.
+每个已注册代理必须有隔离姿态。
 
-### Required field
+### 必需字段
 
 - `isolation_level`
 
 ### `isolation_level`
 
-Describes the operational containment posture of the agent.
+描述代理的操作遏制姿态。
 
-This does not need to over-specify runtime implementation in prose,
-but it must be explicit enough to support governance and future validation.
+这不需要在散文中过度指定运行时实现，
+但它必须足够明确以支持治理和未来验证。
 
-Typical examples may later include values such as:
+典型示例可能稍后包括如下值：
 
-- `shared`
-- `bounded`
-- `isolated`
-- `high_isolation`
+- `shared`（共享）
+- `bounded`（有界）
+- `isolated`（隔离）
+- `high_isolation`（高隔离）
 
-Exact enum hardening may be deferred until schema stage.
+确切的枚举硬化可能推迟到模式阶段。
 
-### Why isolation matters
+### 为什么隔离重要
 
-Isolation affects:
+隔离影响：
 
-- blast radius
-- side-effect containment
-- tool safety
-- workspace collision risk
-- executor trust posture
+- 影响范围
+- 副作用遏制
+- 工具安全
+- 工作空间碰撞风险
+- 执行器信任姿态
 
-An agent without explicit isolation posture is weakly governed.
+没有明确隔离姿态的代理是弱治理的。
 
 ---
 
-## Resource Control Model
+## 资源控制模型
 
-Every registered agent must have resource boundaries.
+每个已注册代理必须有资源边界。
 
-### Required field
+### 必需字段
 
 - `resource_limits`
 
 ### `resource_limits`
 
-Describes the bounded resource posture of the agent.
+描述代理的有界资源姿态。
 
-This may include limits or expectations related to:
+这可能包括与以下相关的限制或期望：
 
-- runtime window
-- cost exposure
-- concurrency
-- tool usage
-- execution slot limits
-- memory or storage impact where relevant
+- 运行时窗口
+- 成本暴露
+- 并发性
+- 工具使用
+- 执行槽位限制
+- 记忆或存储影响（如相关）
 
-This document does not define the full internal structure of `resource_limits`,
-but it does define that the field is mandatory.
+本文档不定义 `resource_limits` 的完整内部结构，
+但它确实定义该字段是强制的。
 
-### Principle
+### 原则
 
-No agent should be treated as an unbounded execution surface.
+没有代理应作为无界执行面存在。
 
 ---
 
-## Health and Heartbeat Model
+## 健康与心跳模型
 
-Registry entries should support minimum operational health visibility.
+注册表条目应支持最小操作健康可见性。
 
-### Required health-related fields
+### 必需的健康相关字段
 
 - `health_status`
 - `heartbeat_interval_seconds`
@@ -364,89 +364,97 @@ Registry entries should support minimum operational health visibility.
 
 ### `health_status`
 
-A durable summary of whether the agent is currently considered operationally trustworthy.
+代理当前是否被认为操作上值得信任的持久摘要。
 
-This is not a detailed runtime metric dump.
-It is a compact governed health signal.
+这不是详细的运行时指标转储。
+它是紧凑的受治理健康信号。
 
 ### `heartbeat_interval_seconds`
 
-The expected heartbeat cadence for the agent, where heartbeat is relevant.
+代理的预期心跳频率，当心跳相关时。
 
 ### `last_seen_at`
 
-The last time the agent was observed as alive or responsive enough to update health posture.
+最后一次观察到代理存活或足够响应以更新健康姿态的时间。
 
-### Principle
+### 原则
 
-A registered agent should not remain permanently trusted if it cannot be observed or health-assessed.
+已注册代理如果不能被观察或健康评估，则不应保持永久信任。
 
 ---
 
-## Lifecycle Model
+## 生命周期模型
 
-Registry objects require administrative lifecycle tracking distinct from runtime execution state.
+注册表对象需要与运行时执行状态不同的管理生命周期追踪。
 
-### Required field
+### 必需字段
 
 - `lifecycle_state`
 
-### Preferred lifecycle states
+### 首选生命周期状态
 
-- `draft`
-- `registered`
-- `approved`
-- `active`
-- `paused`
-- `deprecated`
-- `revoked`
-- `archived`
+- `draft`（草稿）
+- `registered`（已注册）
+- `approved`（已审批）
+- `active`（活跃）
+- `paused`（暂停）
+- `deprecated`（已弃用）
+- `revoked`（已撤销）
+- `archived`（已归档）
 
-These states are lifecycle states, not task states.
+这些状态是生命周期状态，而非任务状态。
 
-### Lifecycle meanings
+### 生命周期含义
 
 #### `draft`
-The agent definition exists but has not yet been accepted into governed use.
+
+代理定义存在但尚未被接受进入受治理使用。
 
 #### `registered`
-The agent has been entered into the registry but is not yet fully approved for normal governed use.
+
+代理已进入注册表但尚未完全审批用于正常受治理使用。
 
 #### `approved`
-The agent has passed the required governance gate for its intended usage level.
+
+代理已通过其预期使用级别所需的治理门禁。
 
 #### `active`
-The agent is allowed to participate in normal governed operation.
+
+代理被允许参与正常受治理操作。
 
 #### `paused`
-The agent is intentionally not in active use.
+
+代理有意不处于活跃使用中。
 
 #### `deprecated`
-The agent should not be selected for new normal use, though historical reference may remain.
+
+代理不应被选择用于新的正常使用，尽管历史引用可能保留。
 
 #### `revoked`
-The agent is no longer permitted for use because trust, authority, or suitability has been withdrawn.
+
+代理不再被允许使用，因为信任、权限或适用性已被撤销。
 
 #### `archived`
-The agent entry is retained for history only.
 
-### Lifecycle rule
+代理条目仅保留用于历史。
 
-A registry entry should not be treated as fully usable merely because it exists.
+### 生命周期规则
 
-Existence is not activation.
+注册表条目不应仅因为存在而被视为完全可用。
 
-Approval is not automatically activation either.
+存在不是激活。
+
+审批也不自动是激活。
 
 ---
 
-## Admission Rule
+## 准入规则
 
-An agent should not be considered a governed registry object unless it satisfies the minimum required fields.
+代理不作为受治理的注册表对象，除非它满足最小必需字段。
 
-### Minimum admission baseline
+### 最小准入基线
 
-A valid agent registry entry must include at least:
+有效的代理注册表条目必须至少包括：
 
 - `agent_id`
 - `name`
@@ -466,108 +474,108 @@ A valid agent registry entry must include at least:
 - `created_at`
 - `updated_at`
 
-This is the durable governance baseline.
+这是持久治理基线。
 
-Additional fields may exist, but these should not be omitted in a properly governed registry entry.
+附加字段可能存在，但这些不应在正确受治理的代理注册表条目中省略。
 
 ---
 
-## Audit Model
+## 审计模型
 
-Registry entries must preserve basic auditability.
+注册表条目必须保留基本的可审计性。
 
-### Required audit fields
+### 必需审计字段
 
 - `created_at`
 - `updated_at`
 - `created_by`
 - `updated_by`
 
-### Optional but strongly recommended
+### 强烈推荐但可选
 
 - `approved_at`
 - `approved_by`
 - `revoked_at`
 - `archived_at`
 
-### Audit principle
+### 审计原则
 
-A governed agent record should preserve who created, changed, and approved it where relevant.
+受治理的代理记录应在相关处保留谁创建、更改和审批它。
 
-Registry without audit fields is weak governance.
-
----
-
-## Approval and Activation Rule
-
-Approval and activation must remain distinct.
-
-### Rule
-
-An agent may be:
-
-- registered but not approved
-- approved but not active
-- active and later paused
-- active and later revoked
-- deprecated without being immediately archived
-
-### Why
-
-This distinction supports safer control over:
-
-- rollout posture
-- trust posture
-- replacement posture
-- historical accountability
+没有审计字段的注册表是弱治理。
 
 ---
 
-## Risk and Registry Relation
+## 审批与激活规则
 
-The registry is one of the objects most sensitive to governance drift.
+审批和激活必须保持分离。
 
-Registry modifications should usually receive stronger scrutiny than ordinary low-risk edits.
+### 规则
 
-Changes that affect any of the following should be treated carefully:
+代理可以是：
 
-- permissions
-- risk ceiling
-- lifecycle state
-- ownership
-- isolation level
-- resource limits
-- health posture
-- authority-bearing metadata
+- 已注册但未审批
+- 已审批但不活跃
+- 活跃后暂停
+- 活跃后撤销
+- 已弃用但不立即归档
 
-These changes may materially affect what the system can do and what it is allowed to do.
+### 为什么
 
----
+此区分支持对以下更安全的控制：
 
-## Agent Health Interpretation
-
-Health is not identical to lifecycle.
-
-An agent may be:
-
-- `active` but unhealthy
-- `approved` but not recently seen
-- `paused` but historically valid
-- `deprecated` but still healthy enough for controlled legacy reference
-
-Therefore:
-
-- `lifecycle_state` and `health_status` must remain distinct
-
-Do not collapse them into a single status field.
+- 推出姿态
+- 信任姿态
+- 替换姿态
+- 历史问责
 
 ---
 
-## Selection and Routing Implications
+## 风险与注册表关系
 
-The registry is not the routing engine.
+注册表是对治理漂移最敏感的对象之一。
 
-However, routing decisions may rely on registry fields such as:
+注册表修改通常应比普通低风险编辑接受更强的审查。
+
+影响以下任一项的变更应小心处理：
+
+- 权限
+- 风险上限
+- 生命周期状态
+- 所有权
+- 隔离级别
+- 资源限制
+- 健康姿态
+- 权限承载元数据
+
+这些变更可能实质性影响系统能做什么和被允许做什么。
+
+---
+
+## 代理健康解释
+
+健康与生命周期不同。
+
+代理可以是：
+
+- `active` 但不健康
+- `approved` 但最近未见
+- `paused` 但历史上有效
+- `deprecated` 但仍然足够健康以供受控遗留引用
+
+因此：
+
+- `lifecycle_state` 和 `health_status` 必须保持分离
+
+不要将它们合并到单一状态字段中。
+
+---
+
+## 选择与路由影响
+
+注册表不是路由引擎。
+
+然而，路由决策可能依赖于注册表字段，例如：
 
 - `agent_type`
 - `capability_scope`
@@ -576,88 +584,88 @@ However, routing decisions may rely on registry fields such as:
 - `lifecycle_state`
 - `health_status`
 
-### Practical rule
+### 实践规则
 
-An agent should not be recommended or selected on role fit alone.
+代理不应仅凭角色适配被推荐或选择。
 
-Selection should also respect:
+选择还应尊重：
 
-- lifecycle
-- health
-- permissions
-- risk ceiling
-- isolation suitability
-
----
-
-## Agent Registry and Trace
-
-Registry is not trace.
-
-Registry should preserve durable metadata.
-
-Trace should preserve meaningful events such as:
-
-- agent admission
-- approval
-- activation
-- revocation
-- major permission change
-- major health-state deterioration
-
-Do not turn the registry entry into a running event log.
-
-Use trace for events and registry for current durable truth.
+- 生命周期
+- 健康
+- 权限
+- 风险上限
+- 隔离适用性
 
 ---
 
-## Agent Registry and Memory
+## 代理注册表与追踪
 
-Registry is not long-term memory summary.
+注册表不是追踪。
 
-Memory may preserve strategic or durable lessons about agent design,
-but the registry should preserve the current governed truth about the agent itself.
+注册表应保留持久元数据。
 
-Do not duplicate the entire registry into memory.
+追踪应保留有意义的事件，例如：
+
+- 代理准入
+- 审批
+- 激活
+- 撤销
+- 重大权限变更
+- 重大健康状态恶化
+
+不要将注册表条目变成运行事件日志。
+
+使用追踪记录事件，使用注册表记录当前持久真实。
 
 ---
 
-## Relation to Other Documents
+## 代理注册表与记忆
 
-This document should align with:
+注册表不是长期记忆摘要。
+
+记忆可能保留关于代理设计的战略性或持久教训，
+但注册表应保留关于代理本身的当前受治理真实。
+
+不要将整个注册表复制到记忆中。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `GOVERNANCE_GLOSSARY.md`
 - `FIELD_CANON.md`
 - `RISK_MODEL.md`
 - `STATE_MACHINE.md`
 - `TRACE_SPEC.md`
-- future `contracts/agent_registry.schema.json`
+- 未来的 `contracts/agent_registry.schema.json`
 
-This document defines registry semantics.
+本文档定义注册表语义。
 
-Future schema should define structural enforcement.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- anonymous agents
-- agents with no clear owner
-- agents with unclear permissions
-- agents with no explicit risk boundary
-- agents that exist but are not lifecycle-controlled
-- agents selected despite unhealthy or revoked status
-- registry records that behave like prose notes instead of governed objects
-- governance drift caused by soft or incomplete agent metadata
+未来模式应定义结构执行。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-An agent registry should make agents governable.
+本规范的存在部分是为了防止：
 
-If an agent cannot be clearly identified, owned, bounded, classified, and lifecycle-controlled, it is not well governed.
+- 匿名代理
+- 没有明确所有者的代理
+- 权限不清的代理
+- 没有明确风险边界的代理
+- 存在但未生命周期控制的代理
+- 尽管不健康或已撤销仍被选择的代理
+- 表现为散文笔记而非受治理对象的注册表记录
+- 由软弱或不完整代理元数据导致的治理漂移
 
-The registry exists to make durable agent truth explicit.
+---
+
+## 最终原则
+
+代理注册表应使代理可治理。
+
+如果代理无法被明确标识、拥有、有界、分类和生命周期控制，它就不是良好治理的。
+
+注册表的存在是为了使持久的代理真实明确。

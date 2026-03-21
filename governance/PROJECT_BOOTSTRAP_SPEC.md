@@ -1,130 +1,130 @@
-# PROJECT_BOOTSTRAP_SPEC.md
+# 项目引导规范
 
-## Purpose
+## 目的
 
-This document defines the project bootstrap specification for the Xuanzhi workspace.
+本文档定义玄织工作空间的项目引导规范。
 
-Its purpose is to provide a stable governed path from:
+其目的在于为以下事项提供稳定的受治理路径：
 
-- project intent
-- task framing
-- repository creation or selection
-- template selection
-- initial governance setup
-- development handoff readiness
+- 项目意图
+- 任务界定
+- 仓库创建或选择
+- 模板选择
+- 初始治理设置
+- 开发交接就绪
 
-This document is normative for project bootstrap semantics.
+本文档对项目引导语义具有规范性。
 
-It is not a shell script.
-It is not a GitLab API reference.
-It is not a repo template file itself.
-It is not a substitute for development task packets or project-local governance files.
+它不是 shell 脚本。
+它不是 GitLab API 参考。
+它不是仓库模板文件本身。
+它不是开发任务包或项目本地治理文件的替代品。
 
-Its job is to define how a new project should enter the governed system.
-
----
-
-## Core Principle
-
-Project bootstrap is not merely “create repo and start coding.”
-
-A governed bootstrap should answer:
-
-- what kind of project this is
-- why the project exists
-- what repo shape it should have
-- what governance baseline applies
-- what the initial execution posture is
-- what the first controlled development path is
-
-A bad bootstrap creates infrastructure without clarity.
-
-This workspace prefers bootstrap that is:
-
-- minimal
-- explicit
-- type-aware
-- governance-compatible
-- ready for bounded execution
+其任务是定义新项目应如何进入受治理系统。
 
 ---
 
-## Bootstrap Entry Conditions
+## 核心原则
 
-Bootstrap begins when a project-level effort is recognized that needs one or more of the following:
+项目引导不仅仅是"创建仓库并开始编码"。
 
-- a new repository
-- a new governed project space
-- a new project-local governance surface
-- a new long-running development track
-- a new workflow-bearing or automation-bearing project unit
+受治理的引导应回答：
 
-Not every task requires project bootstrap.
+- 这是什么类型的项目
+- 项目为什么存在
+- 它应该有什么仓库形态
+- 适用什么治理基线
+- 初始执行姿态是什么
+- 第一条受控开发路径是什么
 
-Small bounded work inside an existing healthy repo should not be forced into new-project ceremony.
+坏的引导创造没有清晰度的基础设施。
 
----
+本工作空间偏好以下引导：
 
-## Bootstrap Output Goal
-
-A successful bootstrap should produce a project that is:
-
-- clearly classified
-- clearly owned
-- structurally legible
-- compatible with the workspace governance model
-- ready for controlled development or workflow execution
-- reviewable as a project entry point
-
-At minimum, a successful bootstrap should make the next development decision easier and safer.
+- 最小
+- 明确
+- 类型感知
+- 治理兼容
+- 有界执行就绪
 
 ---
 
-## Canonical Bootstrap Phases
+## 引导进入条件
 
-The canonical project bootstrap phases are:
+当识别到需要以下一项或多项的项目级别工作时，引导开始：
 
-1. project framing
-2. project type selection
-3. repository strategy decision
-4. template application
-5. project-local governance baseline
-6. initial issue/task setup
-7. execution readiness check
+- 新仓库
+- 新的受治理项目空间
+- 新的项目本地治理面
+- 新的长期开发轨道
+- 新的工作流承载或自动化承载的项目单元
 
-These phases should remain conceptually distinct even if implementation later compresses them.
+并非每个任务都需要项目引导。
 
----
-
-## Phase 1: Project Framing
-
-Project framing should answer the minimum essential questions:
-
-- what problem or objective does the project address
-- what kind of work does the project mainly involve
-- what is the expected first deliverable
-- what is the likely primary executor
-- what risk posture should be assumed initially
-
-### Framing outputs
-
-Useful outputs include:
-
-- project summary
-- project type candidate
-- expected deliverable class
-- initial repo need judgment
-- likely executor posture
-
-### Principle
-
-If the project cannot be framed, repo creation should not be the first action.
+在现有健康仓库内的小型有界工作不应被迫进入新项目仪式。
 
 ---
 
-## Phase 2: Project Type Selection
+## 引导输出目标
 
-The project should be classified using the canonical repository types:
+成功的引导应产出：
+
+- 明确分类的项目
+- 明确拥有的项目
+- 结构可读的项目
+- 与工作空间治理模型兼容的项目
+- 准备受控开发或工作流执行的项目
+- 可作为项目入口点评审的项目
+
+至少，成功的引导应使下一个开发决策更容易和更安全。
+
+---
+
+## 标准引导阶段
+
+标准的项目引导阶段是：
+
+1. 项目界定
+2. 项目类型选择
+3. 仓库策略决策
+4. 模板应用
+5. 项目本地治理基线
+6. 初始问题/任务设置
+7. 执行就绪检查
+
+这些阶段应在概念上保持分离，即使实现稍后压缩它们。
+
+---
+
+## 阶段 1：项目界定
+
+项目界定应回答最小必要问题：
+
+- 项目解决什么问题或目标
+- 项目主要涉及什么类型的工作
+- 预期的第一个交付物是什么
+- 可能的主要执行器是什么
+- 初始应假设什么风险姿态
+
+### 界定输出
+
+有用的输出包括：
+
+- 项目摘要
+- 项目类型候选
+- 预期交付物类别
+- 初始仓库需求判断
+- 可能的执行器姿态
+
+### 原则
+
+如果项目无法被界定，仓库创建不应该是第一个动作。
+
+---
+
+## 阶段 2：项目类型选择
+
+项目应使用标准仓库类型进行分类：
 
 - `software_project`
 - `automation_project`
@@ -133,333 +133,333 @@ The project should be classified using the canonical repository types:
 - `knowledge_project`
 - `research_project`
 
-### Why type selection matters
+### 为什么类型选择重要
 
-Project type influences:
+项目类型影响：
 
-- template shape
-- optional directories
-- CI expectations
-- local governance burden
-- likely executor fit
-- likely review posture
+- 模板形态
+- 可选目录
+- CI 期望
+- 本地治理负担
+- 可能的执行器适配
+- 可能的评审姿态
 
-### Selection rule
+### 选择规则
 
-Use the narrowest project type that fits the real work.
+使用适合真实工作的最窄项目类型。
 
-Do not choose a more complex type merely because it sounds more advanced.
-
----
-
-## Phase 3: Repository Strategy Decision
-
-The bootstrap path must decide whether to:
-
-- use an existing repo
-- create a new repo
-- defer repo creation temporarily
-
-### Use an existing repo when
-
-- the work clearly belongs to an existing healthy project surface
-- repo-local governance already exists
-- creating a new repo would create duplication
-- the existing repo structure still fits the work
-
-### Create a new repo when
-
-- the project is genuinely distinct
-- ownership or lifecycle should be separate
-- existing repos would create structural confusion
-- the project type or control surface is materially different
-- a clean governance boundary is valuable
-
-### Defer repo creation when
-
-- framing is still too unclear
-- the work is exploratory and not yet project-shaped
-- a small research or design phase should happen first
-
-### Principle
-
-A new repo is a governance decision, not merely a storage convenience.
+不要仅因为它听起来更高级就选择更复杂的类型。
 
 ---
 
-## Phase 4: Template Application
+## 阶段 3：仓库策略决策
 
-If a new repo is created, it should apply the relevant template baseline from:
+引导路径必须决定是否：
+
+- 使用现有仓库
+- 创建新仓库
+- 暂时推迟仓库创建
+
+### 当以下情况使用现有仓库
+
+- 工作明显属于现有健康项目面
+- 仓库本地治理已存在
+- 创建新仓库会造成重复
+- 现有仓库结构仍适合工作
+
+### 当以下情况创建新仓库
+
+- 项目真正独立
+- 所有权或生命周期应分离
+- 现有仓库会造成结构性混淆
+- 项目类型或控制面实质性不同
+- 清晰的治理边界有价值
+
+### 当以下情况推迟仓库创建
+
+- 界定仍然太不清晰
+- 工作是探索性的，尚未形成项目形态
+- 应先进行小型研究或设计阶段
+
+### 原则
+
+新仓库是治理决策，不仅仅是存储便利。
+
+---
+
+## 阶段 4：模板应用
+
+如果创建新仓库，它应从以下应用相关模板基线：
 
 - `REPO_TEMPLATE_SPEC.md`
 
-### Template application should include
+### 模板应用应包括
 
-- required default directories
-- optional directories only when justified
-- baseline project files
-- CI baseline posture
-- issue category baseline
-- branch naming baseline
-- project-local governance placement under `/.governance`
+- 必需的默认目录
+- 仅在合理时的可选目录
+- 基线项目文件
+- CI 基线姿态
+- 问题类别基线
+- 分支命名基线
+- `/.governance` 下的项目本地治理放置
 
-### Principle
+### 原则
 
-Template application should reduce future ambiguity, not create decorative structure.
+模板应用应减少未来歧义，而非创造装饰性结构。
 
 ---
 
-## Phase 5: Project-Local Governance Baseline
+## 阶段 5：项目本地治理基线
 
-A new governed repo should gain a minimal project-local governance baseline.
+新的受治理仓库应获得最小项目本地治理基线。
 
-This should live under:
+这应存放在：
 
 - `/.governance`
 
-### Project-local governance should be minimal
+### 项目本地治理应最小
 
-Typical bootstrap-level project-local governance may include:
+典型的引导级别项目本地治理可能包括：
 
-- local project summary
-- local conventions if needed
-- local delivery notes if needed
-- local risk notes if needed
-- references to workspace-level governance
+- 本地项目摘要
+- 如需的本地约定
+- 如需的本地交付说明
+- 如需的本地风险说明
+- 对工作空间级别治理的引用
 
-### Important rule
+### 重要规则
 
-Do not duplicate the full workspace governance stack inside each repo.
+不要在每个仓库内复制完整的工作空间治理栈。
 
-The project-local governance baseline should remain project-specific and minimal.
-
----
-
-## Phase 6: Initial Issue / Task Setup
-
-Bootstrap should create a bounded first work surface.
-
-This usually means at least one of:
-
-- an initial issue
-- an initial development task
-- an initial research task
-- an initial governance/setup task
-
-### Why this matters
-
-Bootstrap should not end with an empty repo plus vague hope.
-
-It should end with a first controlled path.
-
-### Typical initial issue examples
-
-- initialize baseline project structure
-- implement first bounded feature slice
-- set up CI baseline
-- create first automation skeleton
-- establish initial docs and validation posture
+项目本地治理基线应保持项目特定和最小。
 
 ---
 
-## Phase 7: Execution Readiness Check
+## 阶段 6：初始问题/任务设置
 
-Before active development starts, the project should pass a lightweight readiness check.
+引导应创建有界的第一工作面。
 
-### Minimum readiness questions
+这通常意味着至少以下之一：
 
-- is the project type clear enough
-- is the repo choice correct enough
-- is the structure legible enough
-- is the initial task clear enough
-- is the likely executor clear enough
-- is the governance baseline sufficient for first work
-- is the risk posture acceptable for bootstrap scope
+- 初始问题
+- 初始开发任务
+- 初始研究任务
+- 初始治理/设置任务
 
-### Principle
+### 为什么这重要
 
-Readiness should be enough to start well,
-not a giant pre-execution bureaucracy.
+引导不应以空仓库加模糊希望结束。
 
----
+它应以第一条受控路径结束。
 
-## Expected Bootstrap Artifacts
+### 典型初始问题示例
 
-A healthy bootstrap often produces artifacts such as:
-
-- project summary
-- selected project type
-- repo reference
-- template application result
-- local governance baseline under `/.governance`
-- initial issue or task
-- initial executor recommendation
-- initial risk posture summary
-
-These artifacts do not need to be large.
-
-They do need to be legible.
+- 初始化基线项目结构
+- 实现第一个有界功能切片
+- 设置 CI 基线
+- 创建第一个自动化骨架
+- 建立初始文档和验证姿态
 
 ---
 
-## Executor Fit During Bootstrap
+## 阶段 7：执行就绪检查
 
-Bootstrap should preserve the existing bounded executor model.
+在活跃开发开始之前，项目应通过轻量级就绪检查。
 
-### Xuanzhi
+### 最小就绪问题
 
-Xuanzhi is responsible for:
+- 项目类型是否足够清晰
+- 仓库选择是否足够正确
+- 结构是否足够可读
+- 初始任务是否足够清晰
+- 可能的执行器是否足够清晰
+- 治理基线对第一工作是否足够
+- 风险姿态对引导范围是否可接受
 
-- framing the project
-- selecting the project type
-- deciding repo strategy
-- determining initial governance posture
-- deciding whether work is ready for development delegation
+### 原则
+
+就绪应足以良好开始，
+而非巨大的预执行官僚主义。
+
+---
+
+## 预期引导制品
+
+健康的引导通常产出如下制品：
+
+- 项目摘要
+- 选定的项目类型
+- 仓库引用
+- 模板应用结果
+- `/.governance` 下的本地治理基线
+- 初始问题或任务
+- 初始执行器推荐
+- 初始风险姿态摘要
+
+这些制品不需要很大。
+
+它们需要可读。
+
+---
+
+## 引导期间的执行器适配
+
+引导应保留现有有界执行器模型。
+
+### 玄织
+
+玄织负责：
+
+- 界定项目
+- 选择项目类型
+- 决定仓库策略
+- 确定初始治理姿态
+- 决定工作是否准备好开发委托
 
 ### Claude Code
 
-Claude Code may become the default executor after bootstrap when the project is development-heavy and repo-centered.
+当项目是开发密集和以仓库为中心时，Claude Code 可能在引导后成为默认执行器。
 
-### Workflow systems
+### 工作流系统
 
-Workflow systems may be suitable for bootstrap-adjacent automation work,
-but should not replace project framing and governance judgment.
+工作流系统可能适合引导相关的自动化工作，
+但不应替代项目界定和治理判断。
 
-### Principle
+### 原则
 
-Bootstrap is governance-first, execution-second.
-
----
-
-## Risk and Approval During Bootstrap
-
-Bootstrap can look administrative while still carrying real risk.
-
-Approval or stronger scrutiny may be appropriate when bootstrap includes:
-
-- repo creation in sensitive org surfaces
-- infra project creation
-- workflow-bearing project creation with activation implications
-- permission-bearing setup
-- risky project-local governance changes
-- automation project creation with meaningful blast radius
-
-### Principle
-
-Bootstrap is not automatically low-risk just because it happens “before real work.”
+引导是治理优先，执行其次。
 
 ---
 
-## Repo Reuse vs Repo Proliferation
+## 引导期间的风险与审批
 
-One of the most important bootstrap decisions is whether a new repo is actually justified.
+引导可能看起来是行政性的，但仍带有真实风险。
 
-### Signs that a new repo is justified
+当引导包括以下内容时，审批或更强审查可能是适当的：
 
-- distinct ownership
-- distinct lifecycle
-- distinct project type
-- strong structural separation value
-- reduced future confusion
+- 敏感组织面中的仓库创建
+- 基础设施项目创建
+- 具有激活影响的工作流承载项目创建
+- 权限承载设置
+- 风险项目本地治理变更
+- 具有意义影响范围的自动化项目创建
 
-### Signs that a new repo is probably not justified
+### 原则
 
-- the work is just one bounded feature inside an existing repo
-- repo separation adds ceremony but not control
-- ownership and lifecycle are not materially different
-- the new repo would mostly duplicate existing structure
-
-### Principle
-
-Avoid repo proliferation without governance value.
+引导不会仅仅因为它发生在"真正工作"之前就自动是低风险的。
 
 ---
 
-## Bootstrap and Development Packets
+## 仓库重用与仓库蔓延
 
-Bootstrap should make later development packet generation easier.
+引导最重要的决策之一是新仓库是否真正合理。
 
-A good bootstrap should leave the project in a state where Xuanzhi can later produce clean:
+### 新仓库合理的迹象
 
-- `dev_task_packet.schema.json` inputs
-- `dev_result_packet.schema.json` review expectations
+- 独立所有权
+- 独立生命周期
+- 独立项目类型
+- 强结构性分离价值
+- 减少未来混淆
 
-### Principle
+### 新仓库可能不合理的迹象
 
-Bootstrap is partly successful when the first development delegation becomes easier and cleaner.
+- 工作只是现有仓库内的一个有界功能
+- 仓库分离增加仪式但不增加控制
+- 所有权和生命周期没有实质性不同
+- 新仓库主要会复制现有结构
+
+### 原则
+
+避免没有治理价值的仓库蔓延。
 
 ---
 
-## Bootstrap and GitLab
+## 引导与开发包
 
-When GitLab is the repo control surface, bootstrap should support:
+引导应使后续开发包生成更容易。
 
-- governed repo creation
-- issue-driven first work
-- branch-aware future development
-- MR/CI-ready structure
+好的引导应使项目处于玄织可以稍后产出干净的状态：
 
-This should align with:
+- `dev_task_packet.schema.json` 输入
+- `dev_result_packet.schema.json` 评审期望
+
+### 原则
+
+当第一次开发委托变得更容易和更干净时，引导部分成功。
+
+---
+
+## 引导与 GitLab
+
+当 GitLab 是仓库控制面时，引导应支持：
+
+- 受治理的仓库创建
+- 问题驱动的第一工作
+- 分支感知的未来开发
+- MR/CI 就绪的结构
+
+这应与以下对齐：
 
 - `GITLAB_INTEGRATION.md`
 
 ---
 
-## Bootstrap and Trace
+## 引导与追踪
 
-Meaningful bootstrap actions should be traceable.
+有意义的引导动作应可追踪。
 
-Typical bootstrap trace-worthy moments include:
+典型的引导值得追踪的时刻包括：
 
-- project framing accepted
-- repo creation
-- template applied
-- initial governance baseline created
-- initial issue or task opened
-- first executor recommendation established
+- 项目界定接受
+- 仓库创建
+- 模板应用
+- 初始治理基线创建
+- 初始问题或任务打开
+- 第一执行器推荐建立
 
-Bootstrap should not be invisible if it creates durable project structure.
-
----
-
-## Bootstrap and Memory
-
-Not every bootstrap event belongs in long-term memory.
-
-However, memory-worthy bootstrap outcomes may include:
-
-- durable project direction
-- major architectural project classification
-- important structural decisions about repo or project boundaries
-
-Trace and repo artifacts should hold most bootstrap detail.
-Long-term memory should hold only durable strategic signal.
+如果引导创造持久项目结构，它不应是不可见的。
 
 ---
 
-## Small Bootstrap Exception
+## 引导与记忆
 
-Not every new workstream needs full bootstrap.
+并非每个引导事件都属于长期记忆。
 
-A very small bounded project-like effort may use a light bootstrap path if:
+然而，值得记忆的引导结果可能包括：
 
-- the project is obviously simple
-- the risk is low
-- the repo shape is trivial
-- the initial work is clear
-- future governance burden is low
+- 持久项目方向
+- 主要架构项目分类
+- 关于仓库或项目边界的重要结构决策
 
-### Principle
-
-A light bootstrap is acceptable when it preserves clarity without unnecessary ceremony.
-
-It should not become an excuse for structural sloppiness.
+追踪和仓库制品应持有大多数引导细节。
+长期记忆应仅持有持久的战略信号。
 
 ---
 
-## Relation to Other Documents
+## 小型引导例外
 
-This document should align with:
+并非每个新工作流都需要完整引导。
+
+非常小型有界的类项目工作可能使用轻量引导路径，如果：
+
+- 项目明显简单
+- 风险低
+- 仓库形态简单
+- 初始工作清晰
+- 未来治理负担低
+
+### 原则
+
+轻量引导在保留清晰度且不必要仪式时可接受。
+
+它不应成为结构性草率的借口。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `REPO_TEMPLATE_SPEC.md`
 - `CLAUDE_CODE_EXECUTION_SPEC.md`
@@ -469,28 +469,28 @@ This document should align with:
 - `RISK_MODEL.md`
 - `APPROVAL_POLICY.md`
 
-This document defines bootstrap semantics.
+本文档定义引导语义。
 
-It does not replace repo template, controller packet, or execution integration specifications.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- repo creation without framing
-- empty governed repos with no first work path
-- project sprawl without structural justification
-- project-local governance duplication
-- bootstrap that creates folders but not clarity
-- early executor selection without project shape understanding
-- treating project bootstrap as trivial administration
+它不替代仓库模板、控制器包或执行集成规范。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-A good bootstrap creates a project that is easier to govern, easier to develop, and easier to review from the first meaningful step.
+本规范的存在部分是为了防止：
 
-That is the point.
+- 没有界定的仓库创建
+- 没有第一工作路径的空受治理仓库
+- 没有结构性理由的项目蔓延
+- 项目本地治理重复
+- 创建文件夹但不创造清晰度的引导
+- 没有项目形态理解的早期执行器选择
+- 将项目引导视为琐碎管理
+
+---
+
+## 最终原则
+
+好的引导创造从第一个有意义的步骤起就更容易治理、更容易开发、更容易评审的项目。
+
+这就是目的。

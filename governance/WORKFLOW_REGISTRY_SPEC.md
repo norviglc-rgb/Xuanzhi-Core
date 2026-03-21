@@ -1,142 +1,142 @@
-# WORKFLOW_REGISTRY_SPEC.md
+# 工作流注册表规范
 
-## Purpose
+## 目的
 
-This document defines the specification for the Workflow Registry in the Xuanzhi workspace.
+本文档定义玄织工作空间工作流注册表的规范。
 
-Its purpose is to provide a durable governed record of recognized workflows and their control-relevant metadata.
+其目的在于提供已认可工作流及其控制相关元数据的持久受治理记录。
 
-The Workflow Registry exists to support:
+工作流注册表的存在是为了支持：
 
-- workflow accountability
-- ownership clarity
-- activation control
-- permission visibility
-- risk-aware governance
-- lifecycle management
-- auditability
-- future machine-readable validation
+- 工作流问责
+- 所有权清晰度
+- 激活控制
+- 权限可见性
+- 风险感知治理
+- 生命周期管理
+- 可审计性
+- 未来机器可读验证
 
-This document is normative for workflow registry semantics.
+本文档对工作流注册表语义具有规范性。
 
-It is not a runtime execution log.
-It is not a full workflow definition store.
-It is not a substitute for execution trace or scheduler state.
+它不是运行时执行日志。
+它不是完整的工作流定义存储。
+它不是执行追踪或调度器状态的替代品。
 
-Its job is to define what a workflow registry entry is, what fields it must preserve, and how workflow registration relates to governance.
-
----
-
-## Core Principle
-
-A workflow is not governed merely because it exists somewhere in a tool, directory, or workflow system.
-
-A workflow becomes governable when it is:
-
-- identifiable
-- owned
-- classifiable
-- risk-declared
-- permission-aware
-- lifecycle-controlled
-- health-visible
-
-The Workflow Registry exists to prevent workflows from drifting into:
-
-- anonymous automation
-- unreviewed activation
-- unclear permissions
-- hidden risk
-- silent operational sprawl
-
-A good workflow registry should answer:
-
-- what this workflow is
-- who owns it
-- what class of workflow it is
-- what triggers it
-- what permissions it depends on
-- what its risk posture is
-- whether it is approved
-- whether it is active
-- whether it is healthy enough to trust
-
-A bad registry stores descriptions without influencing activation or governance.
+其任务是定义工作流注册表条目是什么、它必须保留什么字段、以及工作流注册与治理的关系。
 
 ---
 
-## Registry Role
+## 核心原则
 
-The Workflow Registry is the durable metadata system for recognized workflows.
+工作流不会因为它存在于某工具、目录或工作流系统中而被治理。
 
-It should be used for:
+工作流在以下情况下变得可治理：
 
-- workflow admission
-- workflow approval
-- workflow activation control
-- lifecycle management
-- governance review
-- reporting on recognized workflows
-- future validator and controller logic
+- 可标识
+- 有所有者
+- 可分类
+- 风险已声明
+- 权限感知
+- 生命周期受控
+- 健康可见
 
-It should not be used for:
+工作流注册表的存在是为了防止工作流漂移到：
 
-- every runtime event
-- every historical execution record
-- long workflow implementation manuals
-- raw trace logs
-- copied workflow source payloads
+- 匿名自动化
+- 未经评审的激活
+- 不清晰的权限
+- 隐藏的风险
+- 静默的操作蔓延
 
-Registry stores durable governed truth about workflows, not all execution detail.
+好的工作流注册表应回答：
+
+- 这个工作流是什么
+- 谁拥有它
+- 它是哪类工作流
+- 什么触发它
+- 它依赖什么权限
+- 它的风险姿态是什么
+- 它是否已审批
+- 它是否活跃
+- 它是否足够健康以信任
+
+坏的注册表存储描述却不影响激活或治理。
 
 ---
 
-## Canonical Workflow Types
+## 注册表角色
 
-This workspace recognizes the following canonical `workflow_type` values:
+工作流注册表是已认可工作流的持久元数据系统。
 
-- `automation_workflow`
-- `scheduled_workflow`
-- `agent_tool_workflow`
-- `data_pipeline_workflow`
-- `maintenance_workflow`
-- `governance_workflow`
+它应用于：
 
-These categories are governance-facing categories, not decorative labels.
+- 工作流准入
+- 工作流审批
+- 工作流激活控制
+- 生命周期管理
+- 治理评审
+- 已认可工作流的汇报
+- 未来验证器和控制器逻辑
+
+它不应用于：
+
+- 每个运行时事件
+- 每个历史执行记录
+- 冗长的工作流实现手册
+- 原始追踪日志
+- 复制的工作源源负载
+
+注册表存储关于工作流的持久受治理真实，而非所有执行细节。
+
+---
+
+## 标准工作流类型
+
+本工作空间认可以下标准 `workflow_type` 值：
+
+- `automation_workflow`（自动化工作流）
+- `scheduled_workflow`（定时工作流）
+- `agent_tool_workflow`（代理工具工作流）
+- `data_pipeline_workflow`（数据管道工作流）
+- `maintenance_workflow`（维护工作流）
+- `governance_workflow`（治理工作流）
+
+这些类别是面向治理的类别，而非装饰性标签。
 
 ### `automation_workflow`
 
-A workflow that automates a bounded repeatable process.
+自动化有界可重复流程的工作流。
 
 ### `scheduled_workflow`
 
-A workflow that is intended to run on a schedule or recurring cadence.
+预期按计划或重复频率运行的工作流。
 
 ### `agent_tool_workflow`
 
-A workflow that exists mainly as a tool-facing or agent-invoked execution path.
+主要作为面向工具或代理调用的执行路径存在的工作流。
 
 ### `data_pipeline_workflow`
 
-A workflow focused on ingestion, transformation, transfer, or processing of data-like assets.
+专注于类数据制品的摄入、转换、传输或处理的工作流。
 
 ### `maintenance_workflow`
 
-A workflow used to maintain systems, indexes, state, or operational surfaces.
+用于维护系统、索引、状态或操作面的工作流。
 
 ### `governance_workflow`
 
-A workflow whose primary purpose is review, reporting, approval support, governance checks, or similar control-plane functions.
+主要目的是评审、汇报、审批支持、治理检查或类似控制面功能的工作流。
 
 ---
 
-## Registry Entry Identity
+## 注册表条目标识
 
-Each workflow registry entry must be uniquely identifiable.
+每个工作流注册表条目必须唯一可标识。
 
-### Required identity rule
+### 必需标识规则
 
-Every registered workflow must have:
+每个已注册工作流必须具有：
 
 - `workflow_id`
 - `name`
@@ -144,345 +144,355 @@ Every registered workflow must have:
 
 ### `workflow_id`
 
-`workflow_id` must be globally unique within the workspace.
+`workflow_id` 必须在工作空间内全局唯一。
 
-It should be stable and should not be casually recycled.
+它应稳定且不应被随意回收。
 
 ### `name`
 
-`name` is the human-readable display name of the workflow.
+`name` 是工作流的人类可读显示名称。
 
 ### `description`
 
-A concise description of the workflow's purpose should be present.
+应存在工作流目的的简明描述。
 
-This description should remain compact and governance-relevant.
+此描述应保持紧凑且与治理相关。
 
 ---
 
-## Ownership Model
+## 所有权模型
 
-Every registered workflow must have a clear ownership record.
+每个已注册工作流必须有清晰的所有权记录。
 
-### Required ownership fields
+### 必需所有权字段
 
 - `owner_type`
 - `owner_ref`
 
-### Ownership meaning
+### 所有权含义
 
-Ownership defines who is responsible for the workflow's existence, use, and governance posture.
+所有权定义谁负责工作流的存在、使用和治理姿态。
 
-Ownership is not the same as who last triggered it.
+所有权与谁最后触发它不同。
 
 ### `owner_type`
 
-Typical examples may include:
+典型示例可能包括：
 
-- `user`
-- `workspace`
-- `system`
-- `team`
-- `service`
+- `user`（用户）
+- `workspace`（工作空间）
+- `system`（系统）
+- `team`（团队）
+- `service`（服务）
 
-This set may be hardened later in schema.
+此集合可能稍后在模式中硬化。
 
 ### `owner_ref`
 
-A stable reference to the owner.
+对所有者的稳定引用。
 
-If a workflow has no clear owner, it should not be treated as a fully governed workflow registry object.
+如果工作流没有明确的所有者，它不应被视为完全受治理的工作流注册表对象。
 
 ---
 
-## Trigger Model
+## 触发模型
 
-Every registered workflow should declare how it may be started.
+每个已注册工作流应声明它如何可能被启动。
 
-### Required field
+### 必需字段
 
 - `trigger_types`
 
 ### `trigger_types`
 
-A list of workflow trigger categories.
+工作流触发类别列表。
 
-Typical examples may include:
+典型示例可能包括：
 
-- manual
-- schedule
-- event
+- manual（手动）
+- schedule（定时）
+- event（事件）
 - api
-- agent
+- agent（代理）
 - webhook
 
-This document does not freeze the full enum yet,
-but it does require that trigger posture be explicit.
+本文档尚未冻结完整枚举，
+但它确实要求触发姿态明确。
 
-### Principle
+### 原则
 
-A workflow with hidden or unclear trigger surfaces is weakly governed.
+具有隐藏或不清晰触发面的工作流是弱治理的。
 
 ---
 
-## Permission Model
+## 权限模型
 
-Every registered workflow must declare permission posture.
+每个已注册工作流必须声明权限姿态。
 
-### Required field
+### 必需字段
 
 - `permissions`
 
 ### `permissions`
 
-Describes what the workflow is allowed to touch or invoke.
+描述工作流被允许触及或调用什么。
 
-Examples may include permissions related to:
+示例可能包括与以下相关的权限：
 
-- repos
-- workflows
-- memory surfaces
-- integrations
-- registries
-- external APIs
-- publishing endpoints
-- media systems
+- 仓库
+- 工作流
+- 记忆面
+- 集成
+- 注册表
+- 外部 API
+- 发布端点
+- 媒体系统
 
-The exact internal structure may evolve,
-but the presence of a structured permissions field is mandatory.
+确切的内部结构可能演变，
+但结构化权限字段的存在是强制的。
 
-A workflow should not be treated as governed if its effective access surface is unclear.
+如果工作流的有效访问面不清晰，则不应将其视为受治理的。
 
 ---
 
-## Resource Control Model
+## 资源控制模型
 
-Every registered workflow must declare resource posture.
+每个已注册工作流必须声明资源姿态。
 
-### Required field
+### 必需字段
 
 - `resource_limits`
 
 ### `resource_limits`
 
-Describes bounded resource expectations or limits, potentially including:
+描述有界的资源期望或限制，可能包括：
 
-- runtime window
-- concurrency
-- budget
-- execution slot pressure
-- external service usage
-- storage or artifact volume concerns where relevant
+- 运行时窗口
+- 并发性
+- 预算
+- 执行槽位压力
+- 外部服务使用
+- 存储或制品量关注（如相关）
 
-This document does not fully define the internal object shape,
-but it requires that workflow resource posture be explicit.
+本文档不完全定义内部对象形态，
+但它要求工作流资源姿态明确。
 
 ---
 
-## Risk Model
+## 风险模型
 
-Every registered workflow must declare risk posture.
+每个已注册工作流必须声明风险姿态。
 
-### Required field
+### 必需字段
 
 - `risk_level`
 
-### Optional but useful
+### 可选但有用
 
 - `risk_summary`
 
 ### `risk_level`
 
-The categorical risk class of the workflow under normal expected use.
+工作流在正常预期使用下的分类风险等级。
 
-This should align with the workspace risk model.
+这应与工作空间风险模型对齐。
 
-### Principle
+### 原则
 
-Workflows are not low-risk merely because they are repeatable.
+工作流不会因为它可重复就是低风险的。
 
-A repeatable high-risk workflow is still high-risk.
+可重复的高风险工作流仍然是高风险的。
 
-Workflow risk should consider:
+工作流风险应考虑：
 
-- destructiveness
-- target sensitivity
-- authority implications
-- blast radius
-- recoverability
-- downstream automation consequences
+- 破坏性
+- 目标敏感度
+- 权限影响
+- 影响范围
+- 可恢复性
+- 下游自动化后果
 
 ---
 
-## Approval Model
+## 审批模型
 
-Approval and activation must remain distinct.
+审批和激活必须保持分离。
 
-### Required field
+### 必需字段
 
 - `approved`
 
-### Optional but strongly recommended
+### 可选但强烈推荐
 
 - `approved_at`
 - `approved_by`
 
 ### `approved`
 
-A boolean or equivalent lifecycle fact indicating whether the workflow has passed the required governance gate for normal use.
+指示工作流是否已通过正常使用所需治理门禁的布尔值或等效生命周期事实。
 
-### Approval rule
+### 审批规则
 
-Approved status does not automatically imply active status.
+已审批状态不自动意味着活跃状态。
 
-Approval means the workflow is allowed to exist as a trusted governed candidate for use under its declared posture.
-
----
-
-## Activation Rule
-
-### Core rule
-
-A workflow must be approved before it may be active.
-
-This is a fundamental governance rule.
-
-### Activation implication
-
-A workflow may be:
-
-- registered but not approved
-- approved but not active
-- active and later paused
-- active and later deprecated
-- active and later revoked
-
-Approval and activation must not be collapsed.
+审批意味着工作流被允许作为受信任的受治理候选者在其声明的姿态下使用。
 
 ---
 
-## Lifecycle Model
+## 激活规则
 
-Workflow registry entries require administrative lifecycle tracking distinct from runtime execution state.
+### 核心规则
 
-### Required field
+工作流必须先审批才能活跃。
+
+这是基本的治理规则。
+
+### 激活含义
+
+工作流可以是：
+
+- 已注册但未审批
+- 已审批但不活跃
+- 活跃后暂停
+- 活跃后弃用
+- 活跃后撤销
+
+审批和激活不得合并。
+
+---
+
+## 生命周期模型
+
+工作流注册表条目需要与运行时执行状态不同的管理生命周期追踪。
+
+### 必需字段
 
 - `lifecycle_state`
 
-### Preferred lifecycle states
+### 首选生命周期状态
 
-- `draft`
-- `registered`
-- `approved`
-- `active`
-- `paused`
-- `deprecated`
-- `revoked`
-- `archived`
+- `draft`（草稿）
+- `registered`（已注册）
+- `approved`（已审批）
+- `active`（活跃）
+- `paused`（暂停）
+- `deprecated`（已弃用）
+- `revoked`（已撤销）
+- `archived`（已归档）
 
-These are lifecycle states, not runtime execution states.
+这些是生命周期状态，而非运行时执行状态。
 
-### Lifecycle meanings
+### 生命周期含义
 
 #### `draft`
-The workflow definition exists conceptually or locally but is not yet admitted into governed use.
+
+工作流定义在概念上或本地存在，但尚未被准入受治理使用。
 
 #### `registered`
-The workflow has been entered into the registry but has not yet passed full governance gating.
+
+工作流已进入注册表但尚未通过完整的治理门禁。
 
 #### `approved`
-The workflow has passed the required governance approval posture.
+
+工作流已通过所需的治理审批姿态。
 
 #### `active`
-The workflow is permitted for normal governed use.
+
+工作流被允许正常受治理使用。
 
 #### `paused`
-The workflow is intentionally inactive for now.
+
+工作流目前有意不活跃。
 
 #### `deprecated`
-The workflow should not be selected for new normal use, though historical reference remains.
+
+工作流不应被选择用于新的正常使用，尽管历史引用保留。
 
 #### `revoked`
-The workflow is no longer permitted for use.
+
+工作流不再被允许使用。
 
 #### `archived`
-The workflow entry is retained for history only.
 
-### Lifecycle distinction rule
+工作流条目仅保留用于历史。
 
-Do not confuse:
+### 生命周期区分规则
+
+不要混淆：
 
 - `lifecycle_state`
-with
-- runtime run status
 
-A workflow may be active in lifecycle terms while not currently running.
+与
+
+- 运行时运行状态
+
+工作流可能在生命周期意义上活跃，但当前不在运行。
 
 ---
 
-## Version and Definition Linkage
+## 版本与定义链接
 
-Every registered workflow should preserve version awareness and linkage to its actual definition.
+每个已注册工作流应保留版本意识并链接到其实际定义。
 
-### Required field
+### 必需字段
 
 - `version`
 
-### Strongly recommended field
+### 强烈推荐字段
 
 - `definition_ref`
 
 ### `version`
 
-The declared version of the workflow entry or its governed definition.
+工作流条目或其受治理定义的声明版本。
 
 ### `definition_ref`
 
-A pointer to the actual workflow definition, source file, system entry, or authoritative implementation location.
+指向实际工作流定义、源文件、系统条目或权威实现位置的指针。
 
-The registry should point to the definition.
-It should not absorb the full definition payload unless the workflow is extremely small.
+注册表应指向定义。
+它不应吸收完整的定义负载，除非工作流非常小。
 
 ---
 
-## Health Model
+## 健康模型
 
-Workflow registry entries should support minimum health visibility.
+工作流注册表条目应支持最小健康可见性。
 
-### Required field
+### 必需字段
 
 - `health_status`
 
-### Strongly recommended
+### 强烈推荐
 
 - `last_checked_at`
 
 ### `health_status`
 
-A durable summary of whether the workflow is currently considered operationally trustworthy.
+工作流当前是否被认为操作上值得信任的持久摘要。
 
-This is not a detailed execution log.
-It is a governance-facing health signal.
+这不是详细的执行日志。
+它是面向治理的健康信号。
 
-### Why health matters
+### 为什么健康重要
 
-A workflow may be:
+工作流可能是：
 
-- approved but unhealthy
-- active but repeatedly failing
-- lifecycle-valid but integration-broken
+- 已审批但不健康
+- 活跃但重复失败
+- 生命周期有效但集成损坏
 
-Lifecycle and health must remain distinct.
+生命周期和健康必须保持分离。
 
 ---
 
-## Admission Rule
+## 准入规则
 
-A workflow should not be treated as a governed registry object unless it satisfies the minimum required fields.
+工作流不应被视为受治理的注册表对象，除非它满足最小必需字段。
 
-### Minimum admission baseline
+### 最小准入基线
 
-A valid workflow registry entry must include at least:
+有效的工作流注册表条目必须至少包括：
 
 - `workflow_id`
 - `name`
@@ -501,25 +511,25 @@ A valid workflow registry entry must include at least:
 - `created_at`
 - `updated_at`
 
-This is the durable governance baseline.
+这是持久治理基线。
 
-Additional fields may exist,
-but these should not be omitted in a properly governed workflow registry entry.
+附加字段可能存在，
+但这些不应在正确受治理的工作流注册表条目中省略。
 
 ---
 
-## Audit Model
+## 审计模型
 
-Registry entries must preserve basic auditability.
+注册表条目必须保留基本的可审计性。
 
-### Required audit fields
+### 必需审计字段
 
 - `created_at`
 - `updated_at`
 - `created_by`
 - `updated_by`
 
-### Strongly recommended
+### 强烈推荐
 
 - `approved_at`
 - `approved_by`
@@ -527,97 +537,97 @@ Registry entries must preserve basic auditability.
 - `archived_at`
 - `last_checked_at`
 
-### Audit principle
+### 审计原则
 
-A governed workflow record should preserve who created, changed, approved, or revoked it where relevant.
+受治理的工作流记录应在相关处保留谁创建、更改、审批或撤销它。
 
-Registry without audit fields is weak governance.
-
----
-
-## Trigger and Activation Implications
-
-Trigger declaration affects governance posture.
-
-A workflow with:
-
-- broad triggers
-- external triggers
-- automatic recurring triggers
-- trigger surfaces touching sensitive systems
-
-may deserve stronger scrutiny than a manually triggered bounded workflow.
-
-### Practical rule
-
-Do not assess workflow governance only from the workflow body.
-
-Also assess:
-
-- trigger exposure
-- permission exposure
-- activation posture
-- risk level
-- health
-- lifecycle
+没有审计字段的注册表是弱治理。
 
 ---
 
-## Health and Lifecycle Distinction
+## 触发与激活影响
 
-A workflow may be:
+触发声明影响治理姿态。
 
-- `active` but unhealthy
-- `approved` but not active
-- `paused` but otherwise healthy
-- `deprecated` but still historically valid
+具有以下特征的工作流：
 
-Therefore:
+- 广泛触发器
+- 外部触发器
+- 自动重复触发器
+- 触及敏感系统的触发面
 
-- `health_status` and `lifecycle_state` must remain distinct
+可能比手动触发的有界工作流值得更强的审查。
 
-Do not collapse them into a single generic status field.
+### 实践规则
 
----
+不要仅从工作流体评估工作流治理。
 
-## Workflow Registry and Trace
+还要评估：
 
-Registry is not trace.
-
-Registry should preserve current durable truth.
-
-Trace should preserve meaningful events such as:
-
-- workflow admission
-- approval granted
-- activation
-- pause
-- deprecation
-- revocation
-- major permission change
-- major health deterioration
-
-Do not turn the registry entry into a running event log.
-
-Use trace for events and registry for durable governed state.
+- 触发暴露
+- 权限暴露
+- 激活姿态
+- 风险等级
+- 健康
+- 生命周期
 
 ---
 
-## Workflow Registry and Memory
+## 健康与生命周期区分
 
-Registry is not long-term memory summary.
+工作流可能是：
 
-Memory may preserve strategic notes or lessons about workflow design,
-but the registry should preserve the current governed truth about the workflow itself.
+- `active` 但不健康
+- `approved` 但不活跃
+- `paused` 但其他方面健康
+- `deprecated` 但仍然历史上有效
 
-Do not duplicate the registry into memory.
+因此：
+
+- `health_status` 和 `lifecycle_state` 必须保持分离
+
+不要将它们合并到单一通用状态字段中。
 
 ---
 
-## Workflow Selection and Routing Implications
+## 工作流注册表与追踪
 
-The registry is not the scheduler or router,
-but scheduling and routing decisions may rely on registry fields such as:
+注册表不是追踪。
+
+注册表应保留当前持久真实。
+
+追踪应保留有意义的事件，例如：
+
+- 工作流准入
+- 审批授予
+- 激活
+- 暂停
+- 弃用
+- 撤销
+- 重大权限变更
+- 重大健康恶化
+
+不要将注册表条目变成运行事件日志。
+
+使用追踪记录事件，使用注册表记录持久受治理状态。
+
+---
+
+## 工作流注册表与记忆
+
+注册表不是长期记忆摘要。
+
+记忆可能保留关于工作流设计的战略性笔记或教训，
+但注册表应保留关于工作流本身的当前受治理真实。
+
+不要将注册表复制到记忆中。
+
+---
+
+## 工作流选择与路由影响
+
+注册表不是调度器或路由器，
+但调度和路由决策可能依赖于注册表字段，例如：
 
 - `workflow_type`
 - `trigger_types`
@@ -627,55 +637,55 @@ but scheduling and routing decisions may rely on registry fields such as:
 - `health_status`
 - `lifecycle_state`
 
-A workflow should not be selected merely because it exists.
+工作流不应仅因为存在而被选择。
 
-Selection should also respect:
+选择还应尊重：
 
-- approval
-- lifecycle
-- health
-- permissions
-- risk posture
-- trigger suitability
+- 审批
+- 生命周期
+- 健康
+- 权限
+- 风险姿态
+- 触发适用性
 
 ---
 
-## Relation to Other Documents
+## 与其他文档的关系
 
-This document should align with:
+本文档应与以下文档对齐：
 
 - `GOVERNANCE_GLOSSARY.md`
 - `FIELD_CANON.md`
 - `RISK_MODEL.md`
 - `STATE_MACHINE.md`
 - `TRACE_SPEC.md`
-- future `contracts/workflow_registry.schema.json`
+- 未来的 `contracts/workflow_registry.schema.json`
 
-This document defines workflow registry semantics.
+本文档定义工作流注册表语义。
 
-Future schema should define structural enforcement.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- anonymous workflows
-- workflows with no clear owner
-- workflows with unclear permissions
-- workflows activated before approval
-- repeatable high-risk automation treated as harmless
-- workflow entries with no health visibility
-- registry entries that act like prose notes instead of governed objects
-- automation sprawl without lifecycle control
+未来模式应定义结构执行。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-A workflow registry should make workflows governable.
+本规范的存在部分是为了防止：
 
-If a workflow cannot be clearly identified, owned, permissioned, risk-declared, approved, and lifecycle-controlled, it is not well governed.
+- 匿名工作流
+- 没有明确所有者的工作流
+- 权限不清的工作流
+- 审批前激活的工作流
+- 被视为无害的可重复高风险自动化
+- 没有健康可见性的工作流条目
+- 表现为散文笔记而非受治理对象的注册表条目
+- 没有生命周期控制的自动化蔓延
 
-The registry exists to make durable workflow truth explicit.
+---
+
+## 最终原则
+
+工作流注册表应使工作流可治理。
+
+如果工作流无法被明确标识、拥有、权限化、风险声明、审批和生命周期控制，它就不是良好治理的。
+
+注册表的存在是为了使持久的工作流真实明确。

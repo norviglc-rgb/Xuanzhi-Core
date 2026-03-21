@@ -1,78 +1,78 @@
 # FIELD_CANON.md
 
-## Purpose
+## 用途
 
-This document defines the canonical field naming and structural conventions for the 玄织 workspace.
+本文档定义玄织工作空间的规范字段命名与结构约定。
 
-Its role is to reduce:
+其角色是减少：
 
-- field drift
-- alias sprawl
-- schema inconsistency
-- trace mismatch
-- registry mismatch
-- handoff packet ambiguity
+- 字段漂移
+- 别名蔓延
+- 模式不一致
+- 追踪不匹配
+- 注册表不匹配
+- 交接数据包模糊
 
-This document is normative for machine-readable and semi-structured artifacts.
+本文档对机器可读与半结构化制品具有规范性。
 
-It applies especially to:
+它特别适用于：
 
 - `contracts/*.json`
 - `policies/*.yaml`
-- trace-like structures
-- registry-like structures
-- task and result packets
-- future validation logic
+- 追踪类结构
+- 注册表类结构
+- 任务与结果数据包
+- 未来验证逻辑
 
-If multiple names are used for the same concept, this document defines the preferred canonical choice.
+如果同一概念使用多个名称，本文档定义偏好的规范选择。
 
 ---
 
-## Canonical Naming Rules
+## 规范命名规则
 
-### 1. Use snake_case
+### 1. 使用 snake_case
 
-Canonical field names must use `snake_case`.
+规范字段名必须使用 `snake_case`。
 
-Preferred:
+偏好：
 
 - `task_id`
 - `risk_level`
 - `owner_ref`
 - `approval_state`
 
-Avoid:
+避免：
 
 - `taskId`
 - `riskLevel`
 - `ownerRef`
 - `approvalState`
 
-### 2. Use singular names for singular values
+### 2. 单数值使用单数名称
 
-Use singular names for single values.
+单数值使用单数名称。
 
-Preferred:
+偏好：
 
 - `task_id`
 - `risk_level`
 - `summary`
 - `executor`
 
-Use plural names only for list-like values.
+仅对列表类数值使用复数名称。
 
-Preferred:
+偏好：
 
 - `artifact_refs`
 - `risk_reasons`
 - `allowed_transitions`
 - `trigger_types`
 
-### 3. Prefer explicit names over short ambiguous names
+### 3. 偏好明确名称而非短模糊名称
 
-Prefer names that preserve meaning across files.
+偏好跨文件保留含义的名称。
 
-Preferred:
+偏好：
 
 - `task_state`
 - `step_state`
@@ -82,7 +82,7 @@ Preferred:
 - `risk_level`
 - `risk_score`
 
-Avoid using overly generic top-level names such as:
+避免使用过于通用的顶级名称，如：
 
 - `state`
 - `status`
@@ -91,33 +91,33 @@ Avoid using overly generic top-level names such as:
 - `data`
 - `result`
 
-unless the object is extremely local and unambiguous.
+除非对象极其本地化且无歧义。
 
-### 4. Use `_id` for identities and `_ref` for pointers
+### 4. 身份使用 `_id`，指针使用 `_ref`
 
-Use `_id` when the field identifies the current or canonical object.
+当字段标识当前或规范对象时使用 `_id`。
 
-Examples:
+示例：
 
 - `task_id`
 - `step_id`
 - `trace_id`
 - `workflow_id`
 
-Use `_ref` when the field points to another object, artifact, or external record.
+当字段指向另一对象、制品或外部记录时使用 `_ref`。
 
-Examples:
+示例：
 
 - `owner_ref`
 - `repo_ref`
 - `artifact_ref`
 - `memory_ref`
 
-### 5. Use `_at` for timestamps
+### 5. 时间戳使用 `_at`
 
-Preferred time fields end in `_at`.
+偏好的时间字段以 `_at` 结尾。
 
-Examples:
+示例：
 
 - `created_at`
 - `updated_at`
@@ -125,11 +125,11 @@ Examples:
 - `last_seen_at`
 - `archived_at`
 
-### 6. Use explicit numeric suffixes where helpful
+### 6. 在有帮助处使用明确的数字后缀
 
-Use suffixes that make stored values self-explanatory.
+使用使存储值自解释的后缀。
 
-Preferred:
+偏好：
 
 - `retry_count`
 - `failure_count`
@@ -140,42 +140,42 @@ Preferred:
 
 ---
 
-## Canonical Object Families
+## 规范对象族
 
-### Identity family
+### 身份族
 
-Use when an object must be distinctly identifiable.
+当对象必须可明确识别时使用。
 
-Typical fields:
+典型字段：
 
 - `*_id`
 - `name`
 - `title`
 - `description`
 
-Examples:
+示例：
 
 - `task_id`
 - `workflow_id`
 - `agent_id`
 - `trace_id`
 
-### Ownership family
+### 所有权族
 
-Use when responsibility or governance ownership matters.
+当责任或治理所有权重要时使用。
 
-Preferred fields:
+偏好字段：
 
 - `owner_type`
 - `owner_ref`
 
-Use these instead of a single ambiguous `owner` field when structured ownership matters.
+当结构化所有权重要时使用这些，而非单一模糊的 `owner` 字段。
 
-### Audit family
+### 审计族
 
-Use for origin and modification tracking.
+用于起源与修改追踪。
 
-Preferred fields:
+偏好字段：
 
 - `created_at`
 - `updated_at`
@@ -184,11 +184,11 @@ Preferred fields:
 - `approved_at`
 - `approved_by`
 
-### State family
+### 状态族
 
-Use distinct fields for distinct state domains.
+对不同状态域使用不同字段。
 
-Preferred fields:
+偏好字段：
 
 - `task_state`
 - `step_state`
@@ -196,11 +196,11 @@ Preferred fields:
 - `approval_state`
 - `lifecycle_state`
 
-Do not collapse these into a single `state` field when they have different semantics.
+当它们有不同语义时，不要折叠为单一 `state` 字段。
 
-### Risk family
+### 风险族
 
-Preferred fields:
+偏好字段：
 
 - `risk_level`
 - `risk_score`
@@ -208,19 +208,19 @@ Preferred fields:
 - `risk_reasons`
 - `risk_ceiling`
 
-### Summary family
+### 摘要族
 
-Preferred fields:
+偏好字段：
 
 - `summary`
 - `status_summary`
 - `reasoning_summary`
 
-Use these to preserve compressed signal rather than long prose.
+使用这些以保留压缩信号而非长文本。
 
-### Routing and execution family
+### 分发与执行族
 
-Preferred fields:
+偏好字段：
 
 - `task_type`
 - `executor`
@@ -228,9 +228,9 @@ Preferred fields:
 - `execution_mode`
 - `approval_mode`
 
-### Linkage family
+### 链接族
 
-Preferred fields:
+偏好字段：
 
 - `parent_task_id`
 - `parent_step_id`
@@ -240,67 +240,67 @@ Preferred fields:
 
 ---
 
-## Canonical Field Distinctions
+## 规范字段区分
 
 ### `task_id` vs `step_id`
 
-- `task_id` identifies the main practical unit of work
-- `step_id` identifies a bounded unit inside a task
+- `task_id` 标识工作的主要实践单元
+- `step_id` 标识任务内部的界定单元
 
-Do not use one as the substitute for the other.
+不要用一个替代另一个。
 
 ### `task_state` vs `step_state`
 
-- `task_state` describes the task-level runtime condition
-- `step_state` describes the step-level runtime condition
+- `task_state` 描述任务级运行时条件
+- `step_state` 描述步骤级运行时条件
 
-These must not be merged casually.
+这些不可随意合并。
 
 ### `review_state` vs `approval_state`
 
-- `review_state` describes evaluation status
-- `approval_state` describes permission status
+- `review_state` 描述评估状态
+- `approval_state` 描述许可状态
 
-Review and approval are not the same process.
+审查与批准不是同一过程。
 
-### `lifecycle_state` vs runtime state
+### `lifecycle_state` vs 运行时状态
 
-- `lifecycle_state` describes durable administrative state
-- runtime state fields such as `task_state` or `step_state` describe current execution condition
+- `lifecycle_state` 描述持久管理状态
+- 运行时状态字段如 `task_state` 或 `step_state` 描述当前执行条件
 
-Do not reuse one for the other.
+不要为另一目的复用其中一个。
 
 ### `owner_type` / `owner_ref` vs `owner`
 
-- `owner_type` + `owner_ref` are preferred in structured artifacts
-- `owner` may still appear in prose, but should not be the preferred machine-facing form
+- `owner_type` + `owner_ref` 在结构化制品中偏好
+- `owner` 仍可出现在文本中，但不应是偏好的面向机器形式
 
 ### `risk_level` vs `risk_score`
 
-- `risk_level` is categorical
-- `risk_score` is more granular
+- `risk_level` 是分类的
+- `risk_score` 更细粒度
 
-Use both only when both meanings are actually needed.
+仅当两种含义实际需要时同时使用两者。
 
 ### `summary` vs `reasoning_summary`
 
-- `summary` = overall concise description of result or status
-- `reasoning_summary` = concise explanation of why a path, decision, or proposal exists
+- `summary` = 结果或状态的整体简洁描述
+- `reasoning_summary` = 路径、决策或提议存在原因的简洁解释
 
-### `artifact_refs` vs embedded payloads
+### `artifact_refs` vs 嵌入载荷
 
-- `artifact_refs` point to outputs or files
-- large outputs should not be inlined into every packet unless necessary
+- `artifact_refs` 指向输出或文件
+- 大型输出不应内联到每个数据包，除非必要
 
-Prefer references over payload sprawl.
+偏好引用而非载荷蔓延。
 
 ---
 
-## Task and Step Canon
+## 任务与步骤准则
 
-### Task-level preferred fields
+### 任务级偏好字段
 
-Use these fields for structured task-like objects when applicable:
+当适用时对结构化任务类对象使用这些字段：
 
 - `task_id`
 - `task_type`
@@ -313,7 +313,7 @@ Use these fields for structured task-like objects when applicable:
 - `created_at`
 - `updated_at`
 
-Optional but often useful:
+可选但通常有用：
 
 - `approval_mode`
 - `execution_mode`
@@ -321,9 +321,9 @@ Optional but often useful:
 - `artifact_refs`
 - `parent_task_id`
 
-### Step-level preferred fields
+### 步骤级偏好字段
 
-Use these for bounded step-like objects when applicable:
+当适用时对界定清晰的步骤类对象使用这些：
 
 - `step_id`
 - `task_id`
@@ -333,21 +333,21 @@ Use these for bounded step-like objects when applicable:
 - `expected_output`
 - `risk_level`
 
-Optional but often useful:
+可选但通常有用：
 
 - `parent_step_id`
 - `reasoning_summary`
 - `artifact_refs`
 
-If step structures become formalized, the schema should take precedence over prose examples.
+如果步骤结构变得正式化，模式应优先于文本示例。
 
 ---
 
-## Handoff Packet Canon
+## 交接数据包准则
 
-### Task packet fields
+### 任务数据包字段
 
-For control-plane to executor handoff packets, preferred fields include:
+对于控制面到执行器交接数据包，偏好字段包括：
 
 - `task_id`
 - `task_type`
@@ -361,9 +361,9 @@ For control-plane to executor handoff packets, preferred fields include:
 - `approval_mode`
 - `execution_mode`
 
-### Result packet fields
+### 结果数据包字段
 
-For executor to control-plane result packets, preferred fields include:
+对于执行器到控制面结果数据包，偏好字段包括：
 
 - `task_id`
 - `summary`
@@ -373,7 +373,7 @@ For executor to control-plane result packets, preferred fields include:
 - `risk_level`
 - `review_state`
 
-Optional but useful:
+可选但有用：
 
 - `changed_files`
 - `tests_run`
@@ -381,15 +381,15 @@ Optional but useful:
 - `next_step`
 - `reasoning_summary`
 
-If packet schemas later become formalized, those schemas become the enforcement layer, while this document remains the naming baseline.
+如果数据包模式后续变得正式化，那些模式成为强制层，而本文档保持命名基准。
 
 ---
 
-## Registry Canon
+## 注册表准则
 
-### Agent registry preferred fields
+### 代理注册表偏好字段
 
-Use when defining structured agent registry objects:
+定义结构化代理注册表对象时使用：
 
 - `agent_id`
 - `name`
@@ -401,7 +401,7 @@ Use when defining structured agent registry objects:
 - `created_at`
 - `updated_at`
 
-Optional but useful:
+可选但有用：
 
 - `permissions`
 - `capability_scope`
@@ -409,9 +409,9 @@ Optional but useful:
 - `heartbeat_interval_seconds`
 - `last_seen_at`
 
-### Workflow registry preferred fields
+### 工作流注册表偏好字段
 
-Use when defining structured workflow registry objects:
+定义结构化工作流注册表对象时使用：
 
 - `workflow_id`
 - `name`
@@ -423,7 +423,7 @@ Use when defining structured workflow registry objects:
 - `created_at`
 - `updated_at`
 
-Optional but useful:
+可选但有用：
 
 - `trigger_types`
 - `permissions`
@@ -433,9 +433,9 @@ Optional but useful:
 
 ---
 
-## Trace Canon
+## 追踪准则
 
-For trace-like objects, prefer these fields:
+对于追踪类对象，偏好这些字段：
 
 - `trace_id`
 - `task_id`
@@ -448,21 +448,21 @@ For trace-like objects, prefer these fields:
 - `created_at`
 - `artifact_refs`
 
-Optional but useful:
+可选但有用：
 
 - `parent_trace_id`
 - `executor`
 - `status_summary`
 
-Avoid turning trace structures into narrative dumps.
+避免将追踪结构变成叙述堆放。
 
-Trace should preserve useful audit signal, not full conversational sprawl.
+追踪应保留有用的审计信号，而非完整对话蔓延。
 
 ---
 
-## Memory Canon
+## 记忆准则
 
-For long-term memory summary entries or memory-related structured references, prefer:
+对于长期记忆摘要条目或记忆相关的结构化引用，偏好：
 
 - `summary`
 - `category`
@@ -470,25 +470,25 @@ For long-term memory summary entries or memory-related structured references, pr
 - `updated_at`
 - `artifact_refs`
 
-For stable root-layer memory sections, prefer semantic grouping over pseudo-database over-structuring.
+对于稳定的根层记忆节，偏好语义分组而非伪数据库过度结构化。
 
-`MEMORY.md` should remain human-readable and summary-oriented.
+`MEMORY.md` 应保持人类可读且摘要导向。
 
-Detailed memory rules belong in policy and governance files, not in root memory summary itself.
+详细记忆规则属于策略与治理文件，而非根记忆摘要本身。
 
 ---
 
-## Enumerated Field Guidance
+## 枚举字段指导
 
-This document does not try to freeze every enum value globally.
+本文档不尝试全局冻结每个枚举值。
 
-However, the following principle applies:
+然而，以下原则适用：
 
-- enums should be explicit when stabilized
-- enum meaning should be consistent across files
-- enum changes should trigger schema and policy review where relevant
+- 枚举在稳定时应明确
+- 枚举含义应跨文件一致
+- 枚举变更应在相关处触发模式与策略审查
 
-Likely enum-heavy fields include:
+可能是枚举密集的字段包括：
 
 - `task_state`
 - `step_state`
@@ -498,60 +498,60 @@ Likely enum-heavy fields include:
 - `risk_level`
 - `task_type`
 
-When these become critical, they should be hardened in schemas or policy artifacts.
+当这些变得关键时，它们应在模式或策略制品中硬化。
 
 ---
 
-## Alias Avoidance Rule
+## 别名避免规则
 
-Do not casually introduce parallel names for the same concept.
+不要随意为同一概念引入并行名称。
 
-Examples of drift to avoid:
+应避免的漂移示例：
 
-- `status` instead of `task_state`
-- `kind` instead of `task_type`
-- `owner` instead of `owner_type` + `owner_ref`
-- `risk` instead of `risk_level`
-- `output_refs` instead of `artifact_refs`
-- `updated_on` instead of `updated_at`
+- `status` 而非 `task_state`
+- `kind` 而非 `task_type`
+- `owner` 而非 `owner_type` + `owner_ref`
+- `risk` 而非 `risk_level`
+- `output_refs` 而非 `artifact_refs`
+- `updated_on` 而非 `updated_at`
 
-If an alias already exists in legacy material, canonicalize toward the preferred field name in new work.
-
----
-
-## Migration and Refactoring Rule
-
-When a field is renamed or clarified:
-
-1. identify the old name
-2. identify the new canonical name
-3. update schemas and policies where relevant
-4. note the semantic reason for the change
-5. avoid long-term dual usage
-
-The goal is convergence, not permanent synonym coexistence.
+如果别名已存在于遗留材料中，在新工作中向偏好的字段名规范化。
 
 ---
 
-## Practical Rule for New Files
+## 迁移与重构规则
 
-When creating a new structured artifact:
+当字段被重命名或澄清时：
 
-1. prefer existing canonical field names
-2. avoid inventing new top-level generic names
-3. separate state domains explicitly
-4. use `_id`, `_ref`, and `_at` consistently
-5. keep summaries concise and reusable
-6. prefer artifact references over embedded bulk output
-7. trigger hardening review if the structure becomes important
+1. 识别旧名称
+2. 识别新的规范名称
+3. 更新模式与策略（如相关）
+4. 注明变更的语义原因
+5. 避免长期双重使用
+
+目标是收敛，而非永久同义词共存。
 
 ---
 
-## Final Principle
+## 新文件的实际规则
 
-Field naming is not cosmetic.
+创建新结构化制品时：
 
-When fields drift, structure drifts.
-When structure drifts, validation, routing, memory, trace, and reporting all become harder.
+1. 偏好现有规范字段名
+2. 避免发明新的顶级通用名称
+3. 明确分离状态域
+4. 一致使用 `_id`、`_ref` 和 `_at`
+5. 保持摘要简洁且可复用
+6. 偏好制品引用而非嵌入批量输出
+7. 如果结构变得重要则触发硬化审查
 
-This canon exists to keep structured artifacts convergent as the workspace grows.
+---
+
+## 最终原则
+
+字段命名不是装饰性的。
+
+当字段漂移，结构就漂移。
+当结构漂移，验证、分发、记忆、追踪与报告都变得更难。
+
+本准则的存在是让结构化制品在工作空间成长时保持收敛。

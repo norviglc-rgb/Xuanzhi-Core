@@ -1,464 +1,464 @@
 # GITLAB_INTEGRATION.md
 
-## Purpose
+## 文档目的
 
-This document defines how GitLab CE is integrated into the Xuanzhi workspace as the primary repository, issue, merge, and CI control surface for governed development work.
+本文档定义 GitLab CE 如何集成到 Xuanzhi 工作空间中，作为受治理开发工作的主要仓库、议题、合并和 CI 控制面。
 
-Its purpose is to provide a stable integration baseline for:
+其目的是为以下场景提供稳定的集成基线：
 
-- repository creation
-- issue-driven development flow
-- branch discipline
-- merge request discipline
-- CI gating
-- review and delivery checkpoints
-- governance-compatible development traceability
+- 仓库创建
+- 议题驱动的开发流程
+- 分支规范
+- 合并请求规范
+- CI 把关
+- 评审与交付检查点
+- 兼容治理的开发可追溯性
 
-This document is normative for GitLab integration posture.
+本文档对 GitLab 集成姿态具有规范性约束。
 
-It is not a GitLab API reference.
-It is not a CI pipeline file.
-It is not a substitute for repo template, risk policy, or approval policy.
+它不是 GitLab API 参考。
+它不是 CI 流水线文件。
+它不能替代仓库模板、风险策略或审批策略。
 
-Its job is to define how GitLab fits into the governed development model.
-
----
-
-## Core Principle
-
-GitLab is not just code storage.
-
-In this workspace, GitLab is a development control surface.
-
-A good integration should make it clear:
-
-- how work enters repo flow
-- how development work is tracked
-- how change is isolated
-- how review and CI gates work
-- how merge remains governed
-- how repo state supports reporting and recovery
-
-A bad integration treats GitLab as a passive file bucket and leaves governance to informal habit.
-
-This workspace prefers explicit, reviewable, issue-linked development flow.
+它的职责是定义 GitLab 如何融入受治理的开发模型。
 
 ---
 
-## Role of GitLab
+## 核心原则
 
-GitLab CE is the primary system of record for repository-centered development work.
+GitLab 不仅仅是代码存储。
 
-GitLab is used for:
+在本工作空间中，GitLab 是一个开发控制面。
 
-- repository hosting
-- issue tracking
-- branch-based change isolation
-- merge request workflow
-- CI execution and gating
-- change review checkpoints
-- development traceability support
+良好的集成应当明确：
 
-GitLab is not the top governance core.
+- 工作如何进入仓库流程
+- 开发工作如何被追踪
+- 变更如何被隔离
+- 评审和 CI 把关如何工作
+- 合并如何保持受治理
+- 仓库状态如何支持汇报和恢复
 
-Xuanzhi remains responsible for:
+糟糕的集成将 GitLab 视为被动的文件桶，并将治理留给非正式的习惯。
 
-- task framing
-- routing
-- risk-aware control
-- approval posture
-- summary and reporting
-- escalation decisions
-
-Claude Code remains the default development executor.
-
-GitLab is the primary repo and change-control surface around that execution.
+本工作空间采用明确、可评审、议题关联的开发流程。
 
 ---
 
-## Repository Creation Posture
+## GitLab 的角色
 
-Xuanzhi may create repositories automatically where policy allows.
+GitLab CE 是以仓库为中心的开发工作的主要记录系统。
 
-### Automatic creation should still preserve
+GitLab 用于：
 
-- project type selection
-- repo naming clarity
-- template fit
-- baseline directory structure
-- CI baseline
-- branch naming baseline
-- project-local governance placement
+- 仓库托管
+- 议题追踪
+- 基于分支的变更隔离
+- 合并请求工作流
+- CI 执行与把关
+- 变更评审检查点
+- 开发可追溯性支持
 
-### Principle
+GitLab 不是顶层治理核心。
 
-Automatic repo creation is allowed only as governed creation,
-not as unstructured repo proliferation.
+Xuanzhi 仍负责：
 
-Repository creation should align with:
+- 任务框架
+- 路由
+- 风险感知控制
+- 审批姿态
+- 汇总与汇报
+- 升级决策
+
+Claude Code 仍是默认的开发执行器。
+
+GitLab 是围绕该执行的主要仓库和变更控制面。
+
+---
+
+## 仓库创建姿态
+
+当策略允许时，Xuanzhi 可以自动创建仓库。
+
+### 自动创建仍应保持
+
+- 项目类型选择
+- 仓库命名清晰度
+- 模板契合
+- 基线目录结构
+- CI 基线
+- 分支命名基线
+- 项目本地治理放置
+
+### 原则
+
+自动仓库创建仅作为受治理的创建被允许，
+而非非结构化的仓库扩散。
+
+仓库创建应与以下文件对齐：
 
 - `REPO_TEMPLATE_SPEC.md`
 
 ---
 
-## Issue-Driven Development Flow
+## 议题驱动的开发流程
 
-The default governed development path is:
+默认受治理的开发路径是：
 
-`Issue -> Branch -> MR -> CI -> Review -> Merge`
+`议题 -> 分支 -> 合并请求 -> CI -> 评审 -> 合并`
 
-This should be treated as the standard control path for repo-centered work.
+这应作为以仓库为中心工作的标准控制路径。
 
-### Issue role
+### 议题的角色
 
-Issues should serve as the primary bounded record for:
+议题应作为以下内容的主要界定记录：
 
-- requested work
-- scoped change intent
-- defect description
-- research question
-- governance-related repo work
+- 请求的工作
+- 范围化的变更意图
+- 缺陷描述
+- 研究问题
+- 治理相关的仓库工作
 
-### Default issue categories
+### 默认议题类别
 
-At minimum, the following issue categories should exist:
+至少应存在以下议题类别：
 
-- `feature`
-- `bug`
-- `task`
-- `research`
-- `governance`
+- `feature`（功能）
+- `bug`（缺陷）
+- `task`（任务）
+- `research`（研究）
+- `governance`（治理）
 
-### Principle
+### 原则
 
-Work should not drift into major repo changes with no issue-level framing unless the work is genuinely too small to justify it.
-
----
-
-## Branch Discipline
-
-Branches are the default isolation surface for governed change.
-
-### Default branch families
-
-- `feature/*`
-- `fix/*`
-- `research/*`
-- `infra/*`
-- `experiment/*`
-
-### Branch purpose
-
-Branches should communicate:
-
-- intent
-- scope posture
-- type of work
-
-### Branch rule
-
-Meaningful work should not happen directly on a shared mainline path without branch-aware isolation unless policy explicitly allows it for a very small bounded case.
-
-### Principle
-
-Branching is not bureaucracy.
-It is change isolation.
+工作不应在没有议题级框架的情况下漂移到重大仓库变更，除非工作确实太小而无需如此。
 
 ---
 
-## Merge Request Discipline
+## 分支规范
 
-Merge requests are the primary structured review surface for code and governed repo changes.
+分支是受治理变更的默认隔离面。
 
-### MR role
+### 默认分支族
 
-An MR should make it easier to answer:
+- `feature/*`（功能）
+- `fix/*`（修复）
+- `research/*`（研究）
+- `infra/*`（基础设施）
+- `experiment/*`（实验）
 
-- what changed
-- why it changed
-- whether CI passed
-- whether the work should merge
-- whether risk or approval posture changed
+### 分支目的
 
-### MR expectation
+分支应传达：
 
-Meaningful repo changes should normally arrive through MR rather than silent direct merge.
+- 意图
+- 范围姿态
+- 工作类型
 
-### MR should support
+### 分支规则
 
-- review
-- delivery review
-- CI status visibility
-- linkage to issue context
-- bounded summary of change intent
+有意义的工作不应直接在共享主线上进行而没有分支感知的隔离，除非策略明确允许非常小的限定情况。
 
----
+### 原则
 
-## CI Baseline
-
-The default CI baseline should include:
-
-- lint
-- test
-- build
-- security scan
-
-The exact implementation may vary by project type,
-but the governance expectation remains.
-
-### CI gate rule
-
-CI failure should block merge by default.
-
-### Why
-
-This preserves:
-
-- delivery discipline
-- quality gating
-- recoverability
-- review confidence
-
-### Principle
-
-CI is not cosmetic.
-CI is part of governed merge posture.
+分支不是官僚主义。
+分支是变更隔离。
 
 ---
 
-## Review Integration
+## 合并请求规范
 
-GitLab MR flow should support both review and delivery review.
+合并请求是代码和受治理仓库变更的主要结构化评审面。
 
-### Review surfaces
+### 合并请求的角色
 
-Typical review may include:
+合并请求应使以下问题更容易回答：
 
-- code review
-- structure review
-- delivery readiness review
-- test/build result review
-- risk-aware review when relevant
+- 变更了什么
+- 为什么变更
+- CI 是否通过
+- 工作是否应该合并
+- 风险或审批姿态是否变化
 
-### Review actors
+### 合并请求期望
 
-Review may be performed by:
+有意义的仓库变更通常应通过合并请求到达，而非静默的直接合并。
 
-- review agents
-- delivery review agents
-- humans when risk, ambiguity, or repeated failure justify escalation
+### 合并请求应支持
 
-### Principle
-
-GitLab should make review legible.
-It should not hide review behind informal chat-only approval.
-
----
-
-## Merge Posture
-
-Merge should occur only after the relevant gates are satisfied.
-
-Typical merge expectations include:
-
-- issue context exists where appropriate
-- branch isolation was used where appropriate
-- MR exists for meaningful changes
-- CI passed
-- required review posture is satisfied
-- required approval posture is satisfied
-
-### Merge rule
-
-Merge is not the same thing as code existence.
-
-Merge is a governance checkpoint that says:
-
-this change is accepted into shared durable project truth
+- 评审
+- 交付评审
+- CI 状态可见性
+- 与议题上下文的关联
+- 界定清晰的变更意图摘要
 
 ---
 
-## Development Executor Interaction
+## CI 基线
 
-Claude Code is the default development executor for repo-centered implementation work.
+默认 CI 基线应包括：
 
-### Claude Code should interact with GitLab through governed flow
+- 代码检查
+- 测试
+- 构建
+- 安全扫描
 
-Typical shape:
+具体实现可能因项目类型而异，
+但治理期望保持不变。
 
-- work framed by Xuanzhi
-- issue or bounded task context identified
-- branch created or selected
-- repo-local implementation performed
-- commits produced at meaningful checkpoints
-- MR prepared where appropriate
-- CI and review gates observed
-- merge occurs only through the governed path
+### CI 把关规则
 
-### Principle
+CI 失败默认应阻止合并。
 
-GitLab provides the durable change-control path around executor activity.
+### 为什么
 
----
+这保护：
 
-## Commit Discipline
+- 交付规范
+- 质量把关
+- 可恢复性
+- 评审信心
 
-Meaningful development progression should produce commit-worthy checkpoints.
+### 原则
 
-### Commit expectations
-
-Commits should support:
-
-- recoverability
-- reviewability
-- comparison against prior state
-- bounded progress visibility
-
-### Principle
-
-A repo history full of giant unstructured dumps weakens control.
-A repo history full of coherent checkpoints improves it.
-
-This aligns with the workspace stage commit policy.
+CI 不是装饰。
+CI 是受治理合并姿态的一部分。
 
 ---
 
-## Repo-Local Governance
+## 评审集成
 
-Projects may contain repo-local governance material under:
+GitLab 合并请求流程应支持评审和交付评审。
+
+### 评审面
+
+典型的评审可能包括：
+
+- 代码评审
+- 结构评审
+- 交付就绪评审
+- 测试/构建结果评审
+- 相关时的风险感知评审
+
+### 评审者
+
+评审可由以下人员执行：
+
+- 评审代理
+- 交付评审代理
+- 当风险、模糊性或重复失败证明升级合理时的人类
+
+### 原则
+
+GitLab 应使评审可读。
+它不应将评审隐藏在非正式的仅聊天审批之后。
+
+---
+
+## 合并姿态
+
+合并应仅在满足相关关卡后发生。
+
+典型的合并期望包括：
+
+- 适当时存在议题上下文
+- 适当时使用了分支隔离
+- 有意义的变更存在合并请求
+- CI 通过
+- 满足所需的评审姿态
+- 满足所需的审批姿态
+
+### 合并规则
+
+合并不等同于代码存在。
+
+合并是一个治理检查点，表示：
+
+此变更已被接受进入共享的持久项目真相
+
+---
+
+## 开发执行器交互
+
+Claude Code 是以仓库为中心的实现工作的默认开发执行器。
+
+### Claude Code 应通过受治理流程与 GitLab 交互
+
+典型形态：
+
+- 工作由 Xuanzhi 框架化
+- 确定议题或界定清晰的任务上下文
+- 创建或选择分支
+- 执行仓库本地实现
+- 在有意义的检查点产出提交
+- 适当时准备合并请求
+- 遵守 CI 和评审关卡
+- 合并仅通过受治理路径发生
+
+### 原则
+
+GitLab 围绕执行器活动提供持久的变更控制路径。
+
+---
+
+## 提交规范
+
+有意义的开发进展应产生值得提交的检查点。
+
+### 提交期望
+
+提交应支持：
+
+- 可恢复性
+- 可评审性
+- 与先前状态的对比
+- 限定范围的进度可见性
+
+### 原则
+
+充满巨大非结构化堆砌的仓库历史会削弱控制。
+充满连贯检查点的仓库历史会改善控制。
+
+这与工作空间阶段提交策略对齐。
+
+---
+
+## 仓库本地治理
+
+项目可以在以下位置包含仓库本地治理材料：
 
 - `/.governance`
 
-GitLab should treat this as repo-local controlled content, not as a replacement for workspace-wide governance.
+GitLab 应将其视为仓库本地受控内容，而非工作空间范围治理的替代。
 
-### Principle
+### 原则
 
-Repo-local governance belongs in the repo.
-Workspace-wide governance belongs in the main Xuanzhi workspace.
+仓库本地治理属于仓库。
+工作空间范围治理属于主 Xuanzhi 工作空间。
 
-Do not silently collapse these layers.
-
----
-
-## Risk and Approval Interaction
-
-GitLab flow does not override risk or approval policy.
-
-A branch, commit, or MR existing does not mean the change is allowed to proceed to merge.
-
-### Practical rule
-
-When work is:
-
-- high-risk
-- destructive
-- authority-sensitive
-- registry-affecting
-- workflow-activating
-- infra-sensitive
-
-merge posture should remain subject to the relevant review, approval, or escalation path.
-
-### Principle
-
-GitLab flow is necessary, but not sufficient, for governance.
+不要静默地合并这些层级。
 
 ---
 
-## Workflow and Registry Changes in Git Repos
+## 风险与审批交互
 
-Some repos may contain workflow definitions, agent definitions, or project-local governance files.
+GitLab 流程不覆盖风险或审批策略。
 
-These changes may require stronger scrutiny than ordinary source-code edits.
+分支、提交或合并请求的存在并不意味着变更被允许进行合并。
 
-Examples:
+### 实践规则
 
-- workflow definition changes
-- activation-adjacent config changes
-- project-local approval changes
-- project-local governance policy changes
-- permission-relevant config changes
+当工作涉及：
 
-These should not be treated as ordinary low-risk formatting edits merely because they live in a repository.
+- 高风险
+- 破坏性
+- 权限敏感
+- 影响注册表
+- 激活工作流
+- 基础设施敏感
 
----
+合并姿态应保持遵循相关的评审、审批或升级路径。
 
-## Release-Like or Delivery-Like Readiness
+### 原则
 
-For work that functions as a delivery checkpoint,
-GitLab should support a final readiness posture before merge or release-like completion.
-
-Typical questions include:
-
-- did CI pass
-- did review pass
-- are blockers resolved
-- is risk posture acceptable
-- is the repo state coherent enough to accept the change
-
-This is not necessarily a separate GitLab feature.
-It is a governed use of GitLab surfaces.
+GitLab 流程对于治理是必要的，但不是充分的。
 
 ---
 
-## Traceability Support
+## Git 仓库中的工作流和注册表变更
 
-GitLab should support governance traceability indirectly through:
+某些仓库可能包含工作流定义、代理定义或项目本地治理文件。
 
-- issue linkage
-- branch naming
-- MR structure
-- commit history
-- CI results
-- merge record
+这些变更可能比普通源代码编辑需要更严格的审查。
 
-GitLab is not the only trace surface,
-but it is a major artifact source for development-related trace and review.
+示例：
 
-### Principle
+- 工作流定义变更
+- 激活相关的配置变更
+- 项目本地审批变更
+- 项目本地治理策略变更
+- 权限相关的配置变更
 
-Prefer referencing GitLab artifacts from trace and reporting rather than duplicating their full contents elsewhere.
+这些不应仅因为存在于仓库中就算作普通的低风险格式化编辑。
 
 ---
 
-## Small Change Exception
+## 发布类或交付类就绪
 
-Not every tiny repo action must traverse maximum ceremony.
+对于作为交付检查点的工作，
+GitLab 应在合并或发布类完成前支持最终就绪姿态。
 
-A small bounded exception may exist for:
+典型问题包括：
 
-- trivial typo fixes
-- tiny local safe corrections
-- low-risk non-structural edits
+- CI 是否通过
+- 评审是否通过
+- 阻塞点是否解决
+- 风险姿态是否可接受
+- 仓库状态是否足够连贯以接受变更
 
-But this exception must remain genuinely small.
-
-It should not become a loophole that swallows normal branch/MR discipline.
-
-### Principle
-
-Exceptions should reduce friction without weakening the default controlled path.
+这不一定是单独的 GitLab 功能。
+这是 GitLab 面的受治理使用。
 
 ---
 
-## Health and Failure Signals
+## 可追溯性支持
 
-GitLab integration should make it easy to surface signals such as:
+GitLab 应通过以下方式间接支持治理可追溯性：
 
-- CI failures
-- MR blocked status
-- repeated failed pipelines
-- merge delay due to review or approval gates
-- branch work that has stalled
+- 议题关联
+- 分支命名
+- 合并请求结构
+- 提交历史
+- CI 结果
+- 合并记录
 
-These do not replace the global trace and reporting model,
-but they are important operational inputs.
+GitLab 不是唯一的追踪面，
+但它是开发相关追踪和评审的主要产物来源。
+
+### 原则
+
+优先从追踪和汇报中引用 GitLab 产物，而非在其他地方复制其完整内容。
 
 ---
 
-## Relation to Other Documents
+## 小变更例外
 
-This document should align with:
+并非每个微小的仓库操作都必须经历最大的仪式。
+
+可以存在小的限定例外：
+
+- 琐碎的拼写错误修复
+- 微小的本地安全更正
+- 低风险的非结构性编辑
+
+但此例外必须保持真正的小。
+
+它不应成为吞噬正常分支/合并请求规范的漏洞。
+
+### 原则
+
+例外应减少摩擦而不削弱默认受控路径。
+
+---
+
+## 健康与失败信号
+
+GitLab 集成应使以下信号易于暴露：
+
+- CI 失败
+- 合并请求阻塞状态
+- 重复失败的流水线
+- 由于评审或审批关卡导致的合并延迟
+- 已停滞的分支工作
+
+这些不替代全局追踪和汇报模型，
+但它们是重要的操作输入。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文件对齐：
 
 - `REPO_TEMPLATE_SPEC.md`
 - `DEV_TASK_MODEL.md`
@@ -468,31 +468,31 @@ This document should align with:
 - `TRACE_SPEC.md`
 - `CLAUDE_CODE_EXECUTION_SPEC.md`
 
-This document defines GitLab integration posture.
+本文档定义 GitLab 集成姿态。
 
-It does not replace repo template, packet contracts, or approval/risk semantics.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- repo-centered work with no issue framing
-- direct shared-surface changes without isolation
-- MR bypass becoming normal
-- CI being treated as optional
-- merge happening without meaningful review posture
-- GitLab existing as storage but not control
-- workflow/config/governance changes being treated as ordinary low-risk edits
-- executor output being too loose to fit governed repo flow
+它不替代仓库模板、包契约或审批/风险语义。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-GitLab should function as the durable development control surface around repo-centered work.
+本规范的存在部分是为了防止：
 
-The correct integration makes change easier to isolate, easier to review, easier to validate, and safer to merge.
+- 没有议题框架的以仓库为中心的工作
+- 没有隔离的直接共享面变更
+- 合并请求绕过成为常态
+- CI 作为可选项
+- 没有有意义的评审姿态就发生合并
+- GitLab 作为存储而非控制存在
+- 工作流/配置/治理变更当作普通的低风险编辑
+- 执行器输出太松散而无法适应受治理的仓库流程
 
-That is the point.
+---
+
+## 最终原则
+
+GitLab 应作为以仓库为中心工作的持久开发控制面发挥作用。
+
+正确的集成使变更更容易隔离、更容易评审、更容易验证，并且更安全地合并。
+
+这就是其意义所在。

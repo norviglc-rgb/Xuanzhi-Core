@@ -1,502 +1,502 @@
-# APPROVAL_POLICY.md
+# 审批策略
 
-## Purpose
+## 目的
 
-This document defines the approval policy of the Xuanzhi workspace.
+本文档定义玄织工作空间的审批策略。
 
-Its purpose is to provide a stable approval baseline for:
+其目的在于为以下事项提供稳定审批基线：
 
-- whether an action may proceed
-- which approval path applies
-- how approval differs from review
-- when governance-level approval is sufficient
-- when human approval is required
-- how approval interacts with risk, workflow activation, and long-running development
+- 动作是否可以继续
+- 适用哪条审批路径
+- 审批与评审的区别
+- 何时治理级别审批足够
+- 何时需要人工审批
+- 审批如何与风险、工作流激活和长期开发交互
 
-This document is normative for approval semantics.
+本文档对审批语义具有规范性。
 
-It is not a full scheduler implementation.
-It is not a substitute for risk classification.
-It is not a review handbook.
-It is not a runtime trace log.
+它不是完整的调度器实现。
+它不是风险分类的替代品。
+它不是评审手册。
+它不是运行时追踪日志。
 
-Its job is to define who or what must approve which kinds of actions, and what approval outcomes mean for the next control step.
-
----
-
-## Core Principle
-
-Approval is permission, not praise.
-
-A useful approval policy should answer:
-
-- does this path have permission to proceed
-- what level of authority is required
-- is governance approval enough
-- is human intervention required
-- what happens after approval is granted or denied
-
-A bad approval policy confuses approval with review, or allows approval to become invisible, inconsistent, or decorative.
-
-Therefore this workspace treats approval as a bounded control gate.
+其任务是定义谁或什么必须审批哪类动作，以及审批结果对下一个控制步骤意味着什么。
 
 ---
 
-## Approval Is Not Review
+## 核心原则
 
-Approval and review must remain distinct.
+审批是许可，不是赞扬。
 
-### Review
+一个有用的审批策略应回答：
 
-Review asks questions such as:
+- 这条路径是否有许可继续
+- 需要什么级别的权限
+- 治理审批是否足够
+- 是否需要人工干预
+- 审批被授予或拒绝后发生什么
 
-- is the output coherent
-- is the result good enough
-- did the work meet the intended objective
-- are there major blockers or findings
+一个坏的审批策略将审批与评审混淆，或允许审批变得不可见、不一致或装饰性。
 
-### Approval
-
-Approval asks questions such as:
-
-- may this action proceed
-- does the current authority path allow it
-- is the risk posture acceptable
-- does this require stricter governance or human involvement
-
-### Distinction rule
-
-A result may:
-
-- pass review but still fail approval
-- fail review without ever needing approval
-- require approval before execution
-- require review after execution
-
-Do not collapse review and approval into one generic gate.
+因此本工作空间将审批视为有界控制门禁。
 
 ---
 
-## Approval Modes
+## 审批不是评审
 
-This workspace recognizes the following approval modes:
+审批和评审必须保持分离。
 
-- `not_required`
-- `governance_required`
-- `human_required`
+### 评审
 
-These modes are control-plane categories, not decorative labels.
+评审问以下问题：
+
+- 输出是否连贯
+- 结果是否足够好
+- 工作是否达成了预期目标
+- 是否存在主要阻塞或发现
+
+### 审批
+
+审批问以下问题：
+
+- 此动作是否可以继续
+- 当前权限路径是否允许它
+- 风险姿态是否可接受
+- 这是否需要更严格的治理或人工介入
+
+### 区分规则
+
+结果可能：
+
+- 通过评审但仍失败于审批
+- 失败于评审而无需审批
+- 执行前需要审批
+- 执行后需要评审
+
+不要将评审和审批合并为一个通用门禁。
+
+---
+
+## 审批模式
+
+本工作空间认可以下审批模式：
+
+- `not_required`（不需要）
+- `governance_required`（需要治理）
+- `human_required`（需要人工）
+
+这些模式是控制面类别，而非装饰性标签。
 
 ### `not_required`
 
-No explicit approval gate is required for the current action under current posture.
+当前动作在当前姿态下不需要明确的审批门禁。
 
 ### `governance_required`
 
-Approval is required, but it may be resolved inside the governed system path.
+需要审批，但可以在受治理系统路径内解决。
 
-This typically means Xuanzhi or an equivalent governance-capable approval path may decide.
+这通常意味着玄织或等效的具备治理能力的审批路径可以决策。
 
 ### `human_required`
 
-The action may not proceed on the normal autonomous path.
+动作不能在正常自主路径上继续。
 
-Human authorization is required before continuation.
-
----
-
-## Approval Authority Levels
-
-Approval authority should be thought of in bounded layers.
-
-### Layer 1: No explicit approval
-
-For low-risk, non-destructive, low-authority, reversible actions.
-
-### Layer 2: Governance approval
-
-For actions that are significant enough to require a permission gate, but still resolvable within the Xuanzhi governance path.
-
-### Layer 3: Human approval
-
-For actions that exceed autonomous trust boundaries, touch severe risk, or require explicit human authorization.
+继续之前需要人工授权。
 
 ---
 
-## Default Approval Posture by Risk Level
+## 审批权限级别
 
-These are default tendencies, not a substitute for specific policy.
+审批权限应在有界层级中思考。
+
+### 层级 1：无明确审批
+
+用于低风险、非破坏性、低权限、可逆的动作。
+
+### 层级 2：治理审批
+
+用于足够重要需要权限门禁的动作，但仍可在玄织治理路径内解决。
+
+### 层级 3：人工审批
+
+用于超过自主信任边界、触及严重风险或需要明确人工授权的动作。
+
+---
+
+## 按风险级别的默认审批姿态
+
+这些是默认倾向，不是特定策略的替代品。
 
 ### `R0`
 
-Default approval mode:
+默认审批模式：
 
 - `not_required`
 
-Typical posture:
+典型姿态：
 
-- proceed normally
-- lightweight execution or analysis
-- no separate approval path needed
+- 正常继续
+- 轻量级执行或分析
+- 不需要单独的审批路径
 
 ### `R1`
 
-Default approval mode:
+默认审批模式：
 
 - `not_required`
 
-Typical posture:
+典型姿态：
 
-- reversible low-risk work
-- may proceed without separate approval unless another sensitivity rule applies
+- 可逆低风险工作
+- 可以在没有单独审批的情况下继续，除非其他敏感性规则适用
 
 ### `R2`
 
-Default approval mode:
+默认审批模式：
 
-- `governance_required` only when sensitivity, authority, or durability justifies it
-- otherwise `not_required`
+- 仅当敏感性、权限或持久性证明合理时为 `governance_required`
+- 否则 `not_required`
 
-Typical posture:
+典型姿态：
 
-- moderate changes may still proceed without explicit approval if clearly bounded
-- but durable, sensitive, or structural effects often justify governance approval
+- 如果明确有界，中等变更仍可在没有明确审批的情况下继续
+- 但持久、敏感或结构性影响通常证明治理审批是合理的
 
 ### `R3`
 
-Default approval mode:
+默认审批模式：
 
 - `governance_required`
-- `human_required` when uncertainty, authority, or destructive consequences are too high for autonomous governance resolution
+- 当不确定性、权限或破坏性后果对自主治理解决过高时为 `human_required`
 
-Typical posture:
+典型姿态：
 
-- stronger gate
-- stronger review of authority and justification
-- stricter continuation conditions
+- 更强的门禁
+- 对权限和理由进行更强评审
+- 更严格的继续条件
 
 ### `R4`
 
-Default approval mode:
+默认审批模式：
 
-- not a normal approval path
-- immediate block and escalation
-- typically `human_required` for any continuation decision
+- 不是正常审批路径
+- 立即阻塞和升级
+- 任何继续决策通常为 `human_required`
 
-`R4` is a stop class, not a routine “please approve this” class.
-
----
-
-## Actions That Commonly Require Governance Approval
-
-Governance approval is commonly appropriate for actions such as:
-
-- activating a workflow
-- changing durable governance behavior
-- changing important memory in a durable way
-- modifying agent or workflow registry entries
-- performing structurally meaningful project changes
-- significant development actions with notable but bounded downside
-- authority-sensitive but not clearly overreaching actions
-- moderate-to-high-impact changes that remain inside normal trust boundaries
-
-### Principle
-
-Governance approval should be used when the action is too significant for silent normal execution, but not so extreme that autonomy must stop entirely.
+`R4` 是停止类别，不是常规的"请审批这个"类别。
 
 ---
 
-## Actions That Commonly Require Human Approval
+## 通常需要治理审批的动作
 
-Human approval is commonly appropriate for actions such as:
+治理审批通常适用于以下动作：
 
-- clearly high-risk destructive actions
-- actions near or beyond autonomous authority boundaries
-- severe runtime or infra changes with meaningful downside
-- actions with major business, safety, or governance implications
-- unresolved `R3` actions with weak information
-- any `R4` continuation path
-- major permission expansion
-- major sub-agent authority expansion
-- sensitive deletion or revocation where autonomous trust is not enough
+- 激活工作流
+- 更改持久治理行为
+- 以持久方式更改重要记忆
+- 修改代理或工作流注册表条目
+- 执行结构上重要的项目变更
+- 具有明显但有界负面影响的重大开发动作
+- 权限敏感但未明显越权的动作
+- 仍处于正常信任边界内的中等到高影响变更
 
-### Principle
+### 原则
 
-Human approval is required when the cost of autonomous permission error is too high.
+当动作对于静默正常执行太重要，但不至于极端到自主性必须完全停止时，应使用治理审批。
 
 ---
 
-## Approval and Sensitive Objects
+## 通常需要人工审批的动作
 
-Sensitive objects increase the chance that approval is required.
+人工审批通常适用于以下动作：
 
-Examples of sensitive object classes include:
+- 明显高风险的破坏性动作
+- 接近或超过自主权限边界的动作
+- 具有明显负面影响的严重运行时或基础设施变更
+- 具有重大业务、安全或治理影响的动作
+- 信息薄弱的未解决 `R3` 动作
+- 任何 `R4` 继续路径
+- 重大权限扩展
+- 重大子代理权限扩展
+- 自主信任不足的敏感删除或撤销
 
-- memory
-- knowledge
-- configuration
+### 原则
+
+当自主权限错误的成本过高时，需要人工审批。
+
+---
+
+## 审批与敏感对象
+
+敏感对象增加需要审批的可能性。
+
+敏感对象类别示例包括：
+
+- 记忆
+- 知识
+- 配置
 - CI/CD
-- nginx or gateway/runtime routing
-- docker runtime
-- registries
-- workflow activation surfaces
-- permission-bearing objects
-- sub-agent authority surfaces
+- nginx 或网关/运行时路由
+- docker 运行时
+- 注册表
+- 工作流激活面
+- 权限承载对象
+- 子代理权限面
 
-Touching a sensitive object does not automatically imply `human_required`,
-but it should raise scrutiny and often pushes the action toward `governance_required` or stronger.
-
----
-
-## Approval and Workflow Activation
-
-Workflow activation is a special approval case.
-
-### Core rule
-
-A workflow must be approved before it may be active.
-
-This rule should align with the workflow registry model.
-
-### Practical meaning
-
-A workflow may exist in the registry without being active.
-
-Approval is the control gate that allows activation to become possible.
-
-Activation should not silently happen merely because a definition exists or a trigger exists.
+触及敏感对象不自动意味着 `human_required`，
+但它应提高审查力度，且通常将动作推向 `governance_required` 或更强。
 
 ---
 
-## Approval and Long-Running Development
+## 审批与工作流激活
 
-Long-running development may encounter approval at multiple levels.
+工作流激活是特殊的审批案例。
 
-### Common approval moments
+### 核心规则
 
-- before a risky structural change
-- before a milestone continuation path
-- before merge or release-like gates
-- after review if the next path has elevated risk
-- after a replan when the new path materially changes the original risk or scope
+工作流必须先审批才能活跃。
 
-### Principle
+此规则应与工作流注册表模型对齐。
 
-Do not force approval at every tiny step.
+### 实践含义
 
-Approval should appear at meaningful control points,
-not as ceremony noise.
+工作流可以在注册表中存在而不活跃。
+
+审批是使激活成为可能的控制门禁。
+
+激活不应仅仅因为定义存在或触发器存在就静默发生。
 
 ---
 
-## Approval Outcomes
+## 审批与长期开发
 
-The canonical approval outcomes are:
+长期开发可能在多个级别遇到审批。
 
-- `approval_not_required`
-- `approval_pending`
-- `approval_running`
-- `approval_granted`
-- `approval_rejected`
-- `approval_escalated`
+### 常见审批时刻
 
-These meanings should align with the state machine.
+- 风险结构性变更之前
+- 里程碑继续路径之前
+- 合并或类发布门禁之前
+- 评审后如果下一路径风险升高
+- 重规划后当新路径实质性改变原始风险或范围
+
+### 原则
+
+不要在每个微小步骤强制审批。
+
+审批应出现在有意义的控制点，
+而非作为仪式噪音。
+
+---
+
+## 审批结果
+
+标准审批结果是：
+
+- `approval_not_required`（不需要审批）
+- `approval_pending`（审批待定）
+- `approval_running`（审批运行中）
+- `approval_granted`（审批授予）
+- `approval_rejected`（审批拒绝）
+- `approval_escalated`（审批升级）
+
+这些含义应与状态机对齐。
 
 ### `approval_not_required`
 
-No approval gate applies.
+无审批门禁适用。
 
 ### `approval_pending`
 
-Approval is required but not yet started.
+需要审批但尚未开始。
 
 ### `approval_running`
 
-Approval evaluation is actively in progress.
+审批评估正在进行中。
 
 ### `approval_granted`
 
-Permission to proceed has been granted.
+已获得继续的许可。
 
 ### `approval_rejected`
 
-Permission to proceed has been denied.
+继续的许可已被拒绝。
 
-The default next action is usually:
+默认下一个动作通常是：
 
-- replan
-- or stop, depending on context
+- 重规划
+- 或停止，取决于上下文
 
 ### `approval_escalated`
 
-Approval cannot be resolved on the current path and has been escalated.
+审批无法在当前路径上解决，已被升级。
 
 ---
 
-## What Happens After Approval Decisions
+## 审批决策后发生什么
 
-### After `approval_granted`
+### `approval_granted` 之后
 
-The action may proceed on the approved path, subject to:
+动作可以在已审批路径上继续，受限于：
 
-- continued risk posture
-- state validity
-- review gates where relevant
+- 持续的风险姿态
+- 状态有效性
+- 相关处的评审门禁
 
-Approval does not erase the need for later review.
+审批不消除后续评审的需要。
 
-### After `approval_rejected`
+### `approval_rejected` 之后
 
-The default next action is not blind repetition.
+默认下一个动作不是盲目重复。
 
-The default next action is usually:
+默认下一个动作通常是：
 
 - `replanning`
-- or `cancelled`
-- or `escalating` if the conflict cannot be responsibly resolved
+- 或 `cancelled`
+- 或 `escalating`（如果冲突无法负责任地解决）
 
-### After `approval_escalated`
+### `approval_escalated` 之后
 
-The system should not proceed on the current normal path.
+系统不应在当前正常路径上继续。
 
-A stricter authority path must resolve the next step.
-
----
-
-## Approval Trigger Heuristics
-
-Approval should be considered when one or more of the following are true:
-
-- risk is meaningfully elevated
-- the target is sensitive
-- the change is hard to reverse
-- the blast radius is broad
-- the authority implication is unclear
-- the action changes durable governance state
-- the action changes activation posture
-- the action changes permissions or registry truth
-- the action has high cost with real downside
-- the executor is capable but the trust boundary is still insufficient
-
-These are heuristics, not the final machine-readable rule engine.
-They exist to guide governance posture and later policy hardening.
+更严格的权限路径必须解决下一步。
 
 ---
 
-## Human Escalation Triggers
+## 审批触发启发式规则
 
-Human approval should be strongly considered or required when:
+当以下一个或多个为真时应考虑审批：
 
-- the action is `R4`
-- the action is clearly unauthorized or overreaching
-- the action is clearly destructive and poorly justified
-- the action is high-cost with weak information
-- governance approval cannot confidently resolve the path
-- review and approval signals are materially conflicted
-- authority-sensitive change cannot be justified inside current autonomy limits
+- 风险有意义升高
+- 目标敏感
+- 变更难以逆转
+- 影响范围广泛
+- 权限影响不清晰
+- 动作更改持久治理状态
+- 动作更改激活姿态
+- 动作更改权限或注册表真实
+- 动作具有高成本和真实负面影响
+- 执行器有能力但信任边界仍不足
 
----
-
-## Strong-Reporting Mode
-
-As approval sensitivity rises, reporting quality should rise too.
-
-### Strong-reporting mode is appropriate when:
-
-- approval is required for a significant action
-- the action touches sensitive objects
-- the path was denied and replanned
-- escalation occurred
-- a high-risk action is allowed to proceed
-
-### Strong-reporting mode should improve:
-
-- summary clarity
-- rationale clarity
-- actor visibility
-- artifact reference quality
-- state visibility
-- next-step clarity
-
-Strong reporting does not mean verbosity.
-It means clearer accountable structure.
+这些是启发式规则，不是最终机器可读规则引擎。
+它们存在是为了指导治理姿态和后续策略硬化。
 
 ---
 
-## Approval and Veto Relation
+## 人工升级触发条件
 
-Approval denial and veto are related but not identical.
+当以下情况时应强烈考虑或要求人工审批：
 
-### Approval rejection
-
-Means the current path does not have permission to proceed.
-
-### Veto
-
-Means the proposed path should not proceed as proposed because it is too unsound, too risky, too destructive, too unclear, or too overreaching.
-
-A veto is stronger than ordinary approval rejection.
-
-Typical consequences of veto:
-
-- immediate stop of current path
-- replan or escalate
-- no casual retry of the same proposal
+- 动作是 `R4`
+- 动作明显未经授权或越权
+- 动作明显破坏性且理由不足
+- 动作高成本但信息薄弱
+- 治理审批无法自信解决路径
+- 评审和审批信号存在实质性冲突
+- 权限敏感变更无法在当前自主限制内证明合理
 
 ---
 
-## Approval and Retry Relation
+## 强汇报模式
 
-Do not treat approval as a retry loop.
+随着审批敏感性上升，汇报质量也应上升。
 
-If approval is rejected, the default should not be:
+### 以下情况适合强汇报模式：
 
-- resubmit the same path repeatedly
-- rename the same path and try again
+- 重大动作需要审批
+- 动作触及敏感对象
+- 路径被拒绝并重规划
+- 发生升级
+- 高风险动作被允许继续
 
-The default should be:
+### 强汇报模式应改善：
 
-- revise the path
-- reduce risk
-- improve justification
-- change the executor or scope if necessary
-- escalate when current authority is insufficient
+- 摘要清晰度
+- 理由清晰度
+- 行动者可见性
+- 制品引用质量
+- 状态可见性
+- 下一步清晰度
 
----
-
-## Approval and Registry Changes
-
-Registry changes often deserve stronger approval posture than ordinary edits.
-
-Examples:
-
-- permission changes
-- risk ceiling changes
-- lifecycle changes
-- workflow activation
-- authority-bearing metadata changes
-
-These should usually not proceed as invisible low-risk mutations.
+强汇报不意味着冗长。
+它意味着更清晰的可问责结构。
 
 ---
 
-## Approval and Memory Changes
+## 审批与否决的关系
 
-Durable memory changes may require approval when they are:
+审批拒绝和否决相关但不相同。
 
-- destructive
-- strategic
-- difficult to reverse
-- likely to alter future governance posture
+### 审批拒绝
 
-Small additive durable memory updates may not require approval.
-Destructive or authority-sensitive memory changes often should.
+意味着当前路径没有许可继续。
+
+### 否决
+
+意味着提议的路径不应按提议继续，因为它太不可靠、太有风险、太具破坏性、太不清晰或太越权。
+
+否决比普通审批拒绝更强。
+
+否决的典型后果：
+
+- 立即停止当前路径
+- 重规划或升级
+- 不得随意重试相同提议
 
 ---
 
-## Relation to Other Documents
+## 审批与重试的关系
 
-This document should align with:
+不要将审批视为重试循环。
+
+如果审批被拒绝，默认不应该是：
+
+- 重复提交相同路径
+- 重命名相同路径并再次尝试
+
+默认应该是：
+
+- 修订路径
+- 降低风险
+- 改善理由
+- 如有必要更改执行器或范围
+- 当前权限不足时升级
+
+---
+
+## 审批与注册表变更
+
+注册表变更通常比普通编辑值得更强审批姿态。
+
+示例：
+
+- 权限变更
+- 风险上限变更
+- 生命周期变更
+- 工作流激活
+- 权限承载元数据变更
+
+这些通常不应作为不可见的低风险变更继续。
+
+---
+
+## 审批与记忆变更
+
+持久记忆变更在以下情况下可能需要审批：
+
+- 破坏性
+- 战略性
+- 难以逆转
+- 可能改变未来治理姿态
+
+小型添加性持久记忆更新可能不需要审批。
+破坏性或权限敏感的记忆变更通常应该。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `RISK_MODEL.md`
 - `STATE_MACHINE.md`
@@ -505,31 +505,31 @@ This document should align with:
 - `TRACE_SPEC.md`
 - `policies/risk_policy.yaml`
 
-This document defines approval semantics and control posture.
+本文档定义审批语义和控制姿态。
 
-Future policy artifacts or validator logic may harden more of these rules.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- approval being confused with review
-- significant actions proceeding without a permission gate
-- workflow activation without approval
-- sensitive changes being treated as ordinary low-risk edits
-- repeated denial loops without replanning
-- autonomy silently crossing authority boundaries
-- high-risk continuation being treated as a normal approval checkbox
+未来策略制品或验证器逻辑可能硬化更多这些规则。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-Approval should exist exactly where permission matters.
+本规范的存在部分是为了防止：
 
-Too little approval weakens governance.
-Too much approval creates ceremonial drag.
+- 审批与评审混淆
+- 重大动作在没有权限门禁的情况下继续
+- 没有审批的工作流激活
+- 敏感变更当作普通低风险编辑处理
+- 没有重规划的重复拒绝循环
+- 自主性静默越权权限边界
+- 高风险继续当作正常审批复选框
 
-The correct approval policy makes significant actions controllable without turning the whole system into bureaucracy.
+---
+
+## 最终原则
+
+审批应恰好在权限重要的地方存在。
+
+太少审批削弱治理。
+太多审批创造仪式性拖累。
+
+正确的审批策略使重大动作可控，而不将整个系统变成官僚主义。

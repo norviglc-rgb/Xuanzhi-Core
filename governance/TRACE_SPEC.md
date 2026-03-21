@@ -1,92 +1,92 @@
-# TRACE_SPEC.md
+# 追踪规范
 
-## Purpose
+## 目的
 
-This document defines the trace model of the Xuanzhi workspace.
+本文档定义玄织工作空间的追踪模型。
 
-Its purpose is to provide a stable baseline for:
+其目的在于为以下事项提供稳定基线：
 
-- auditability
-- recovery support
-- reviewability
-- reporting support
-- long-running task supervision
-- governance accountability
+- 可审计性
+- 恢复支持
+- 可评审性
+- 汇报支持
+- 长期任务监督
+- 治理问责
 
-This document is normative for trace semantics.
+本文档对追踪语义具有规范性。
 
-It is not a full log-ingestion design.
-It is not a substitute for runtime observability tooling.
-It is not a request to record everything.
+它不是完整的日志摄入设计。
+它不是运行时可观测性工具的替代品。
+它不是记录一切的请求。
 
-Its job is to define what should be traced, how trace should be shaped, and what trace is not.
-
----
-
-## Core Principle
-
-Trace exists to preserve accountable signal.
-
-Trace should help answer questions such as:
-
-- what happened
-- why it happened
-- who initiated it
-- who executed it
-- what changed
-- what risk posture applied
-- what review or approval state mattered
-- what the next recovery or continuation point is
-
-A bad trace system records too much noise, too little structure, or the wrong kind of detail.
-
-This workspace prefers:
-
-- structured trace over narrative dump
-- summaries over raw process sprawl
-- references over payload duplication
-- accountability over verbosity
+其任务是定义什么应该被追踪、追踪应该是什么形态、以及追踪不是什么。
 
 ---
 
-## Trace Is Not
+## 核心原则
 
-Trace is not:
+追踪的存在是为了保留可问责的信号。
 
-- full chain-of-thought storage
-- full transcript storage
-- raw reasoning dump
-- a substitute for memory
-- a substitute for governance specs
-- a substitute for runtime metrics tooling
-- a place to copy large artifacts inline
+追踪应帮助回答以下问题：
 
-Trace should preserve decision-relevant and audit-relevant signal,
-not every intermediate thought or every large payload.
+- 发生了什么
+- 为什么发生
+- 谁发起的
+- 谁执行的
+- 变更了什么
+- 应用了什么风险姿态
+- 什么评审或审批状态重要
+- 下一个恢复或继续点是什么
 
----
+一个坏的追踪系统记录太多噪音、太少结构或错误类型的细节。
 
-## Trace Domains
+本工作空间偏好：
 
-This workspace recognizes the following trace domains:
-
-- task trace
-- step trace
-- review trace
-- approval trace
-- agent trace
-- tool/workflow trace
-- memory trace
-- alert trace
-
-These domains may share common fields,
-but they serve different accountability purposes.
+- 结构化追踪而非叙述性转储
+- 摘要而非原始过程蔓延
+- 引用而非负载复制
+- 问责而非冗长
 
 ---
 
-## Common Trace Identity
+## 追踪不是
 
-All trace-like records should prefer the following identity and linkage fields where applicable:
+追踪不是：
+
+- 完整的思维链存储
+- 完整的转录存储
+- 原始推理转储
+- 记忆的替代品
+- 治理规范的替代品
+- 运行时指标工具的替代品
+- 内联复制大型制品的地方
+
+追踪应保留决策相关和审计相关的信号，
+而非每个中间思想或每个大型负载。
+
+---
+
+## 追踪域
+
+本工作空间认可以下追踪域：
+
+- 任务追踪
+- 步骤追踪
+- 评审追踪
+- 审批追踪
+- 代理追踪
+- 工具/工作流追踪
+- 记忆追踪
+- 告警追踪
+
+这些域可能共享公共字段，
+但它们服务于不同的问责目的。
+
+---
+
+## 公共追踪标识
+
+所有类追踪记录应在适用处优先使用以下标识和链接字段：
 
 - `trace_id`
 - `task_id`
@@ -96,476 +96,485 @@ All trace-like records should prefer the following identity and linkage fields w
 - `epic_id`
 - `milestone_id`
 
-Not every trace record requires every linkage field.
+并非每个追踪记录都需要每个链接字段。
 
-The principle is:
+原则是：
 
-include the minimum fields needed to preserve useful traceability
+包含保留有用可追溯性所需的最小字段
 
 ---
 
-## Common Trace Responsibility Fields
+## 公共追踪责任字段
 
-Where applicable, trace records should preserve:
+在适用处，追踪记录应保留：
 
-- `initiator`
-- `executor`
-- `approver`
+- `initiator`（发起者）
+- `executor`（执行者）
+- `approver`（审批者）
 
-### Definitions
+### 定义
 
 #### `initiator`
-The actor that originated the request, trigger, or step.
+
+发起请求、触发或步骤的行动者。
 
 #### `executor`
-The actor or system that actually performed the action.
+
+实际执行动作的行动者或系统。
 
 #### `approver`
-The actor or authority that granted or denied approval when approval matters.
 
-These fields improve auditability and reduce blame ambiguity.
+当审批重要时，授予或拒绝审批的行动者或权限。
+
+这些字段改善可审计性并减少责任模糊。
 
 ---
 
-## Common Trace Content Fields
+## 公共追踪内容字段
 
-The following fields are preferred for structured trace records where relevant:
+以下字段在相关处是结构化追踪记录的首选：
 
-- `summary`
-- `reasoning_summary`
-- `status_summary`
-- `risk_level`
-- `review_state`
-- `approval_state`
-- `artifact_refs`
-- `created_at`
+- `summary`（摘要）
+- `reasoning_summary`（推理摘要）
+- `status_summary`（状态摘要）
+- `risk_level`（风险等级）
+- `review_state`（评审状态）
+- `approval_state`（审批状态）
+- `artifact_refs`（制品引用）
+- `created_at`（创建时间）
 
 ### `summary`
-Compact description of what happened.
+
+发生内容的紧凑描述。
 
 ### `reasoning_summary`
-Compact explanation of why a path or decision existed.
 
-Must remain summary-level.
-Must not become raw chain-of-thought.
+为什么存在某条路径或决策的紧凑解释。
+
+必须保持摘要级别。
+不得变成原始思维链。
 
 ### `status_summary`
-Compact statement of current result or current condition.
+
+当前结果或当前条件的紧凑陈述。
 
 ### `artifact_refs`
-References to outputs, commits, files, or generated artifacts instead of inlining all content.
+
+对输出、提交、文件或生成制品的引用，而非内联所有内容。
 
 ---
 
-## Task Trace
+## 任务追踪
 
-Task trace records major task-level events and transitions.
+任务追踪记录主要的任务级别事件和转换。
 
-Typical task trace moments include:
+典型的任务追踪时刻包括：
 
-- task created
-- task delegated
-- task enters running state
-- task enters waiting state
-- task is replanned
-- task is escalated
-- task is completed
-- task fails
-- task is cancelled
+- 任务创建
+- 任务委托
+- 任务进入运行状态
+- 任务进入等待状态
+- 任务被重规划
+- 任务被升级
+- 任务完成
+- 任务失败
+- 任务取消
 
-### Task trace should answer
+### 任务追踪应回答
 
-- what happened to the task
-- why its state changed
-- what executor path was chosen
-- what major blockers or risks were present
-- what the next governance-relevant checkpoint is
+- 任务发生了什么
+- 为什么其状态变更
+- 选择了什么执行器路径
+- 存在什么主要阻塞或风险
+- 下一个治理相关检查点是什么
 
-Task trace should remain summary-oriented, not step-by-step narration of everything.
-
----
-
-## Step Trace
-
-Step trace records bounded execution or decision steps.
-
-Typical step trace moments include:
-
-- step created
-- step started
-- step completed
-- step failed
-- step retried
-- step replanned
-- step blocked
-- step cancelled
-
-### Step trace should capture
-
-- what step was attempted
-- what action category or action name was involved
-- whether the step succeeded
-- what output or artifact references were produced
-- what risk posture applied
-- what next decision is likely
-
-If the step object already contains detailed bounded context, trace should summarize and reference rather than duplicate.
+任务追踪应保持摘要导向，而非一切事物的逐步叙述。
 
 ---
 
-## Review Trace
+## 步骤追踪
 
-Review trace records the evaluation of outputs and delivery checkpoints.
+步骤追踪记录有界的执行或决策步骤。
 
-Typical review trace moments include:
+典型的步骤追踪时刻包括：
 
-- review requested
-- review started
-- review passed
-- review failed
-- review conflicted
+- 步骤创建
+- 步骤开始
+- 步骤完成
+- 步骤失败
+- 步骤重试
+- 步骤重规划
+- 步骤阻塞
+- 步骤取消
 
-### Review trace should capture
+### 步骤追踪应捕获
 
-- what was reviewed
-- what standard or expectation applied
-- what the outcome was
-- whether blockers or major findings exist
-- whether continuation, replan, or escalation is the next path
+- 尝试了什么步骤
+- 涉及什么动作类别或动作名称
+- 步骤是否成功
+- 产出了什么输出或制品引用
+- 应用了什么风险姿态
+- 可能的下一个决策是什么
 
-Review trace should not become a giant prose essay unless necessary.
-A summary plus artifact references is preferred.
-
----
-
-## Approval Trace
-
-Approval trace records permission-gating events.
-
-Typical approval trace moments include:
-
-- approval requested
-- approval running
-- approval granted
-- approval rejected
-- approval escalated
-
-### Approval trace should capture
-
-- what required approval
-- who or what authority handled it
-- whether approval was granted or denied
-- the concise reason for the outcome
-- what the next allowed path is
-
-Approval trace is about permission state, not review quality.
+如果步骤对象已经包含详细的有界上下文，追踪应摘要和引用而非复制。
 
 ---
 
-## Agent Trace
+## 评审追踪
 
-Agent trace records activity attributable to a named agent.
+评审追踪记录输出和交付检查点的评估。
 
-Typical agent trace moments include:
+典型的评审追踪时刻包括：
 
-- executor assignment
-- agent start of meaningful work
-- major delegation
-- major completion
-- major failure
-- repeated stall or non-progress signal
+- 评审请求
+- 评审开始
+- 评审通过
+- 评审失败
+- 评审冲突
 
-Agent trace should not attempt to serialize an agent's entire internal mental process.
+### 评审追踪应捕获
 
-Its purpose is accountability and operational visibility.
+- 评审了什么
+- 应用了什么标准或期望
+- 结果是什么
+- 是否存在阻塞或主要发现
+- 继续、重规划还是升级是下一路径
 
----
-
-## Tool / Workflow Trace
-
-Tool or workflow trace records the use of tools, external workflows, or pipeline-like execution surfaces.
-
-Typical tool/workflow trace moments include:
-
-- workflow invoked
-- tool action completed
-- pipeline failed
-- external asset generated
-- publish flow executed
-- external job returned error
-
-### Tool/workflow trace should preserve
-
-- what tool or workflow was used
-- why it was used
-- whether it succeeded
-- resulting artifact references
-- bounded failure summary if relevant
-
-Avoid copying raw large payloads into trace unless the payload itself is tiny and essential.
+评审追踪不应变成巨大的散文论文，除非必要。
+首选摘要加上制品引用。
 
 ---
 
-## Memory Trace
+## 审批追踪
 
-Memory trace records meaningful memory-affecting actions.
+审批追踪记录权限门控事件。
 
-Typical memory trace moments include:
+典型的审批追踪时刻包括：
 
-- durable memory added
-- durable memory revised
-- durable memory removed
-- daily memory entry created
-- lesson promoted from temporary note to durable memory
+- 审批请求
+- 审批运行
+- 审批授予
+- 审批拒绝
+- 审批升级
 
-### Memory trace is important because
+### 审批追踪应捕获
 
-memory changes affect future behavior and future judgment.
+- 什么需要审批
+- 谁或什么权限处理它
+- 审批是授予还是拒绝
+- 结果的简明原因
+- 下一个允许的路径是什么
 
-Therefore, meaningful durable-memory changes should not be invisible.
-
-Memory trace should capture:
-
-- what changed
-- why it changed
-- what level of memory was affected
-- whether the change was additive, revisive, or destructive
+审批追踪关于权限状态，而非评审质量。
 
 ---
 
-## Alert Trace
+## 代理追踪
 
-Alert trace records abnormal conditions or governance-significant warning events.
+代理追踪记录可归属于命名代理的活动。
 
-Typical alert trace moments include:
+典型的代理追踪时刻包括：
 
-- stalled task detected
-- repeated failure threshold reached
-- high-risk action blocked
-- escalation triggered
-- approval conflict detected
-- executor health problem surfaced
+- 执行器分配
+- 代理开始有意义的工作
+- 重大委托
+- 重大完成
+- 重大失败
+- 重复停滞或无进展信号
 
-Alert trace should preserve:
+代理追踪不应尝试序列化代理的整个内部心理过程。
 
-- what triggered the alert
-- severity
-- affected object or task
-- current response posture
+其目的是问责和操作可见性。
 
 ---
 
-## Minimum Trace Expectations
+## 工具 / 工作流追踪
 
-At minimum, meaningful trace should exist for:
+工具或工作流追踪记录工具、外部工作流或类管道执行面的使用。
 
-- durable task creation
-- major executor delegation
-- major task state changes
-- review outcomes
-- approval outcomes
-- significant failures
-- replans
-- escalations
-- meaningful durable memory changes
-- high-risk or blocked actions
+典型的工具/工作流追踪时刻包括：
 
-If a task materially changes the system and leaves no traceable summary, governance visibility is too weak.
+- 工作流调用
+- 工具动作完成
+- 管道失败
+- 外部制品生成
+- 发布流程执行
+- 外部作业返回错误
 
----
+### 工具/工作流追踪应保留
 
-## High-Risk Trace Rule
+- 使用了什么工具或工作流
+- 为什么使用它
+- 是否成功
+- 结果制品引用
+- 有界的失败摘要（如相关）
 
-High-risk work should produce stronger trace clarity.
-
-As risk rises, trace should generally improve in:
-
-- summary quality
-- rationale clarity
-- linkage quality
-- review visibility
-- approval visibility
-- artifact reference quality
-
-High-risk actions should not be the least traceable actions in the system.
-
-### Permanent retention tendency
-
-High-risk actions, vetoes, destructive attempts, major escalations, and structurally important governance events should tend toward durable retention.
-
-This document does not define exact storage retention machinery,
-but it does define the governance expectation that these traces matter more and should not be casually discarded.
+避免将原始大型负载复制到追踪中，除非负载本身非常小且必要。
 
 ---
 
-## Long-Running Work Trace
+## 记忆追踪
 
-Long-running work should preserve checkpoint-grade trace, not only final trace.
+记忆追踪记录有意义的记忆影响动作。
 
-Typical long-running trace checkpoints include:
+典型的记忆追踪时刻包括：
 
-- epic created
-- milestone started
-- milestone completed
-- milestone failed
-- major replan
-- long-run checkpoint summary
-- executor handoff
-- prolonged stall
-- long-window completion or continuation decision
+- 持久记忆添加
+- 持久记忆修订
+- 持久记忆移除
+- 日常记忆条目创建
+- 从临时笔记提升为持久记忆的教训
 
-### Why
+### 记忆追踪很重要，因为
 
-Without checkpoint trace, long-running work becomes hard to:
+记忆变更影响未来行为和未来判断。
 
-- supervise
-- summarize
-- recover
-- review
-- continue across sessions
+因此，有意义的持久记忆变更不应是不可见的。
 
----
+记忆追踪应捕获：
 
-## Checkpoint and Snapshot Terms
-
-### checkpoint
-
-A durable marker that captures meaningful progress and supports later continuation or review.
-
-A checkpoint should usually preserve:
-
-- summary
-- current state
-- major artifact references
-- blocker status
-- next decision posture
-
-### snapshot
-
-A compact reconstruction-friendly state capture.
-
-Snapshots may be useful for long-running work,
-but this document treats them as optional support mechanisms rather than mandatory universal trace fields.
+- 变更了什么
+- 为什么变更
+- 影响了什么级别的记忆
+- 变更是添加性的、修订性的还是破坏性的
 
 ---
 
-## Trace and Memory Distinction
+## 告警追踪
 
-Trace and memory are related but not identical.
+告警追踪记录异常条件或治理重要的警告事件。
 
-### Trace
-Records what happened for audit, recovery, and accountability.
+典型的告警追踪时刻包括：
 
-### Memory
-Preserves what deserves to influence future judgment across sessions.
+- 检测到停滞任务
+- 达到重复失败阈值
+- 阻塞高风险动作
+- 触发升级
+- 检测到审批冲突
+- 暴露执行器健康问题
 
-### Practical rule
+告警追踪应保留：
 
-Not every trace event should become memory.
-
-Not every memory-worthy conclusion should be stored as raw trace.
-
-Typical flow when lessons matter:
-
-trace -> review/postmortem -> durable lesson -> memory summary
-
----
-
-## Trace and Reporting Distinction
-
-Trace supports reporting, but trace is not the same thing as report output.
-
-Trace stores structured accountable signal.
-
-Reports compress trace and current state into decision-friendly summaries.
-
-A good report may draw from trace,
-but should not require dumping trace wholesale into user-facing or operator-facing output.
+- 什么触发了告警
+- 严重程度
+- 受影响对象或任务
+- 当前响应姿态
 
 ---
 
-## Trace and Raw Reasoning Restriction
+## 最小追踪期望
 
-This workspace does not treat raw internal chain-of-thought as normal trace material.
+至少，以下内容应存在有意义的追踪：
 
-Instead, use:
+- 持久任务创建
+- 重大执行器委托
+- 重大任务状态变更
+- 评审结果
+- 审批结果
+- 重大失败
+- 重规划
+- 升级
+- 有意义的持久记忆变更
+- 高风险或阻塞动作
+
+如果任务实质性变更系统且不留下可追踪的摘要，则治理可见性太弱。
+
+---
+
+## 高风险追踪规则
+
+高风险工作应产出更强的追踪清晰度。
+
+随着风险上升，追踪通常应在以下方面改善：
+
+- 摘要质量
+- 理由清晰度
+- 链接质量
+- 评审可见性
+- 审批可见性
+- 制品引用质量
+
+高风险动作不应是系统中追踪最少的动作。
+
+### 永久保留倾向
+
+高风险动作、否决、破坏性尝试、重大升级和结构上重要的治理事件应倾向于持久保留。
+
+本文档不定义确切的存储保留机制，
+但它确实定义了这些追踪更重要且不应被随意丢弃的治理期望。
+
+---
+
+## 长期工作追踪
+
+长期工作应保留检查点级别的追踪，而不仅仅是最终追踪。
+
+典型的长期追踪检查点包括：
+
+- 史诗创建
+- 里程碑开始
+- 里程碑完成
+- 里程碑失败
+- 重大重规划
+- 长运行检查点摘要
+- 执行器交接
+- 长期停滞
+- 长窗口完成或继续决策
+
+### 为什么
+
+没有检查点追踪，长期工作变得难以：
+
+- 监督
+- 汇总
+- 恢复
+- 评审
+- 跨会话继续
+
+---
+
+## 检查点和快照术语
+
+### 检查点
+
+捕获有意义进展并支持后续继续或评审的持久标记。
+
+检查点通常应保留：
+
+- 摘要
+- 当前状态
+- 主要制品引用
+- 阻塞状态
+- 下一个决策姿态
+
+### 快照
+
+紧凑的、便于重建的状态捕获。
+
+快照对于长期工作可能有用，
+但本文档将它们视为可选的支持机制，而非强制的通用追踪字段。
+
+---
+
+## 追踪与记忆区分
+
+追踪和记忆相关但不相同。
+
+### 追踪
+
+记录发生了什么，用于审计、恢复和问责。
+
+### 记忆
+
+保留什么值得在会话间影响未来判断。
+
+### 实践规则
+
+并非每个追踪事件都应成为记忆。
+
+并非每个值得记忆的结论都应作为原始追踪存储。
+
+当教训重要时的典型流程：
+
+追踪 -> 评审/复盘 -> 持久教训 -> 记忆摘要
+
+---
+
+## 追踪与汇报区分
+
+追踪支持汇报，但追踪与汇报输出不是同一回事。
+
+追踪存储结构化的可问责信号。
+
+汇报将追踪和当前状态压缩为决策友好的摘要。
+
+好的汇报可以从追踪中提取，
+但不应要求将追踪完全转储到面向用户或面向操作者的输出中。
+
+---
+
+## 追踪与原始推理限制
+
+本工作空间不将原始内部思维链视为正常追踪材料。
+
+相反，使用：
 
 - `summary`
 - `reasoning_summary`
 - `status_summary`
 
-These fields preserve useful decision signal while avoiding uncontrolled reasoning storage.
+这些字段保留有用的决策信号，同时避免不受控制的推理存储。
 
-This improves:
+这改善了：
 
-- compactness
-- governance clarity
-- privacy and safety posture
-- future maintainability
-
----
-
-## Artifact Reference Rule
-
-Prefer `artifact_refs` over embedded bulk payloads.
-
-Use references for:
-
-- changed files
-- commits
-- generated media
-- published outputs
-- reports
-- review documents
-- specs
-- workflow outputs
-
-Inline large content only when:
-
-- the content is very small
-- the content is essential to understand the trace event
-- using a reference would materially reduce clarity
-
-Default posture:
-
-reference first
+- 紧凑性
+- 治理清晰度
+- 隐私和安全姿态
+- 未来可维护性
 
 ---
 
-## Trace Quality Rules
+## 制品引用规则
 
-### Rule 1: summary first
+优先使用 `artifact_refs` 而非嵌入大型负载。
 
-Every meaningful trace should be understandable from its summary fields without requiring a massive narrative.
+使用引用来：
 
-### Rule 2: preserve actor clarity
+- 变更的文件
+- 提交
+- 生成的媒体
+- 发布的输出
+- 报告
+- 评审文档
+- 规范
+- 工作流输出
 
-Where relevant, preserve who initiated, executed, and approved.
+仅当以下情况时内联大型内容：
 
-### Rule 3: preserve next control point
+- 内容非常小
+- 内容对于理解追踪事件是必要的
+- 使用引用会实质性降低清晰度
 
-Trace should help the system understand what happens next:
+默认姿态：
 
-- continue
-- review
-- approve
-- replan
-- escalate
-- stop
-
-### Rule 4: avoid duplication
-
-If a packet, artifact, or step object already holds structure, trace should reference it rather than duplicate it heavily.
-
-### Rule 5: trace should support failure recovery
-
-A trace model that cannot help explain failure or resume long-running work is not sufficient.
+优先引用
 
 ---
 
-## Relation to Other Documents
+## 追踪质量规则
 
-This document should align with:
+### 规则 1：摘要优先
+
+每个有意义的追踪都应可从其摘要字段理解，而不需要大量的叙述。
+
+### 规则 2：保留行动者清晰度
+
+在相关处，保留谁发起、执行和审批。
+
+### 规则 3：保留下一个控制点
+
+追踪应帮助系统理解接下来发生什么：
+
+- 继续
+- 评审
+- 审批
+- 重规划
+- 升级
+- 停止
+
+### 规则 4：避免重复
+
+如果包、制品或步骤对象已经持有结构，追踪应引用它而非大量复制。
+
+### 规则 5：追踪应支持失败恢复
+
+无法帮助解释失败或恢复长期工作的追踪模型是不够的。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `STATE_MACHINE.md`
 - `RISK_MODEL.md`
@@ -573,34 +582,34 @@ This document should align with:
 - `contracts/dev_task_packet.schema.json`
 - `contracts/dev_result_packet.schema.json`
 - `main-agent-step.schema.json`
-- future `trace_event.schema.json`
+- 未来的 `trace_event.schema.json`
 
-This document defines trace semantics and expectations.
+本文档定义追踪语义和期望。
 
-Future machine-readable schemas or trace validators should provide enforcement and structural guarantees.
-
----
-
-## Failure Modes This Model Should Prevent
-
-This trace model exists partly to prevent:
-
-- invisible major decisions
-- unaccountable executor behavior
-- long-running work with no checkpoint visibility
-- high-risk action with weak audit trail
-- reports that cannot be traced back to actual events
-- memory changes with no accountability
-- trace stores filled with noise but lacking useful signal
+未来机器可读模式或追踪验证器应提供执行和结构保证。
 
 ---
 
-## Final Principle
+## 本模型应防止的失败模式
 
-A good trace system does not record everything.
+此追踪模型的存在部分是为了防止：
 
-It records what must remain legible for accountability, recovery, and governance.
+- 不可见的主要决策
+- 不可问责的执行器行为
+- 没有检查点可见性的长期工作
+- 具有弱审计轨迹的高风险动作
+- 无法追溯到实际事件的报告
+- 没有问责的记忆变更
+- 充满噪音但缺乏有用信号的追踪存储
 
-If trace becomes a swamp of duplicated noise, it stops protecting the system.
+---
 
-The correct trace model preserves signal, linkage, and consequence.
+## 最终原则
+
+好的追踪系统不记录一切。
+
+它记录必须保持可读以进行问责、恢复和治理的内容。
+
+如果追踪变成重复噪音的沼泽，它就停止保护系统。
+
+正确的追踪模型保留信号、链接和后果。

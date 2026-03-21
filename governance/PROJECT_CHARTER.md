@@ -33,7 +33,7 @@ Xuanzhi-Core 是一个面向 AI 工作系统的**治理中枢与统一控制面*
    使 Claude Code、Coze Studio、n8n、NocoBase、QMD、Higress、GitLab CE 等组件可在统一控制逻辑下协同工作。
 
 3. 建立可长期维护的规则体系  
-   重要规则不能只停留在 prose 文档中，应逐步沉淀为 schema、policy、validator、state machine。
+   重要规则不能只停留在叙述性文档中，应逐步沉淀为 schema、policy、validator、state machine。
 
 4. 建立偏航纠正能力  
    每次推进时都能判断：
@@ -65,9 +65,9 @@ Xuanzhi-Core 负责治理、路由、审查、收敛；
 根层文件只保留高频、常驻、必须稳定注入的内容；
 细则、策略、模板、规范应下沉到对应目录。
 
-### 5.3 prose 先行，规则硬化跟进
+### 5.3 叙述先行，规则硬化跟进
 允许先用文档表达规则；
-但高价值、高频、易漂移规则必须逐步转化为 machine-readable 形式。
+但高价值、高频、易漂移规则必须逐步转化为机器可读形式。
 
 ### 5.4 先收敛，后扩张
 优先做“最小可运行集合”；

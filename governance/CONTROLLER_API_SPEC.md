@@ -1,550 +1,550 @@
-# CONTROLLER_API_SPEC.md
+# 控制器 API 规范
 
-## Purpose
+## 目的
 
-This document defines the high-level controller action surface of the Xuanzhi workspace.
+本文档定义玄织工作空间的高级控制器动作面。
 
-Its purpose is to provide a stable control-plane API baseline for:
+其目的在于为以下事项提供稳定的控制面 API 基线：
 
-- task intake and routing
-- development delegation
-- workflow invocation
-- governance actions
-- memory actions
-- GitLab-related actions
-- alerting actions
-- dangerous-action gating
-- future controller implementation
+- 任务接收和路由
+- 开发委托
+- 工作流调用
+- 治理动作
+- 记忆动作
+- GitLab 相关动作
+- 告警动作
+- 危险动作门禁
+- 未来控制器实现
 
-This document is normative for controller action semantics.
+本文档对控制器动作语义具有规范性。
 
-It is not a transport protocol specification.
-It is not a REST or RPC manual.
-It is not a scheduler implementation.
-It is not a tool SDK reference.
+它不是传输协议规范。
+它不是 REST 或 RPC 手册。
+它不是调度器实现。
+它不是工具 SDK 参考。
 
-Its job is to define what categories of controller actions exist, what they mean, and what governance expectations apply to them.
-
----
-
-## Core Principle
-
-The controller should expose a small set of high-value actions, not an unbounded sea of low-level commands.
-
-A good controller API should make it clear:
-
-- what action is being requested
-- why the action belongs to the control plane
-- what the expected input shape is
-- what output shape or effect is expected
-- what risk or approval posture may apply
-
-A bad controller API becomes either:
-
-- too low-level and leaks implementation everywhere
-or
-- too vague and useless for real control
-
-This workspace prefers high-level, governance-aware actions.
+其任务是定义存在哪些类别的控制器动作、它们意味着什么、以及适用于它们的治理期望。
 
 ---
 
-## Controller Role
+## 核心原则
 
-The controller is the execution bridge between Xuanzhi's governance reasoning and the systems that actually perform work.
+控制器应暴露一小组高价值动作，而非无界的低级命令海洋。
 
-The controller is expected to:
+好的控制器 API 应明确：
 
-- normalize incoming actions
-- route execution to the correct underlying system
-- enforce policy or validator checks where applicable
-- preserve trace and reporting signal
-- return bounded structured outputs
+- 正在请求什么动作
+- 为什么动作属于控制面
+- 预期的输入形态是什么
+- 预期什么输出形态或效果
+- 可能适用什么风险或审批姿态
 
-The controller is not the top governance authority.
+坏的控制器 API 变成：
 
-Xuanzhi remains responsible for:
+- 太低级并在到处泄漏实现
+或
+- 太模糊而对真实控制无用
 
-- task framing
-- routing intent
-- approval posture
-- escalation posture
-- summary and reporting interpretation
+本工作空间偏好高级的、治理感知的动作。
 
 ---
 
-## Canonical Action Families
+## 控制器角色
 
-The controller should expose actions in the following high-level families:
+控制器是玄织治理推理与实际执行工作的系统之间的执行桥梁。
 
-- `knowledge`
-- `workflow`
-- `development`
-- `governance`
-- `memory`
+控制器预期：
+
+- 规范化传入动作
+- 将执行路由到正确的底层系统
+- 在适用处执行策略或验证器检查
+- 保留追踪和汇报信号
+- 返回有界的结构化输出
+
+控制器不是最高治理权限。
+
+玄织仍负责：
+
+- 任务界定
+- 路由意图
+- 审批姿态
+- 升级姿态
+- 汇总和汇报解释
+
+---
+
+## 标准动作族
+
+控制器应在以下高级族中暴露动作：
+
+- `knowledge`（知识）
+- `workflow`（工作流）
+- `development`（开发）
+- `governance`（治理）
+- `memory`（记忆）
 - `gitlab`
-- `alerts`
-- `dangerous`
+- `alerts`（告警）
+- `dangerous`（危险）
 
-These families should stay small and semantically stable.
+这些族应保持小型且语义稳定。
 
-They are action families, not implementation modules.
+它们是动作族，不是实现模块。
 
 ---
 
-## Action Envelope
+## 动作信封
 
-Every controller action should conceptually include:
+每个控制器动作在概念上应包括：
 
 - `action_family`
 - `action_name`
 - `args`
 - `reasoning_summary`
-- `risk_level` where applicable
-- `approval_mode` where applicable
-- `trace_context` where applicable
+- `risk_level`（如适用）
+- `approval_mode`（如适用）
+- `trace_context`（如适用）
 
-This document does not force one exact wire format,
-but these concepts should be preserved.
+本文档不强制一种确切的线格式，
+但这些概念应被保留。
 
-### Principle
+### 原则
 
-Controller actions should be:
+控制器动作应是：
 
-- explicit
-- bounded
-- auditable
-- policy-aware
-
----
-
-## `knowledge` Actions
-
-`knowledge` actions are used for retrieval, lookup, ingest support, or knowledge-surface operations.
-
-Typical examples:
-
-- retrieve relevant project documents
-- search memory or knowledge surfaces
-- locate supporting evidence
-- register or stage knowledge ingest operations
-
-### Typical use cases
-
-- answering grounded questions
-- building context for planning
-- supporting governance review
-- supporting development framing
-
-### Expected controller behavior
-
-The controller should:
-
-- select the appropriate retrieval source or gateway
-- return bounded structured results
-- avoid forcing large raw content upward unless required
-- preserve artifact references where useful
-
-### Not included
-
-`knowledge` actions are not full memory mutation by default.
-Durable memory changes belong to `memory` actions.
+- 明确的
+- 有界的
+- 可审计的
+- 策略感知的
 
 ---
 
-## `workflow` Actions
+## `knowledge` 动作
 
-`workflow` actions are used to invoke, inspect, or coordinate workflow-like execution surfaces.
+`knowledge` 动作用于检索、查找、摄入支持或知识面操作。
 
-Typical examples:
+典型示例：
 
-- run a workflow
-- schedule a workflow
-- inspect workflow availability
-- check workflow health
-- query workflow registry-backed metadata
-- request workflow activation-related preparation
+- 检索相关项目文档
+- 搜索记忆或知识面
+- 定位支持性证据
+- 注册或暂存知识摄入操作
 
-### Expected controller behavior
+### 典型用例
 
-The controller should:
+- 回答有根据的问题
+- 为规划构建上下文
+- 支持治理评审
+- 支持开发界定
 
-- respect workflow registry truth
-- respect approval and activation posture
-- preserve traceable workflow invocation summaries
-- avoid treating all workflows as always-active or always-safe
+### 预期控制器行为
 
-### Principle
+控制器应：
 
-Workflow invocation is a governed action surface, not just a convenience call.
+- 选择适当的检索源或网关
+- 返回有界的结构化结果
+- 除非必要，避免向上强制大型原始内容
+- 在有用处保留制品引用
 
----
+### 不包括
 
-## `development` Actions
-
-`development` actions are used for development delegation and repo-centered implementation control.
-
-Typical examples:
-
-- create development task packet
-- dispatch work to Claude Code
-- request bounded repo analysis
-- collect development result packet
-- request checkpoint summary
-- prepare delivery-ready review context
-
-### Expected controller behavior
-
-The controller should:
-
-- preserve Xuanzhi -> executor packet semantics
-- enforce relevant policy gates
-- support bounded execution visibility
-- keep result outputs structured and reviewable
-
-### Principle
-
-The controller should not micromanage development keystrokes.
-
-It should manage governed development handoff and return surfaces.
+`knowledge` 动作默认不是完整的记忆变更。
+持久记忆变更属于 `memory` 动作。
 
 ---
 
-## `governance` Actions
+## `workflow` 动作
 
-`governance` actions are used for policy, registry, approval, review, and other control-plane operations.
+`workflow` 动作用于调用、检查或协调类工作流的执行面。
 
-Typical examples:
+典型示例：
 
-- submit approval request
-- record approval decision
-- register an agent
-- register a workflow
-- update governed lifecycle state
-- request governance review
-- create or update policy-aware records
+- 运行工作流
+- 调度工作流
+- 检查工作流可用性
+- 检查工作流健康
+- 查询工作流注册表支持的元数据
+- 请求工作流激活相关的准备
 
-### Expected controller behavior
+### 预期控制器行为
 
-The controller should:
+控制器应：
 
-- validate governance-sensitive structures
-- respect admission rules
-- distinguish review from approval
-- preserve audit signal
-- enforce lifecycle and registry constraints
+- 尊重工作流注册表真实
+- 尊重审批和激活姿态
+- 保留可追踪的工作流调用摘要
+- 不将所有工作流视为始终活跃或始终安全
 
-### Principle
+### 原则
 
-The governance action family exists to make durable controlled changes explicit.
+工作流调用是受治理的动作面，不仅仅是便利调用。
 
 ---
 
-## `memory` Actions
+## `development` 动作
 
-`memory` actions are used for memory-aware writes, revisions, promotions, or lookups that alter memory state.
+`development` 动作用于开发委托和以仓库为中心的实现控制。
 
-Typical examples:
+典型示例：
 
-- append daily memory note
-- update long-term memory summary
-- promote a lesson
-- revise durable memory entry
-- remove or archive a memory item where policy permits
+- 创建开发任务包
+- 将工作分派给 Claude Code
+- 请求有界的仓库分析
+- 收集开发结果包
+- 请求检查点摘要
+- 准备交付就绪的评审上下文
 
-### Expected controller behavior
+### 预期控制器行为
 
-The controller should:
+控制器应：
 
-- respect memory write policy
-- distinguish long-term memory from daily memory
-- preserve trace signal for meaningful durable memory changes
-- reject or escalate destructive memory actions when risk requires it
+- 保留玄织 -> 执行器包语义
+- 执行相关策略门禁
+- 支持有界执行可见性
+- 保持结果输出结构化和可评审
 
-### Principle
+### 原则
 
-Memory mutation is governance-relevant because it changes future behavior.
+控制器不应微观管理开发按键。
 
----
-
-## `gitlab` Actions
-
-`gitlab` actions are used for repo-centered control operations through GitLab CE.
-
-Typical examples:
-
-- create repository
-- create issue
-- create branch context
-- create or inspect merge request
-- inspect pipeline status
-- gather repo change metadata
-
-### Expected controller behavior
-
-The controller should:
-
-- respect repo template and governance posture
-- prefer issue-linked and branch-aware workflows
-- preserve merge and CI gate awareness
-- return structured status rather than giant raw payloads
-
-### Principle
-
-GitLab actions should support governed development flow, not bypass it.
+它应管理受治理的开发交接和返回面。
 
 ---
 
-## `alerts` Actions
+## `governance` 动作
 
-`alerts` actions are used to create, route, summarize, or acknowledge abnormal or attention-worthy conditions.
+`governance` 动作用于策略、注册表、审批、评审和其他控制面操作。
 
-Typical examples:
+典型示例：
 
-- raise stalled task alert
-- emit high-risk block alert
-- record escalation alert
-- summarize unresolved warnings
-- acknowledge alert handling
+- 提交审批请求
+- 记录审批决策
+- 注册代理
+- 注册工作流
+- 更新受治理生命周期状态
+- 请求治理评审
+- 创建或更新策略感知记录
 
-### Expected controller behavior
+### 预期控制器行为
 
-The controller should:
+控制器应：
 
-- preserve severity
-- preserve affected object linkage
-- preserve summary and next control point
-- avoid alert spam by default
+- 验证治理敏感结构
+- 尊重准入规则
+- 区分评审与审批
+- 保留审计信号
+- 执行生命周期和注册表约束
 
-### Principle
+### 原则
 
-Alerting should increase legibility, not create noise.
-
----
-
-## `dangerous` Actions
-
-`dangerous` actions are a special high-scrutiny family for actions that may be destructive, overreaching, or deeply sensitive.
-
-Typical examples:
-
-- destructive delete
-- registry revocation
-- major permission expansion
-- sensitive infra change
-- runtime-critical control mutation
-
-### Expected controller behavior
-
-The controller should:
-
-- require stronger validation
-- consult risk posture
-- consult approval posture
-- stop or escalate when required
-- preserve high-quality trace and reporting
-
-### Principle
-
-Dangerous actions should never feel normal merely because the controller can technically express them.
+治理动作族的存在是为了使持久的受控变更明确。
 
 ---
 
-## Input Expectations
+## `memory` 动作
 
-Controller actions should prefer bounded structured arguments.
+`memory` 动作用于记忆感知的写入、修订、提升或更改记忆状态的查找。
 
-Typical expectations include:
+典型示例：
 
-- canonical identifiers where applicable
-- references instead of giant embedded payloads
-- summary-level reasoning rather than full process dumps
-- explicit action targets
-- explicit action purpose when ambiguity matters
+- 追加日常记忆笔记
+- 更新长期记忆摘要
+- 提升教训
+- 修订持久记忆条目
+- 在策略允许时移除或归档记忆项
 
-### Principle
+### 预期控制器行为
 
-Controller inputs should support validation and policy checks.
+控制器应：
 
-They should not depend on informal interpretation of giant raw blobs whenever avoidable.
+- 尊重记忆写入策略
+- 区分长期记忆与日常记忆
+- 为有意义的持久记忆变更保留追踪信号
+- 当风险需要时拒绝或升级破坏性记忆动作
 
----
+### 原则
 
-## Output Expectations
-
-Controller outputs should be structured and bounded.
-
-Typical outputs should include some combination of:
-
-- `summary`
-- `status_summary`
-- `artifact_refs`
-- `task_state`
-- `review_state`
-- `approval_state`
-- `risk_level`
-- `next_step`
-- `trace_id`
-
-### Principle
-
-The controller should return enough to support review, routing, and reporting,
-without forcing the top layer to parse raw system noise every time.
+记忆变更是治理相关的，因为它改变未来行为。
 
 ---
 
-## Controller and Trace
+## `gitlab` 动作
 
-Meaningful controller actions should support trace generation.
+`gitlab` 动作用于通过 GitLab CE 的以仓库为中心的控制操作。
 
-At minimum, trace should exist for:
+典型示例：
 
-- durable governance mutations
-- agent/workflow admission events
-- approval outcomes
-- high-risk action handling
-- meaningful development delegation
-- major memory changes
-- alerts and escalations
+- 创建仓库
+- 创建问题
+- 创建分支上下文
+- 创建或检查合并请求
+- 检查管道状态
+- 收集仓库变更元数据
 
-The controller is a major bridge for trace creation,
-but it should prefer structured trace events rather than narrative logs.
+### 预期控制器行为
+
+控制器应：
+
+- 尊重仓库模板和治理姿态
+- 偏好问题链接和分支感知的工作流
+- 保留合并和 CI 门禁意识
+- 返回结构化状态而非巨大的原始负载
+
+### 原则
+
+GitLab 动作应支持受治理的开发流程，而非绕过它。
 
 ---
 
-## Controller and Policy
+## `alerts` 动作
 
-The controller should be policy-aware.
+`alerts` 动作用于创建、路由、汇总或确认异常或值得关注的情况。
 
-Where machine-readable policy exists, the controller should be able to consult or enforce it.
+典型示例：
 
-Examples include:
+- 提出停滞任务告警
+- 发出高风险阻塞告警
+- 记录升级告警
+- 汇总未解决的警告
+- 确认告警处理
+
+### 预期控制器行为
+
+控制器应：
+
+- 保留严重程度
+- 保留受影响对象链接
+- 保留汇总和下一个控制点
+- 默认避免告警垃圾邮件
+
+### 原则
+
+告警应增加可读性，而非创造噪音。
+
+---
+
+## `dangerous` 动作
+
+`dangerous` 动作是一个特殊的高审查族，用于可能是破坏性、越权或高度敏感的动作。
+
+典型示例：
+
+- 破坏性删除
+- 注册表撤销
+- 重大权限扩展
+- 敏感基础设施变更
+- 运行时关键的控制变更
+
+### 预期控制器行为
+
+控制器应：
+
+- 要求更强的验证
+- 咨询风险姿态
+- 咨询审批姿态
+- 在需要时停止或升级
+- 保留高质量的追踪和汇报
+
+### 原则
+
+危险动作不应仅仅因为控制器技术上可以表达它们就感觉正常。
+
+---
+
+## 输入期望
+
+控制器动作应偏好有界的结构化参数。
+
+典型期望包括：
+
+- 适用处的标准标识符
+- 引用而非巨大嵌入负载
+- 摘要级别的推理而非完整过程转储
+- 明确的动作目标
+- 歧义重要时的明确动作目的
+
+### 原则
+
+控制器输入应支持验证和策略检查。
+
+它们不应依赖于对巨大原始块的随意解释（尽可能避免）。
+
+---
+
+## 输出期望
+
+控制器输出应结构化且有界。
+
+典型输出应包括以下某种组合：
+
+- `summary`（摘要）
+- `status_summary`（状态摘要）
+- `artifact_refs`（制品引用）
+- `task_state`（任务状态）
+- `review_state`（评审状态）
+- `approval_state`（审批状态）
+- `risk_level`（风险等级）
+- `next_step`（下一步）
+- `trace_id`（追踪 ID）
+
+### 原则
+
+控制器应返回足够的内容以支持评审、路由和汇报，
+而不强制顶层每次都解析原始系统噪音。
+
+---
+
+## 控制器与追踪
+
+有意义的控制器动作应支持追踪生成。
+
+至少，以下内容应存在追踪：
+
+- 持久治理变更
+- 代理/工作流准入事件
+- 审批结果
+- 高风险动作处理
+- 有意义的开发委托
+- 重大记忆变更
+- 告警和升级
+
+控制器是追踪创建的主要桥梁，
+但它应偏好结构化追踪事件而非叙述性日志。
+
+---
+
+## 控制器与策略
+
+控制器应是策略感知的。
+
+当存在机器可读策略时，控制器应能够咨询或执行它。
+
+示例包括：
 
 - `state_transitions.yaml`
 - `risk_policy.yaml`
 
-### Principle
+### 原则
 
-The controller should not behave as if policy documents are decorative attachments.
+控制器不应表现得好像策略文档是装饰性附件。
 
-If policy exists, controller design should leave room to honor it.
-
----
-
-## Controller and Validation
-
-The controller should validate:
-
-- packet shape where contracts exist
-- registry admission baseline where schemas exist
-- approval and lifecycle constraints where rules exist
-- dangerous-action prerequisites where policy requires it
-
-This does not mean every action must be slowed down by maximum validation,
-but meaningful governed actions should not skip structural checks.
+如果策略存在，控制器设计应留出空间来尊重它。
 
 ---
 
-## Dangerous-Action Gate
+## 控制器与验证
 
-Dangerous actions should not share the same trust posture as ordinary actions.
+控制器应验证：
 
-A dangerous-action gate should exist conceptually for actions that are:
+- 存在契约处的包形态
+- 存在模式处的注册表准入基线
+- 存在规则处的审批和生命周期约束
+- 策略要求处的危险动作前提
 
-- destructive
-- highly sensitive
-- authority-expanding
-- hard to reverse
-- registry- or activation-critical
-- infra-critical
-
-### Dangerous-action gate should support
-
-- stronger risk check
-- stronger approval check
-- escalation path
-- strong-reporting mode
-- high-quality trace
+这不意味着每个动作都必须被最大验证拖慢，
+但有意义的受治理动作不应跳过结构检查。
 
 ---
 
-## Controller and Approval
+## 危险动作门禁
 
-The controller is not the source of approval legitimacy.
-It is the execution bridge for approval-aware actions.
+危险动作不应与普通动作共享相同的信任姿态。
 
-The controller should be able to support actions such as:
+概念上应为以下动作存在危险动作门禁：
 
-- request approval
-- record approval outcome
-- block action due to missing approval
-- escalate when approval cannot be resolved autonomously
+- 破坏性
+- 高度敏感
+- 权限扩展
+- 难以逆转
+- 注册表或激活关键
+- 基础设施关键
 
-### Principle
+### 危险动作门禁应支持
 
-Controller support for approval must preserve the distinction between:
-
-- review
-- approval
-- veto
-- escalation
-
----
-
-## Controller and Registry
-
-The controller should support registry-aware actions without turning the registry into a runtime dump.
-
-Typical registry-related actions may include:
-
-- admit entry
-- validate entry
-- update lifecycle state
-- update health status
-- revoke entry
-- archive entry
-
-### Principle
-
-Registry mutations are governance-significant and should remain explicit.
+- 更强的风险检查
+- 更强的审批检查
+- 升级路径
+- 强汇报模式
+- 高质量追踪
 
 ---
 
-## Controller and Scheduler Boundary
+## 控制器与审批
 
-The controller may later interact with a scheduler,
-but this document does not define the scheduler.
+控制器不是审批合法性的来源。
+它是审批感知动作的执行桥梁。
 
-The controller action surface should remain scheduler-compatible,
-but it should not be forced to encode full scheduling logic at this stage.
+控制器应能够支持如下动作：
 
-### Principle
+- 请求审批
+- 记录审批结果
+- 因缺少审批而阻塞动作
+- 当审批无法自主解决时升级
 
-Keep the controller API high-level.
-Do not prematurely collapse scheduler design into controller actions.
+### 原则
 
----
+控制器对审批的支持必须保留以下区分：
 
-## Implementation Guidance
-
-A future implementation may map these high-level action families to:
-
-- internal methods
-- service handlers
-- RPC endpoints
-- workflow dispatch adapters
-- policy validators
-- external integrations
-
-This mapping is intentionally deferred.
-
-What matters now is preserving the semantic surface.
+- 评审
+- 审批
+- 否决
+- 升级
 
 ---
 
-## Relation to Other Documents
+## 控制器与注册表
 
-This document should align with:
+控制器应支持注册表感知动作，而不将注册表变成运行时转储。
+
+典型的注册表相关动作可能包括：
+
+- 准入条目
+- 验证条目
+- 更新生命周期状态
+- 更新健康状态
+- 撤销条目
+- 归档条目
+
+### 原则
+
+注册表变更是治理重要的，应保持明确。
+
+---
+
+## 控制器与调度器边界
+
+控制器可能稍后与调度器交互，
+但本文档不定义调度器。
+
+控制器动作面应保持与调度器兼容，
+但不应在此阶段强制编码完整的调度逻辑。
+
+### 原则
+
+保持控制器 API 高级。
+不要过早将调度器设计折叠到控制器动作中。
+
+---
+
+## 实现指导
+
+未来实现可能将这些高级动作族映射到：
+
+- 内部方法
+- 服务处理器
+- RPC 端点
+- 工作流调度适配器
+- 策略验证器
+- 外部集成
+
+此映射有意推迟。
+
+现在重要的是保留语义面。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `STATE_MACHINE.md`
 - `RISK_MODEL.md`
@@ -556,29 +556,29 @@ This document should align with:
 - `CLAUDE_CODE_EXECUTION_SPEC.md`
 - `GITLAB_INTEGRATION.md`
 
-This document defines controller action semantics.
+本文档定义控制器动作语义。
 
-It does not replace packet schemas, policy files, or integration-specific execution specs.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- controller actions that are too low-level to govern
-- controller actions that are too vague to validate
-- dangerous mutations hiding inside ordinary action surfaces
-- policy existing but not being structurally usable
-- integration sprawl without a common control surface
-- top-layer reasoning having no stable action vocabulary
+它不替代包模式、策略文件或集成特定的执行规范。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-A good controller API gives the control plane a small number of powerful, governable actions.
+本规范的存在部分是为了防止：
 
-It should make work easier to route, easier to validate, easier to trace, and harder to let drift silently.
+- 太低级而无法治理的控制器动作
+- 太模糊而无法验证的控制器动作
+- 隐藏在普通动作面中的危险变更
+- 策略存在但结构上不可用
+- 没有通用控制面的集成蔓延
+- 顶层推理没有稳定的动作词汇
 
-That is the point.
+---
+
+## 最终原则
+
+好的控制器 API 给控制面少量强大、可治理的动作。
+
+它应使工作更易于路由、更易于验证、更易于追踪、更难静默漂移。
+
+这就是目的。

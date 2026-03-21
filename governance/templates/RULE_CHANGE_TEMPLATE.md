@@ -1,708 +1,338 @@
-# RULE_HARDENING_POLICY.md
+# 规则变更模板
 
-## Purpose
+## 目的
 
-This document defines the hardening policy for governance rules in the 玄织 system.
+本模板用于记录玄织工作空间中所有重大治理规则的变更。
 
-Its purpose is to prevent long-term drift into a prose-only governance architecture.
+每次对状态机、风险模型、审批策略、记忆写入规则、注册表结构、契约模式或其他关键治理文件的变更，都应使用本模板。
 
-Narrative governance documents are necessary, but they are not sufficient for stable execution.
+本模板帮助确保：
 
-This policy exists to ensure that when rules become important enough, they are progressively translated into stronger machine-readable forms such as:
-
-- JSON Schema
-- YAML policy
-- validator logic
-- state transition tables
-
-This document is normative for rule evolution.
-
-If a new governance rule is added or an existing rule is changed, this policy defines the minimum hardening review that must occur before the change is considered complete.
+- 变更原因可追溯
+- 影响范围可识别
+- 风险可评估
+- 相关方可通知
+- 回滚路径可明确
 
 ---
 
-## Core Principle
+## 变更信息
 
-A rule written only in prose is a rule that still depends on interpretation.
+### 变更标题
 
-Interpretation is useful for human understanding,
-but insufficient for reliable control when the rule governs:
+<!-- 简明扼要的变更标题 -->
 
-- structure
-- permissions
-- lifecycle
-- state transitions
-- risk decisions
-- approvals
-- registry integrity
-- trace integrity
-- memory safety
+### 变更日期
 
-Therefore, the system must not indefinitely rely on prose-only governance for rules that materially affect execution, authority, or recoverability.
+<!-- YYYY-MM-DD 格式 -->
 
----
+### 变更发起者
 
-## Design Position
+<!-- 谁提出此变更 -->
 
-This policy does not require every rule to be immediately executable.
+### 变更类别
 
-That would be excessive and impractical.
+<!-- 选择适用的类别 -->
 
-Instead, this policy requires that every meaningful new or modified rule be evaluated for hardening suitability.
-
-The required question is not:
-
-"Can we leave this in Markdown for now?"
-
-The required question is:
-
-"Should this rule remain prose-only, or does it now deserve a machine-readable counterpart?"
-
-If uncertainty remains, the rule should be flagged for hardening review rather than ignored.
+- [ ] C1：文字澄清类
+- [ ] C2：局部结构调整类
+- [ ] C3：规则变更类
+- [ ] C4：架构变更类
+- [ ] C5：方向性变更类
 
 ---
 
-## Scope
+## 变更描述
 
-This policy applies to all governance and operating rule changes, especially those affecting:
+### 当前状态
 
-- `AGENTS.md`
-- `SOUL.md`
-- `USER.md`
-- `MEMORY.md`
-- `governance/*.md`
-- `contracts/*.json`
-- `policies/*.yaml`
+<!-- 描述当前规则或结构的状态 -->
 
-It is especially important for changes involving:
+### 提议变更
 
-- object fields
-- required metadata
-- state semantics
-- risk classification
-- approval behavior
-- registry requirements
-- workflow activation
-- memory operations
-- trace minimums
-- durable task handoff contracts
+<!-- 详细描述提议的变更 -->
+
+### 变更原因
+
+<!-- 为什么要进行此变更？不进行变更的代价是什么？ -->
 
 ---
 
-## Why This Policy Exists
+## 影响分析
 
-Without rule hardening discipline, the system tends to drift toward a fragile pattern:
+### 受影响的文件
 
-1. a rule is written in prose
-2. similar rules are later added elsewhere
-3. enforcement remains implicit
-4. runtime behavior diverges from documentation
-5. conflicts accumulate
-6. debugging becomes governance archaeology
+<!-- 列出所有需要修改的文件 -->
 
-This policy exists to prevent that pattern.
+| 文件路径 | 变更类型 | 说明 |
+|---------|---------|------|
+|         |         |      |
 
-The goal is not bureaucratic heaviness.
+### 受影响的组件
 
-The goal is to keep the system governable as it grows.
+<!-- 列出受影响的系统组件 -->
 
----
+- [ ] 玄织（治理中枢）
+- [ ] Claude Code（开发执行器）
+- [ ] Coze Studio（AI 应用中枢）
+- [ ] n8n（自动化系统）
+- [ ] NocoBase（后台与审核）
+- [ ] Higress（模型网关）
+- [ ] GitLab CE（代码边界）
+- [ ] Docker（部署底座）
+- [ ] 其他：___________
 
-## Rule Classes
+### 受影响的流程
 
-Every governance rule should be thought of as belonging to one or more rule classes.
+<!-- 列出受影响的工作流程 -->
 
-### Class A: Semantic Rule
-
-A rule that defines meaning, terminology, or conceptual distinction.
-
-Examples:
-
-- the difference between `task_state` and `step_state`
-- the difference between `capability_scope` and `permissions`
-- the meaning of `risk_ceiling`
-- the meaning of `MEMORY.md`
-
-Typical destination:
-
-- `governance/GOVERNANCE_GLOSSARY.md`
-- `governance/FIELD_CANON.md`
-- narrative governance specifications
-
-These rules may remain prose-first,
-but they still require consistency review across files.
-
-### Class B: Structural Rule
-
-A rule that defines required fields, field names, field shapes, enums, or object constraints.
-
-Examples:
-
-- required fields for a step object
-- required fields for agent registry entries
-- allowed values for `workflow_type`
-- required audit fields
-
-Typical hardening destination:
-
-- JSON Schema
-- field canon
-- validator logic
-
-### Class C: Policy Rule
-
-A rule that governs allow/deny behavior, thresholds, approval paths, permissions, or routing gates.
-
-Examples:
-
-- approval required before workflow activation
-- R4 means immediate block
-- no agent may exceed `risk_ceiling`
-- destructive memory delete requires escalation
-
-Typical hardening destination:
-
-- YAML policy
-- controller policy engine
-- validator logic
-
-### Class D: Transition Rule
-
-A rule that governs lifecycle transitions or state movement.
-
-Examples:
-
-- `approved` before `active`
-- retry before replan
-- review failure -> replan
-- approval rejection -> replan
-- max retry behavior
-- stalled inspection routing
-
-Typical hardening destination:
-
-- state transition table
-- state validator
-- scheduler/controller logic
-
-### Class E: Operational Rule
-
-A rule that governs process posture, writing practice, review flow, or maintenance discipline.
-
-Examples:
-
-- root files should stay thin
-- daily review should include running tasks and running agents
-- long-term memory writes must be conservative
-- all meaningful structural changes should be documented
-
-These rules may remain prose-first,
-but should still be evaluated for partial hardening where useful.
+- [ ] 任务接收流程
+- [ ] 开发委托流程
+- [ ] 评审流程
+- [ ] 审批流程
+- [ ] 记忆写入流程
+- [ ] 工作流激活流程
+- [ ] 升级流程
+- [ ] 其他：___________
 
 ---
 
-## Mandatory Hardening Review
+## 风险评估
 
-Every meaningful rule addition or modification must undergo a hardening review.
+### 风险等级
 
-This review is mandatory.
+<!-- 选择适用的风险等级 -->
 
-The question is not whether hardening must happen immediately.
-The question is whether hardening has been assessed.
+- [ ] R0（只读/低影响）
+- [ ] R1（低风险可逆）
+- [ ] R2（有意义变更）
+- [ ] R3（高风险/敏感）
+- [ ] R4（紧急阻塞）
 
-The hardening review consists of four required checks.
+### 风险说明
 
----
+<!-- 详细说明变更带来的风险 -->
 
-## The Four Required Hardening Checks
+### 风险缓解措施
 
-### Check 1: Schema Check
-
-Ask:
-
-Does this rule define or change any of the following?
-
-- required fields
-- field names
-- field types
-- enums
-- object structure
-- packet format
-- metadata requirements
-- lifecycle field presence
-- trace field presence
-
-If yes, assess whether the rule should update or create:
-
-- JSON Schema
-- field canon entry
-- validation logic
-
-Typical targets:
-
-- `main-agent-step.schema.json`
-- `dev_task_packet.schema.json`
-- `dev_result_packet.schema.json`
-- `agent_registry.schema.json`
-- `workflow_registry.schema.json`
-- `trace_event.schema.json`
-
-### Check 2: Policy Check
-
-Ask:
-
-Does this rule define or change any of the following?
-
-- allow / deny behavior
-- risk thresholds
-- approval requirements
-- escalation criteria
-- write permissions
-- trigger constraints
-- routing logic
-- governance veto conditions
-
-If yes, assess whether the rule should update or create:
-
-- YAML policy
-- allowlist / denylist rule
-- controller-side policy enforcement logic
-
-Typical targets:
-
-- `risk_policy.yaml`
-- `approval_rules.yaml`
-- `memory_write_rules.yaml`
-
-### Check 3: Validator Check
-
-Ask:
-
-Does this rule require pre-execution, pre-registration, pre-activation, pre-write, or pre-merge validation?
-
-If yes, assess whether validator logic is needed for:
-
-- packet validation
-- registry admission
-- workflow activation
-- memory write control
-- review gating
-- approval gating
-- root file boundary enforcement
-
-Validator need is especially strong when the cost of invalid state is high.
-
-### Check 4: State Transition Check
-
-Ask:
-
-Does this rule affect:
-
-- task state
-- step state
-- review state
-- approval state
-- lifecycle state
-- retry behavior
-- replanning behavior
-- escalation behavior
-- activation behavior
-- pause/resume behavior
-
-If yes, assess whether the rule should update or create:
-
-- state transition table
-- state guard logic
-- scheduler/controller transition checks
-
-Typical target:
-
-- `state_transitions.yaml`
+<!-- 如何缓解上述风险 -->
 
 ---
 
-## Hardening Review Output
+## 硬化评审
 
-Every rule change must produce a hardening review summary.
+### Schema 检查
 
-This summary must include at least:
+此变更是否定义或更改以下内容？
 
-- rule change summary
-- affected documents
-- schema impact: yes/no + reason
-- policy impact: yes/no + reason
-- validator impact: yes/no + reason
-- state transition impact: yes/no + reason
-- proposed hardening targets
-- immediate hardening required: yes/no
-- deferred hardening allowed: yes/no + reason
-- technical debt note if deferred
+- [ ] 必需字段
+- [ ] 字段名称
+- [ ] 字段类型
+- [ ] 枚举值
+- [ ] 对象结构
+- [ ] 包格式
+- [ ] 元数据要求
 
-This output does not need to be large.
+**Schema 影响说明：**
 
-It does need to be explicit.
+### Policy 检查
 
-Silence is not an acceptable hardening decision.
+此变更是否定义或更改以下内容？
 
----
+- [ ] 允许/拒绝行为
+- [ ] 风险阈值
+- [ ] 审批要求
+- [ ] 升级标准
+- [ ] 写入权限
+- [ ] 触发约束
+- [ ] 路由逻辑
 
-## Immediate Hardening Triggers
+**Policy 影响说明：**
 
-Some rule changes should default to immediate hardening rather than optional later review.
+### Validator 检查
 
-Immediate hardening is strongly recommended when a rule affects:
+此变更是否需要以下验证？
 
-- risk classification or risk enforcement
-- approval boundaries
-- workflow activation conditions
-- registry required fields
-- trace required fields
-- memory delete or destructive memory operations
-- lifecycle transitions
-- state transitions
-- protected or sensitive file operations
-- executor handoff packet structure
-- agent authority expansion
-- permission changes
-- sub-agent creation requirements
+- [ ] 执行前验证
+- [ ] 注册前验证
+- [ ] 激活前验证
+- [ ] 写入前验证
+- [ ] 合并前验证
 
-These are not ordinary narrative refinements.
-They affect the governed behavior of the system.
+**Validator 影响说明：**
 
----
+### 状态转换检查
 
-## Deferred Hardening Rules
+此变更是否影响以下状态？
 
-Not every rule must be hardened immediately.
+- [ ] 任务状态
+- [ ] 步骤状态
+- [ ] 评审状态
+- [ ] 审批状态
+- [ ] 生命周期状态
+- [ ] 重试行为
+- [ ] 重规划行为
+- [ ] 升级行为
 
-Deferred hardening may be acceptable when all of the following are true:
-
-- the rule is low-risk
-- the rule is low-frequency
-- the rule is mainly explanatory
-- the rule has low enforcement cost if interpreted manually
-- the rule does not create critical ambiguity
-- the technical debt is documented
-
-Examples of rules that may remain prose-first for a while:
-
-- stylistic communication preferences
-- explanation ordering preferences
-- descriptive examples
-- low-stakes narrative guidance
-- non-critical maintenance heuristics
-
-Deferral is acceptable.
-Silent neglect is not.
+**状态转换影响说明：**
 
 ---
 
-## Hardening Priority Order
+## 兼容性与迁移
 
-When hardening capacity is limited, use this priority order.
+### 向后兼容性
 
-### Priority 1: Execution-critical contracts
+- [ ] 完全向后兼容
+- [ ] 部分向后兼容
+- [ ] 不向后兼容
 
-Examples:
+**兼容性说明：**
 
-- task handoff packets
-- result packets
-- step object schema
+### 迁移策略
 
-### Priority 2: Risk and approval gates
+<!-- 如果不兼容，如何迁移现有数据/状态 -->
 
-Examples:
+### 回滚计划
 
-- risk policy
-- approval rules
-- destructive operation thresholds
-
-### Priority 3: State and lifecycle controls
-
-Examples:
-
-- state transitions
-- activation rules
-- retry rules
-- review failure behavior
-
-### Priority 4: Registry integrity
-
-Examples:
-
-- agent registry schema
-- workflow registry schema
-- required audit fields
-
-### Priority 5: Trace integrity
-
-Examples:
-
-- trace minimum fields
-- retention-critical events
-- artifact reference rules
-
-### Priority 6: Memory write control
-
-Examples:
-
-- write / rewrite / delete gating
-- promotion rules
-- summary vs detail write boundaries
+<!-- 如果变更失败，如何回滚 -->
 
 ---
 
-## Rule Change Categories and Expected Hardening
+## 审批信息
 
-This section defines common cases and the expected hardening posture.
+### 审批要求
 
-### Category: terminology clarification
+- [ ] 不需要审批
+- [ ] 需要治理审批
+- [ ] 需要人工审批
 
-Expected hardening:
+### 审批者
 
-- glossary or field canon update
-- schema impact usually no
-- policy impact usually no
-- validator impact usually no
-- state impact usually no
+<!-- 谁需要审批此变更 -->
 
-### Category: field rename or field standardization
+### 审批状态
 
-Expected hardening:
+- [ ] 待审批
+- [ ] 审批中
+- [ ] 已批准
+- [ ] 已拒绝
+- [ ] 已升级
 
-- field canon update required
-- schema review required
-- validator review likely required
-- transition impact depends on field function
+### 审批意见
 
-### Category: risk rule change
-
-Expected hardening:
-
-- policy review required
-- validator review likely required
-- state impact possible
-- immediate hardening often recommended
-
-### Category: approval path change
-
-Expected hardening:
-
-- policy review required
-- state transition review required
-- validator review likely required
-
-### Category: lifecycle change
-
-Expected hardening:
-
-- schema review likely required
-- state transition review required
-- validator review likely required
-
-### Category: packet or trace shape change
-
-Expected hardening:
-
-- schema review required
-- validator review required
-- policy review optional
-- state impact depends on semantics
-
-### Category: memory write behavior change
-
-Expected hardening:
-
-- policy review required
-- validator review often required
-- trace review often required
-
-### Category: root file boundary rule
-
-Expected hardening:
-
-- usually prose-first
-- validator review may still apply for linting or guardrail tooling
-- schema impact usually low
+<!-- 审批者的意见和条件 -->
 
 ---
 
-## Rule Hardening Debt
+## 执行计划
 
-If a rule is judged to need hardening but is not hardened immediately, the system must create a hardening debt record.
+### 执行步骤
 
-The record should include:
+1. <!-- 步骤 1 -->
+2. <!-- 步骤 2 -->
+3. <!-- 步骤 3 -->
 
-- rule summary
-- affected file
-- affected layer
-- why hardening is needed
-- why hardening is deferred
-- proposed target artifact
-- severity
-- review date or next review phase
+### 执行时间线
 
-This debt may live in:
+| 阶段 | 预计时间 | 负责人 |
+|-----|---------|-------|
+|     |         |       |
 
-- governance debt notes
-- technical debt review
-- weekly review
-- a dedicated hardening backlog
+### 验证方法
 
-The debt must remain visible.
-
-Invisible hardening debt becomes system drift.
+<!-- 如何验证变更已正确实施 -->
 
 ---
 
-## Relation to Existing Governance Documents
+## 相关文档
 
-This policy does not replace governance prose.
+### 相关基线文档
 
-It complements it.
+- [ ] `PROJECT_CHARTER.md`
+- [ ] `BOUNDARY_AND_SCOPE.md`
+- [ ] `ARCHITECTURE_BASELINE.md`
+- [ ] `DELIVERY_STAGES.md`
+- [ ] `CHANGE_CONTROL.md`
+- [ ] `QUALITY_GATES.md`
 
-Typical relationship:
+### 相关治理文档
 
-- prose explains the meaning
-- contracts define the structure
-- policies define the gate
-- validators enforce the check
-- state tables define legal movement
+- [ ] `STATE_MACHINE.md`
+- [ ] `RISK_MODEL.md`
+- [ ] `APPROVAL_POLICY.md`
+- [ ] `TRACE_SPEC.md`
+- [ ] `AGENT_REGISTRY_SPEC.md`
+- [ ] `WORKFLOW_REGISTRY_SPEC.md`
+- [ ] `RULE_HARDENING_POLICY.md`
 
-All five may coexist.
+### 相关契约文件
 
-Good governance is layered, not mono-format.
+- [ ] `contracts/dev_task_packet.schema.json`
+- [ ] `contracts/dev_result_packet.schema.json`
+- [ ] `contracts/agent_registry.schema.json`
+- [ ] `contracts/workflow_registry.schema.json`
+- [ ] `contracts/trace_event.schema.json`
 
----
+### 相关策略文件
 
-## Relation to Root File Policy
-
-`ROOT_FILE_POLICY.md` controls what should stay in thin root files.
-
-This document controls what should be hardened when rules evolve.
-
-The two policies should be applied together:
-
-- root policy keeps constant prompt surface small
-- hardening policy prevents deep rules from remaining forever soft
-
-Together they reduce both context bloat and control softness.
-
----
-
-## Operational Rule for the Main Agent
-
-When the main agent proposes, edits, or reviews a governance rule, it must not stop at the prose layer by default.
-
-It must also ask:
-
-- does this change affect structure?
-- does this change affect policy?
-- does this change affect validation?
-- does this change affect state movement?
-
-If yes, it should either:
-
-- update the corresponding machine-readable artifact
-or
-- create an explicit hardening debt note
-
-Doing neither is non-compliant behavior.
+- [ ] `policies/risk_policy.yaml`
+- [ ] `policies/approval_rules.yaml`
+- [ ] `policies/state_transitions.yaml`
+- [ ] `policies/memory_write_rules.yaml`
 
 ---
 
-## Operational Rule for Governance Review
+## 遗留问题
 
-Any governance review that accepts a non-trivial rule change should verify that a hardening review was actually performed.
+### 技术债务
 
-The review should reject vague claims such as:
+<!-- 变更后可能产生的新技术债务 -->
 
-- "we can harden this later"
-- "this is obvious enough"
-- "the controller will probably handle it"
-- "the model will remember"
+### 待办事项
 
-These are not hardening decisions.
-They are evasions.
+<!-- 变更后需要跟进的事项 -->
 
----
+### 未解决问题
 
-## Typical Failure Patterns This Policy Prevents
-
-### Failure Pattern 1: prose-only accumulation
-
-Large governance documents grow, but runtime enforcement remains weak.
-
-### Failure Pattern 2: duplicated rules with partial mismatch
-
-A rule appears in multiple documents but is hardened nowhere.
-
-### Failure Pattern 3: packet drift
-
-The main agent and execution agent gradually disagree on structured handoff shape.
-
-### Failure Pattern 4: state drift
-
-Narrative descriptions of state behavior diverge from scheduler/controller behavior.
-
-### Failure Pattern 5: registry softness
-
-Registry fields are described in prose but not actually validated.
-
-### Failure Pattern 6: delayed hardening forever
-
-The system repeatedly says it will harden "later" until drift becomes expensive.
+<!-- 变更后仍需解决的问题 -->
 
 ---
 
-## Compliance Signals
+## 变更记录
 
-Healthy signals:
-
-- rule changes trigger hardening checks automatically
-- important rules have clear machine-readable counterparts
-- prose and contracts remain aligned
-- state and risk rules become more explicit over time
-- packet schemas stabilize
-- governance discussions create fewer contradictions
-
-Unhealthy signals:
-
-- repeated prose changes with no hardening review
-- conflicting behavior between documents and execution
-- missing schema updates after field changes
-- repeated "to be hardened later" with no backlog tracking
-- unclear state or approval behavior at runtime
+| 版本 | 日期 | 变更内容 | 变更者 |
+|-----|-----|---------|-------|
+| 1.0 |     | 初始版本 |       |
 
 ---
 
-## Exception Rule
+## 检查清单
 
-An exception to hardening review is allowed only for changes that are clearly:
+### 变更前检查
 
-- editorial
-- formatting-only
-- non-semantic
-- non-structural
-- non-operational
+- [ ] 变更原因已明确说明
+- [ ] 影响范围已完整分析
+- [ ] 风险已评估
+- [ ] 硬化评审已完成
+- [ ] 相关方已通知
 
-Examples:
+### 变更中检查
 
-- typo fixes
-- grammar changes
-- wording clarity improvements that do not alter meaning
+- [ ] 按执行计划实施
+- [ ] 同步更新相关文档
+- [ ] 保持 prose 与 machine-readable 一致
+- [ ] 记录变更过程
 
-If meaning changes, this policy applies.
+### 变更后检查
+
+- [ ] 变更已验证
+- [ ] 相关文档已更新
+- [ ] 遗留问题已记录
+- [ ] 技术债务已登记
+- [ ] 变更记录已更新
 
 ---
 
-## Final Principle
+## 备注
 
-A mature governance system does not merely describe itself.
-
-It increasingly makes its critical rules legible to machines as well as humans.
-
-Prose gives meaning.
-Hardening gives control.
-
-Both are necessary.
+<!-- 任何其他需要说明的内容 -->

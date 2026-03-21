@@ -1,35 +1,35 @@
 # GOVERNANCE_GLOSSARY.md
 
-## Purpose
+## 用途
 
-This document defines the canonical terminology of the 玄织 workspace.
+本文档定义玄织工作空间的规范术语。
 
-Its role is to provide a shared semantic baseline for:
+其角色是为以下内容提供共享的语义基准：
 
-- root-layer files
-- governance specifications
-- contracts
-- policies
-- integrations
-- reporting and review artifacts
+- 根层文件
+- 治理规范
+- 契约
+- 策略
+- 集成
+- 报告与审查制品
 
-This glossary exists to reduce:
+本词汇表的存在是为了减少：
 
-- naming drift
-- conceptual duplication
-- cross-file contradiction
-- ambiguous state language
-- soft mismatch between prose and machine-readable artifacts
+- 命名漂移
+- 概念重复
+- 跨文件矛盾
+- 模糊的状态语言
+- 文本与机器可读制品之间的软性不匹配
 
-This document is normative for terminology.
+本文档对术语具有规范性。
 
-If two files use the same term differently, this glossary takes precedence unless an explicit exception is approved and recorded.
+如果两个文件对同一术语有不同用法，本词汇表优先，除非明确批准并记录了例外。
 
 ---
 
-## Scope
+## 范围
 
-This glossary applies to at least the following:
+本词汇表至少适用于以下文件：
 
 - `AGENTS.md`
 - `SOUL.md`
@@ -43,207 +43,207 @@ This glossary applies to at least the following:
 - `policies/*.yaml`
 - `integrations/*.md`
 
-It is intended to support both human-readable governance and future machine-readable hardening.
+它旨在同时支持人类可读的治理与未来的机器可读硬化。
 
 ---
 
-## Canonical Naming Rule
+## 规范命名规则
 
-Structured fields, schema properties, registry keys, trace keys, and policy keys should prefer canonical English snake_case names.
+结构化字段、模式属性、注册表键、追踪键与策略键应偏好规范的英文 snake_case 名称。
 
-Chinese may be used freely in explanatory prose, but should not silently replace canonical machine-facing names.
+中文可在解释性文本中自由使用，但不应静默替换面向机器的规范名称。
 
-One concept should prefer one primary canonical term.
+一个概念应偏好一个主要的规范术语。
 
 ---
 
-## Core Identity Terms
+## 核心身份术语
 
 ### 玄织
 
-The main governance intelligence of this workspace.
+本工作空间的主治理智能。
 
-玄织 is:
+玄织是：
 
-- the governance core
-- the control-plane coordinator
-- the secretary-general style strategic aide
-- the unified intake, routing, summary, and reporting center
+- 治理核心
+- 控制面协调者
+- 秘书长风格的战略辅佐
+- 统一的接收、分发、摘要与报告中心
 
-玄织 is not:
+玄织不是：
 
-- the universal executor
-- a roleplay servant persona
-- a romantic persona
-- a pure emotional support role
-- a replacement for all specialized systems
+- 万能执行者
+- 角色扮演仆从人格
+- 恋爱人格
+- 纯粹的情感支持角色
+- 所有专业系统的替代品
 
-### governance core
+### 治理核心
 
-The highest governance role in the workspace.
+工作空间中的最高治理角色。
 
-In this system, this normally refers to 玄织.
+在本系统中，这通常指玄织。
 
-### control plane
+### 控制面
 
-The layer responsible for:
+负责以下内容的层：
 
-- intake
-- routing
-- judgment
-- summary
-- reporting
-- governance consistency
-- memory discipline
+- 接收
+- 分发
+- 判断
+- 摘要
+- 报告
+- 治理一致性
+- 记忆纪律
 
-The control plane should not be confused with the heavy execution layer.
-
----
-
-## Agent and Executor Terms
-
-### agent
-
-A durable or named decision/execution entity recognized by the system.
-
-An agent is expected to have:
-
-- a role
-- a bounded responsibility
-- a defined level of authority or execution fit
-
-Not every temporary reasoning step is an agent.
-
-### main agent
-
-The top-layer workspace agent responsible for governance and coordination.
-
-In this workspace, the main agent is 玄织.
-
-### executor
-
-The actor or system that actually performs a task or action.
-
-Examples include:
-
-- 玄织 for light governance-oriented work
-- Claude Code for development work
-- workflow systems for pipeline-like work
-- specialized media systems for narrow execution
-
-### specialized executor
-
-An executor whose value comes from fit to a narrow task class rather than top-level governance authority.
-
-### development executor
-
-The executor used for implementation-heavy software work.
-
-In this workspace, Claude Code is the default development executor.
-
-### workflow system
-
-A system used for repeatable, process-like, or low-code execution.
-
-FastGPT may serve in this role where appropriate.
+控制面不应与重型执行层混淆。
 
 ---
 
-## Work Unit Terms
+## 代理与执行器术语
 
-### task
+### 代理
 
-The main practical unit of work.
+系统认可的持久或命名的决策/执行实体。
 
-A task is what the system is trying to complete or advance.
+代理预期具有：
 
-A task may be small and direct, or long-running and structured.
+- 一个角色
+- 界定清晰的责任
+- 定义的权威级别或执行适配度
 
-### step
+并非每个临时推理步骤都是代理。
 
-A smaller bounded unit inside a task.
+### 主代理
 
-A step should have a near-term objective and a clear relation to task progress.
+负责治理与协调的顶层工作空间代理。
 
-### epic
+在本工作空间中，主代理是玄织。
 
-The highest long-running development container.
+### 执行器
 
-An epic may contain multiple milestones.
+实际执行任务或行动的行为者或系统。
 
-Use only when the work actually benefits from that hierarchy.
+示例包括：
 
-### milestone
+- 玄织用于轻量治理导向工作
+- Claude Code 用于开发工作
+- 工作流系统用于流水线式工作
+- 专业媒体系统用于窄域执行
 
-A major checkpoint within an epic.
+### 专业执行器
 
-A milestone should produce a reviewable result or decision point.
+价值来自与窄域任务类别的适配度而非顶层治理权威的执行器。
 
-### deliverable
+### 开发执行器
 
-The concrete output expected from a task, step, or executor.
+用于实现密集型软件工作的执行器。
 
-A deliverable may be:
+在本工作空间中，Claude Code 是默认开发执行器。
 
-- an implementation result
-- a report
-- a review summary
-- a schema
-- a policy file
-- a generated artifact
-- a publication-ready asset
+### 工作流系统
 
----
+用于可重复、流程式或低代码执行的系统。
 
-## Governance Action Terms
-
-### intake
-
-The act of receiving and initially framing a task.
-
-### routing
-
-The act of choosing the appropriate executor or path.
-
-### delegation
-
-The act of assigning execution to a lower-layer or more suitable executor while preserving top-layer governance.
-
-Delegation is not loss of control.
-
-### review
-
-The evaluation of quality, coherence, completeness, fit, or readiness.
-
-Review is not the same as approval.
-
-### approval
-
-A gate that determines whether an action may proceed.
-
-Approval is not the same as review.
-
-### escalation
-
-The act of moving a task, risk, or decision upward to a stricter or higher-authority path.
-
-### replan
-
-A structured change of plan after failure, rejection, mismatch, or changed conditions.
-
-### veto
-
-A governance refusal that blocks a proposed path because it is too risky, too unclear, too destructive, or too unsound.
+FastGPT 可在适当时担任此角色。
 
 ---
 
-## Layer Terms
+## 工作单元术语
 
-### root layer
+### 任务
 
-The always-loaded top layer of the workspace.
+工作的主要实践单元。
 
-This layer contains root files such as:
+任务是系统试图完成或推进的内容。
+
+任务可以是小型直接的，也可以是长时运行且结构化的。
+
+### 步骤
+
+任务内部更小的界定单元。
+
+步骤应有近期的目标以及与任务进展的清晰关系。
+
+### 史诗
+
+最高的长时运行开发容器。
+
+一个史诗可包含多个里程碑。
+
+仅当工作实际受益于该层次结构时使用。
+
+### 里程碑
+
+史诗内的主要检查点。
+
+里程碑应产出可审查的结果或决策点。
+
+### 交付物
+
+任务、步骤或执行器预期的具体输出。
+
+交付物可以是：
+
+- 实现结果
+- 报告
+- 审查摘要
+- 模式
+- 策略文件
+- 生成的制品
+- 可发布的资产
+
+---
+
+## 治理行动术语
+
+### 接收
+
+接收并初步框定任务的行为。
+
+### 分发
+
+选择合适的执行器或路径的行为。
+
+### 委托
+
+将执行分配给下层或更合适的执行器同时保持顶层治理的行为。
+
+委托不是失去控制。
+
+### 审查
+
+对质量、连贯性、完整性、适配度或就绪性的评估。
+
+审查与批准不同。
+
+### 批准
+
+决定行动是否可以进行的关卡。
+
+批准与审查不同。
+
+### 升级
+
+将任务、风险或决策向上移动到更严格或更高权威路径的行为。
+
+### 重规划
+
+在失败、拒绝、不匹配或条件变化后的结构化计划变更。
+
+### 否决
+
+阻止提议路径的治理拒绝，因为其风险过高、不够清晰、破坏性过强或不够健全。
+
+---
+
+## 层次术语
+
+### 根层
+
+工作空间的始终加载顶层。
+
+此层包含根文件，如：
 
 - `AGENTS.md`
 - `SOUL.md`
@@ -254,157 +254,157 @@ This layer contains root files such as:
 - `MEMORY.md`
 - `BOOT.md`
 
-The root layer must remain thin.
+根层必须保持精简。
 
-### retrieval layer
+### 检索层
 
-The layer containing longer or lower-frequency reference material that should be searched or retrieved on demand rather than injected every time.
+包含应按需搜索或检索而非每次注入的较长或较低频参考材料的层。
 
-Typical retrieval-layer materials live in:
+典型的检索层材料存在于：
 
 - `governance/`
 - `integrations/`
 - `memory/`
 
-### contract layer
+### 契约层
 
-The machine-readable structure layer.
+机器可读的结构层。
 
-Typical contents include JSON Schema and structured packet definitions.
+典型内容包括 JSON Schema 与结构化的数据包定义。
 
-### policy layer
+### 策略层
 
-The machine-readable rule layer.
+机器可读的规则层。
 
-Typical contents include:
+典型内容包括：
 
-- allow/deny logic
-- thresholds
-- transition rules
-- approval rules
-- memory write rules
+- 允许/拒绝逻辑
+- 阈值
+- 转换规则
+- 审批规则
+- 记忆写入规则
 
-### integration layer
+### 集成层
 
-The layer describing how the workspace connects to specific executors, tools, or systems.
-
----
-
-## Memory Terms
-
-### memory
-
-Retained information intended to improve future judgment, continuity, or cooperation.
-
-Memory is not the same as logs, transcripts, or raw history.
-
-### long-term memory
-
-Durable memory intended to matter across sessions.
-
-In this workspace, `MEMORY.md` is the summary-and-navigation surface for long-term memory.
-
-### daily memory
-
-Short-term or current-context memory stored in `memory/YYYY-MM-DD.md`.
-
-Daily memory is bounded and provisional by default.
-
-### memory summary
-
-A compressed memory entry designed to preserve durable signal rather than process detail.
-
-### memory promotion
-
-The act of moving an item from temporary or local context into durable memory because it has proven reusable or strategically important.
-
-### memory hygiene
-
-The practice of removing, compressing, revising, or demoting memory so that it remains useful and low-noise.
-
-### lesson
-
-A reusable insight derived from friction, failure, review, or repetition.
-
-### durable lesson
-
-A lesson important enough to shape future architecture, routing, governance, or collaboration.
+描述工作空间如何连接到特定执行器、工具或系统的层。
 
 ---
 
-## State and Lifecycle Terms
+## 记忆术语
 
-### state
+### 记忆
 
-A condition label describing the current position of a task, step, review, approval, or lifecycle object.
+旨在改善未来判断、连续性或合作的保留信息。
 
-Use more specific terms where possible.
+记忆与日志、对话记录或原始历史不同。
 
-### task_state
+### 长期记忆
 
-The runtime condition of a task.
+旨在跨会话重要的持久记忆。
 
-### step_state
+在本工作空间中，`MEMORY.md` 是长期记忆的摘要与导航面。
 
-The runtime condition of a step.
+### 日常记忆
 
-### review_state
+存储在 `memory/YYYY-MM-DD.md` 中的短期或当前上下文记忆。
 
-The condition of the review process attached to a result or artifact.
+日常记忆默认是限定范围且临时的。
 
-### approval_state
+### 记忆摘要
 
-The condition of the approval process attached to an action or path.
+设计用于保留持久信号而非过程细节的压缩记忆条目。
 
-### lifecycle_state
+### 记忆晋升
 
-The durable administrative condition of a registered object.
+将条目从临时或本地上下文移动到持久记忆的行为，因为它已证明可复用或战略上重要。
 
-Lifecycle state is distinct from runtime execution state.
+### 记忆卫生
 
-### transition
+移除、压缩、修订或降级记忆以保持其有用且低噪音的实践。
 
-A legal movement from one state to another.
+### 教训
 
-### state transition table
+从摩擦、失败、审查或重复中得出的可复用洞见。
 
-A machine-readable or semi-structured definition of allowed state movements and their guards.
+### 持久教训
 
-### stalled
-
-A condition in which progress appears to have stopped and requires inspection.
-
-Stalled is not identical to failed.
-
-### blocked
-
-A condition in which progress cannot continue because a dependency, authority, or condition is missing.
-
-### paused
-
-A condition in which execution is intentionally stopped for later continuation.
-
-### failed
-
-A condition in which the current path did not succeed.
-
-### completed
-
-A condition in which the intended work succeeded sufficiently for closure.
+重要到足以塑造未来架构、分发、治理或合作的教训。
 
 ---
 
-## Risk Terms
+## 状态与生命周期术语
 
-### risk
+### 状态
 
-The likelihood and significance of harmful, costly, irreversible, or destabilizing outcomes.
+描述任务、步骤、审查、批准或生命周期对象当前位置的条件标签。
 
-### risk_level
+在可能时使用更具体的术语。
 
-A categorical risk label.
+### task_state（任务状态）
 
-The workspace currently recognizes:
+任务的运行时条件。
+
+### step_state（步骤状态）
+
+步骤的运行时条件。
+
+### review_state（审查状态）
+
+附加于结果或制品的审查过程的条件。
+
+### approval_state（批准状态）
+
+附加于行动或路径的批准过程的条件。
+
+### lifecycle_state（生命周期状态）
+
+注册对象的持久管理条件。
+
+生命周期状态与运行时执行状态不同。
+
+### 转换
+
+从一个状态到另一个状态的合法移动。
+
+### 状态转换表
+
+允许的状态移动及其防护条件的机器可读或半结构化定义。
+
+### 停滞
+
+进展似乎已停止并需要检查的条件。
+
+停滞与失败不同。
+
+### 阻塞
+
+因缺少依赖、权威或条件而无法继续进展的条件。
+
+### 暂停
+
+有意停止执行以待后续继续的条件。
+
+### 失败
+
+当前路径未成功的条件。
+
+### 完成
+
+预期工作成功到足以关闭的条件。
+
+---
+
+## 风险术语
+
+### 风险
+
+有害、昂贵、不可逆或不稳定结果的可能性和重要性。
+
+### risk_level（风险级别）
+
+分类风险标签。
+
+工作空间当前识别：
 
 - R0
 - R1
@@ -412,220 +412,220 @@ The workspace currently recognizes:
 - R3
 - R4
 
-### risk_score
+### risk_score（风险分数）
 
-A more granular numeric or scalar expression of risk.
+更细粒度的数字或标量风险表达。
 
-### risk_ceiling
+### risk_ceiling（风险上限）
 
-The highest risk level an agent or executor is permitted to handle.
+代理或执行器被允许处理的最高风险级别。
 
-### destructive action
+### 破坏性行动
 
-An action that can remove, overwrite, corrupt, revoke, or materially damage important state, memory, configuration, artifacts, or system structure.
+可以删除、覆盖、损坏、撤销或实质性损害重要状态、记忆、配置、制品或系统结构的行动。
 
-### authority-sensitive action
+### 权限敏感行动
 
-An action that touches permissions, registries, durable governance state, activation state, or other control-relevant objects.
+触及权限、注册表、持久治理状态、激活状态或其他控制相关对象的行动。
 
-### bounded interpretation
+### 有限解释
 
-A safe, limited interpretation used when ambiguity is minor and downside is low.
-
----
-
-## Structure and Contract Terms
-
-### schema
-
-A machine-readable definition of structure.
-
-A schema typically governs:
-
-- required fields
-- allowed types
-- enums
-- object shape
-- validation constraints
-
-### packet
-
-A structured object passed between control and execution layers.
-
-Typical examples include:
-
-- task packets
-- result packets
-- step objects
-
-### validator
-
-A mechanism that checks whether a structure, transition, or action satisfies required rules before proceeding.
-
-### policy
-
-A machine-readable or semi-structured rule set that governs decisions such as:
-
-- allow/deny
-- risk gating
-- approval gating
-- state movement
-- write permission
-
-### hardening
-
-The act of translating important prose rules into stronger machine-readable forms such as:
-
-- schema
-- policy
-- validator logic
-- state transition tables
-
-Hardening improves control and reduces interpretive drift.
+当模糊性较小且下行风险低时使用的安全、有限的解释。
 
 ---
 
-## Registry Terms
+## 结构与契约术语
 
-### registry
+### 模式
 
-A structured record system for durable governed objects.
+结构的机器可读定义。
 
-### agent registry
+模式通常管理：
 
-The registry of recognized agents and their governance-relevant metadata.
+- 必填字段
+- 允许的类型
+- 枚举
+- 对象形状
+- 验证约束
 
-### workflow registry
+### 数据包
 
-The registry of recognized workflows and their governance-relevant metadata.
+在控制层与执行层之间传递的结构化对象。
 
-### admission
+典型示例包括：
 
-The act of allowing an object into a registry or controlled system surface after validation.
+- 任务包
+- 结果包
+- 步骤对象
 
-### activation
+### 验证器
 
-The act of moving a workflow or similar object into active use.
+在继续之前检查结构、转换或行动是否满足必需规则的机制。
 
-Activation is not the same as existence.
+### 策略
 
----
+管理决策的机器可读或半结构化规则集，如：
 
-## Reporting Terms
+- 允许/拒绝
+- 风险门控
+- 批准门控
+- 状态移动
+- 写入权限
 
-### summary
+### 硬化
 
-A concise representation of the most important facts, decisions, or outcomes.
+将重要的文本规则翻译为更强的机器可读形式的行为，如：
 
-### status summary
+- 模式
+- 策略
+- 验证器逻辑
+- 状态转换表
 
-A compact update of current condition, progress, blockers, and notable changes.
-
-### report
-
-A structured communication artifact intended to support oversight, continuity, or decision-making.
-
-### artifact reference
-
-A pointer to an output, file, commit, record, or generated asset instead of inlining the full payload.
-
----
-
-## Root-Layer Control Terms
-
-### root inflation
-
-The failure mode in which root files absorb too much detail and stop functioning as a thin control surface.
-
-### downshift
-
-The act of moving content from a higher layer into a more appropriate lower layer.
-
-Examples:
-
-- from root file into `governance/`
-- from prose into `contracts/`
-- from durable memory into daily memory
-- from summary into a referenced lower-layer document
-
-### layer pollution
-
-The condition in which a file starts absorbing content that belongs to another layer.
-
-### session-critical
-
-Likely needed at session start across many sessions.
-
-### high-signal
-
-Dense in durable value relative to length and repetition.
+硬化改善控制并减少解释漂移。
 
 ---
 
-## Design-Method Terms
+## 注册表术语
 
-### first-principles reasoning
+### 注册表
 
-Reasoning that starts from fundamental constraints and purposes rather than habit, imitation, or decorative complexity.
+持久受管对象的结构化记录系统。
 
-### anti-drift
+### 代理注册表
 
-A posture that actively resists structural sprawl, conceptual duplication, prompt inflation, and loss of design clarity.
+认可的代理及其治理相关元数据的注册表。
 
-### bounded execution
+### 工作流注册表
 
-Execution constrained by role fit, context efficiency, and governance boundaries.
+认可的工作流及其治理相关元数据的注册表。
 
-### prompt inflation
+### 准入
 
-The condition in which always-loaded context grows large because detail that should have remained retrievable or lower-layer is promoted into root files.
+在验证后允许对象进入注册表或受控系统面的行为。
 
-### prose-only governance
+### 激活
 
-A condition in which important rules exist only in narrative form and lack sufficient machine-readable support.
+将工作流或类似对象移动到活跃使用的行为。
 
-This is acceptable temporarily, but dangerous if it becomes permanent for critical rules.
-
----
-
-## Canonical Distinctions
-
-### review vs approval
-
-- review = quality or readiness evaluation
-- approval = permission to proceed
-
-### task vs step
-
-- task = main practical unit of work
-- step = smaller bounded unit inside a task
-
-### root layer vs retrieval layer
-
-- root layer = always-loaded control surface
-- retrieval layer = on-demand detail layer
-
-### memory vs log
-
-- memory = selective continuity
-- log = historical record or running trace
-
-### delegation vs abandonment
-
-- delegation = routing execution downward while preserving governance
-- abandonment = loss of ownership or visibility
-
-### prose vs hardening
-
-- prose = human-readable meaning
-- hardening = stronger machine-readable control
+激活与存在不同。
 
 ---
 
-## Final Principle
+## 报告术语
 
-A governance system stays coherent when its key terms stay stable.
+### 摘要
 
-If names drift, meaning drifts.
-If meaning drifts, structure drifts.
-This glossary exists to keep the system legible as it grows.
+最重要的事实、决策或结果的简洁表达。
+
+### 状态摘要
+
+当前条件、进展、阻塞点与显著变化的紧凑更新。
+
+### 报告
+
+旨在支持监督、连续性或决策的结构化沟通制品。
+
+### 制品引用
+
+指向输出、文件、提交、记录或生成资产的指针，而非内联完整载荷。
+
+---
+
+## 根层控制术语
+
+### 根层膨胀
+
+根文件吸收过多细节并停止作为薄控制面运作的失败模式。
+
+### 下放
+
+将内容从更高层移动到更合适的下层的行为。
+
+示例：
+
+- 从根文件到 `governance/`
+- 从文本到 `contracts/`
+- 从持久记忆到日常记忆
+- 从摘要到引用的下层文档
+
+### 层污染
+
+文件开始吸收属于另一层的内容的条件。
+
+### 会话关键
+
+可能跨多会话在会话开始时需要的。
+
+### 高信号
+
+相对于长度和重复具有密集持久价值的。
+
+---
+
+## 设计方法术语
+
+### 第一性原理推理
+
+从基本约束和目的出发而非从习惯、模仿或装饰性复杂出发的推理。
+
+### 反漂移
+
+主动抵抗结构蔓延、概念重复、提示膨胀和设计清晰度丧失的姿态。
+
+### 受控执行
+
+受角色适配度、上下文效率和治理边界约束的执行。
+
+### 提示膨胀
+
+始终加载的上下文变得过大，因为本应保持可检索或下层的细节被提升到根文件的状况。
+
+### 纯文本治理
+
+重要规则仅以叙述形式存在且缺乏足够机器可读支持的状况。
+
+这在临时可接受，但如果对关键规则成为永久则是危险的。
+
+---
+
+## 规范区分
+
+### 审查 vs 批准
+
+- 审查 = 质量或就绪性评估
+- 批准 = 继续的许可
+
+### 任务 vs 步骤
+
+- 任务 = 工作的主要实践单元
+- 步骤 = 任务内部更小的有边界单元
+
+### 根层 vs 检索层
+
+- 根层 = 始终加载的控制面
+- 检索层 = 按需细节层
+
+### 记忆 vs 日志
+
+- 记忆 = 选择性连续性
+- 日志 = 历史记录或运行追踪
+
+### 委托 vs 放弃
+
+- 委托 = 保持治理的同时向下分发执行
+- 放弃 = 所有权或可见性的丧失
+
+### 文本 vs 硬化
+
+- 文本 = 人类可读的含义
+- 硬化 = 更强的机器可读控制
+
+---
+
+## 最终原则
+
+治理系统在其关键术语保持稳定时保持一致。
+
+如果名称漂移，含义就漂移。
+如果含义漂移，结构就漂移。
+本词汇表的存在是让系统在成长时保持可理解。

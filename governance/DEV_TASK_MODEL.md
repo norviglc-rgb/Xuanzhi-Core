@@ -1,525 +1,525 @@
-# DEV_TASK_MODEL.md
+# 开发任务模型
 
-## Purpose
+## 目的
 
-This document defines the development task model of the Xuanzhi workspace.
+本文档定义玄织工作空间的开发任务模型。
 
-Its purpose is to provide a stable semantic baseline for long-running development work, especially work delegated from Xuanzhi to Claude Code or other development executors.
+其目的在于为长期开发工作提供稳定的语义基线，特别是从玄织委托给 Claude Code 或其他开发执行器的工作。
 
-This document is normative for:
+本文档对以下内容具有规范性：
 
-- development work hierarchy
-- development-unit meaning
-- delivery expectations
-- checkpoint and review logic
-- bounded recovery logic
-- phase-level reporting expectations
+- 开发工作层级
+- 开发单元含义
+- 交付期望
+- 检查点与评审逻辑
+- 有界恢复逻辑
+- 阶段级汇报期望
 
-It is not a scheduler specification.
-It is not a Git workflow manual.
-It is not a full execution engine design.
+它不是调度器规范。
+它不是 Git 工作流手册。
+它不是完整的执行引擎设计。
 
-Its job is to define the controlled shape of development work.
-
----
-
-## Core Principle
-
-A good development task model should make it clear:
-
-- what unit of work is being discussed
-- what level of completion is expected
-- what kind of review or handoff should happen
-- where recovery should happen after failure
-- how long-running work remains governable
-
-A bad development task model creates hierarchy without control value.
-
-Therefore, this workspace uses hierarchy only where it improves:
-
-- clarity
-- recoverability
-- delegation
-- reporting
-- checkpoint quality
+其任务是定义开发工作的受控形态。
 
 ---
 
-## Canonical Hierarchy
+## 核心原则
 
-The canonical long-running development hierarchy is:
+一个好的开发任务模型应明确：
 
-`epic -> milestone -> task -> step`
+- 正在讨论什么工作单元
+- 期望什么完成级别
+- 应发生什么类型的评审或交接
+- 失败后应在何处恢复
+- 长期工作如何保持可治理
 
-Not every development request must use all four levels.
+一个坏的开发任务模型创造没有控制价值的层级。
 
-Use only the levels that add control value.
+因此，本工作空间仅在层级改善以下方面时使用它：
 
-### Minimal usage rule
-
-- small bounded work may use `task -> step`
-- medium work may use `milestone -> task -> step`
-- long-running complex work may use full `epic -> milestone -> task -> step`
-
-Do not force simple work into unnecessary hierarchy.
-
----
-
-## Unit Definitions
-
-## Epic
-
-An `epic` is the highest long-running development container.
-
-Use an epic when the work:
-
-- spans multiple meaningful milestones
-- cannot be responsibly tracked as one flat task
-- requires strategic continuity over time
-- benefits from periodic checkpointing and governance review
-
-An epic should answer:
-
-- what larger objective is being pursued
-- what major milestones define progress
-- when the epic should be considered completed, paused, failed, or cancelled
-
-### Epic should not be used for:
-
-- one-shot small code changes
-- short bounded fixes
-- tasks that do not materially benefit from hierarchy
+- 清晰度
+- 可恢复性
+- 委托
+- 汇报
+- 检查点质量
 
 ---
 
-## Milestone
+## 标准层级
 
-A `milestone` is a major delivery checkpoint inside an epic.
+标准的长期开发层级是：
 
-A milestone should produce something reviewable.
+`史诗 -> 里程碑 -> 任务 -> 步骤`
 
-Typical milestone outcomes include:
+并非每个开发请求都必须使用所有四个级别。
 
-- a completed implementation slice
-- a validated prototype
-- a refactor checkpoint
-- a stable spec package
-- a tested release candidate
-- a decision-ready research result
+仅使用增加控制价值的级别。
 
-A milestone exists to create a meaningful control point between “ongoing work” and “reviewable progress.”
+### 最小使用规则
 
-### Milestone should answer:
+- 小型有界工作可使用 `任务 -> 步骤`
+- 中等工作可使用 `里程碑 -> 任务 -> 步骤`
+- 长期复杂工作可使用完整 `史诗 -> 里程碑 -> 任务 -> 步骤`
 
-- what bounded progress should be achieved
-- what evidence demonstrates milestone completion
-- what review or approval gate follows
-- what happens if the milestone fails
+不要强制将简单工作放入不必要的层级中。
 
 ---
 
-## Task
+## 单元定义
 
-A `task` is the main practical unit of development work.
+## 史诗
 
-A task should be:
+`史诗` 是最高的长期开发容器。
 
-- understandable
-- bounded
-- delegable
-- reportable
-- reviewable at outcome level
+当工作具有以下特征时使用史诗：
 
-A task may be:
+- 跨越多个有意义的里程碑
+- 无法负责任地作为单一平面任务追踪
+- 需要随时间的战略连续性
+- 受益于周期性检查点和治理评审
 
-- a coding task
-- a refactor task
-- a bug-fix task
-- a documentation/spec task
-- a review task
-- a setup or integration task
+史诗应回答：
 
-A task is the default top-level work unit when epic/milestone hierarchy is not needed.
+- 正在追求什么更大目标
+- 哪些主要里程碑定义进展
+- 何时应认为史诗已完成、暂停、失败或取消
 
-### Task should answer:
+### 史诗不应用于：
 
-- what is being attempted
-- what deliverable is expected
-- what constraints apply
-- what counts as enough success for continuation or closure
+- 一次性小型代码变更
+- 短期有界修复
+- 不能从层级中实质性受益的任务
 
 ---
 
-## Step
+## 里程碑
 
-A `step` is the smallest bounded controller-routable execution unit.
+`里程碑` 是史诗内部的主要交付检查点。
 
-A step should normally have:
+里程碑应产出可评审的内容。
 
-- a near-term goal
-- a concrete action
-- explicit success criteria
-- rollback or recovery awareness
-- bounded risk and resource hints
+典型的里程碑结果包括：
 
-A step is not a long narrative.
-It is not a whole project.
-It is not a floating intention.
+- 完成的实现切片
+- 已验证的原型
+- 重构检查点
+- 稳定的规范包
+- 已测试的候选版本
+- 可决策的研究结果
 
-A step should be small enough to be:
+里程碑的存在是为了在"进行中的工作"和"可评审的进展"之间创建有意义的控制点。
 
-- reasoned about
-- routed
-- reviewed
-- retried
-- replanned
+### 里程碑应回答：
 
-### Step contract alignment
+- 应实现什么有界进展
+- 什么证据证明里程碑完成
+- 接下来是什么评审或审批门禁
+- 如果里程碑失败会发生什么
 
-Where a formal step object is used, it should align with:
+---
+
+## 任务
+
+`任务` 是开发工作的主要实践单元。
+
+任务应当是：
+
+- 可理解的
+- 有界的
+- 可委托的
+- 可汇报的
+- 可在结果级别评审的
+
+任务可以是：
+
+- 编码任务
+- 重构任务
+- 缺陷修复任务
+- 文档/规范任务
+- 评审任务
+- 设置或集成任务
+
+当不需要史诗/里程碑层级时，任务是默认的顶级工作单元。
+
+### 任务应回答：
+
+- 正在尝试什么
+- 期望什么交付物
+- 适用什么约束
+- 什么算作足够成功以继续或关闭
+
+---
+
+## 步骤
+
+`步骤` 是最小的有界控制器可路由执行单元。
+
+步骤通常应当具有：
+
+- 近期目标
+- 具体动作
+- 明确的成功标准
+- 回滚或恢复意识
+- 有界的风险和资源提示
+
+步骤不是长篇叙述。
+它不是整个项目。
+它不是漂浮的意图。
+
+步骤应足够小以：
+
+- 可推理
+- 可路由
+- 可评审
+- 可重试
+- 可重规划
+
+### 步骤契约对齐
+
+当使用正式步骤对象时，它应与以下文档对齐：
 
 - `main-agent-step.schema.json`
 
 ---
 
-## Deliverable Expectations by Level
+## 按级别的交付期望
 
-## Epic deliverable
+## 史诗交付物
 
-An epic should produce a major outcome or major sequence of validated outcomes.
+史诗应产出重大结果或经验证的重大结果序列。
 
-Examples:
+示例：
 
-- a completed subsystem
-- a major multi-stage implementation
-- a stable and accepted architecture transition
-- a release-ready capability family
+- 完成的子系统
+- 重大多阶段实现
+- 稳定且已接受的架构转换
+- 可发布的能力族
 
-### Epic deliverable form
+### 史诗交付物形式
 
-Usually summary-level, milestone-linked, and strategic.
-
----
-
-## Milestone deliverable
-
-A milestone should produce a reviewable checkpoint.
-
-Examples:
-
-- code implemented and testable
-- spec set revised and internally coherent
-- pipeline built and validated
-- integration milestone completed
-- decision package ready for approval
-
-### Milestone deliverable form
-
-Concrete enough for review, not merely “work was done.”
+通常是摘要级别、里程碑链接且战略性的。
 
 ---
 
-## Task deliverable
+## 里程碑交付物
 
-A task should produce a direct practical result.
+里程碑应产出可评审的检查点。
 
-Examples:
+示例：
 
-- file changes
-- tested fix
-- refactor outcome
-- short design output
-- integration update
-- implementation summary
+- 已实现且可测试的代码
+- 已修订且内部一致的规范集
+- 已构建且已验证的管道
+- 已完成的集成里程碑
+- 准备审批的决策包
 
-### Task deliverable form
+### 里程碑交付物形式
 
-Task deliverables should be expressible in:
+足够具体以供评审，不仅仅是"做了工作"。
+
+---
+
+## 任务交付物
+
+任务应产出直接的实践结果。
+
+示例：
+
+- 文件变更
+- 已测试的修复
+- 重构结果
+- 短设计输出
+- 集成更新
+- 实现摘要
+
+### 任务交付物形式
+
+任务交付物应可在以下形式中表达：
 
 - `dev_result_packet.schema.json`
-- status reporting
-- artifact references
-- review summary
+- 状态汇报
+- 制品引用
+- 评审摘要
 
 ---
 
-## Step deliverable
+## 步骤交付物
 
-A step should produce one bounded local outcome.
+步骤应产出一个有界的本地结果。
 
-Examples:
+示例：
 
-- a file update
-- a command result
-- a patch proposal
-- a validation result
-- a short review finding
-- a structured decision output
+- 文件更新
+- 命令结果
+- 补丁提案
+- 验证结果
+- 短评审发现
+- 结构化决策输出
 
 ---
 
-## Relationship to Executor Model
+## 与执行器模型的关系
 
-This workspace currently uses a bounded executor strategy.
+本工作空间当前使用有界执行器策略。
 
-### Xuanzhi
+### 玄织
 
-Xuanzhi is responsible for:
+玄织负责：
 
-- framing development work
-- delegating development work
-- reviewing structured results
-- preserving governance coherence
-- summarizing progress
-- handling escalation when needed
+- 界定开发工作
+- 委托开发工作
+- 评审结构化结果
+- 保持治理一致性
+- 汇总进展
+- 在需要时处理升级
 
-Xuanzhi is not the default heavy development executor.
+玄织不是默认的重度开发执行器。
 
 ### Claude Code
 
-Claude Code is the default development executor.
+Claude Code 是默认的开发执行器。
 
-Claude Code is expected to handle:
+Claude Code 预期处理：
 
-- long-running development execution
-- implementation iteration
-- code changes
-- milestone progression
-- internal development-team style coordination where useful
+- 长期开发执行
+- 实现迭代
+- 代码变更
+- 里程碑进展
+- 内部开发团队风格的协调（如有用）
 
-### Other systems
+### 其他系统
 
-Other executors may support narrow or workflow-like parts of development,
-but do not replace the main development executor role unless explicitly justified.
-
----
-
-## Canonical Development Flow
-
-A common long-running development flow is:
-
-`intake -> planning -> task packet -> executor run -> result packet -> review -> next decision`
-
-When hierarchy is used, this becomes:
-
-`epic framing -> milestone planning -> task delegation -> step execution -> result review -> milestone decision -> epic continuation`
-
-This model supports:
-
-- clear delegation
-- bounded execution
-- structured reporting
-- controlled failure handling
+其他执行器可支持开发的狭窄或工作流式部分，
+但除非明确证明合理，否则不取代主要开发执行器角色。
 
 ---
 
-## Commit Rule
+## 标准开发流程
 
-Meaningful development progression should produce commit-worthy checkpoints.
+常见的长期开发流程是：
 
-### Default rule
+`接收 -> 规划 -> 任务包 -> 执行器运行 -> 结果包 -> 评审 -> 下一个决策`
 
-Each meaningful stage should commit.
+当使用层级时，这变为：
 
-This does not mean “every tiny keystroke.”
+`史诗界定 -> 里程碑规划 -> 任务委托 -> 步骤执行 -> 结果评审 -> 里程碑决策 -> 史诗继续`
 
-It means that meaningful progress slices should not remain uncheckpointed for too long.
+此模型支持：
 
-### Why
-
-Stage-level commits improve:
-
-- recoverability
-- reviewability
-- traceability
-- handoff clarity
-- failure containment
-
-This rule is especially important for long-running development work.
+- 清晰委托
+- 有界执行
+- 结构化汇报
+- 受控失败处理
 
 ---
 
-## Review Rule
+## 提交规则
 
-Development work should not be considered complete merely because execution stopped.
+有意义的开发进展应产出值得提交的检查点。
 
-Review is the checkpoint between “produced” and “accepted.”
+### 默认规则
 
-### Typical review moments
+每个有意义的阶段都应提交。
 
-- step result review where needed
-- task result review
-- milestone completion review
-- delivery review before closure or merge
+这不意味着"每次微小的按键"。
 
-### Review questions
+它意味着有意义的进展切片不应太久未检查点。
 
-At minimum, review should consider:
+### 为什么
 
-- was the intended objective met
-- is the result coherent
-- did risk change
-- are blockers explicit
-- is the next step clear
-- is the deliverable actually usable
+阶段级提交改善：
 
----
+- 可恢复性
+- 可评审性
+- 可追溯性
+- 交接清晰度
+- 失败遏制
 
-## Failure and Recovery Rule
-
-Failure should not immediately collapse the whole hierarchy unless the failure genuinely propagates upward.
-
-### Step failure
-
-Default next action:
-
-- retry if bounded and justified
-- otherwise replan the step or task path
-
-### Task failure
-
-Default next action:
-
-- replan the task
-- or escalate if the task cannot be responsibly resolved in the current path
-
-### Milestone failure
-
-Default next action:
-
-- replan the milestone
-
-Milestone failure does not automatically imply epic failure.
-
-### Epic failure
-
-Epic failure should be reserved for cases where the broader objective is no longer viable under the current constraints or governance posture.
+此规则对于长期开发工作特别重要。
 
 ---
 
-## Retry Rule
+## 评审规则
 
-Retries are bounded.
+开发工作不应仅因执行停止就算作完成。
 
-Default maximum:
+评审是"已产出"和"已接受"之间的检查点。
+
+### 典型评审时刻
+
+- 需要时的步骤结果评审
+- 任务结果评审
+- 里程碑完成评审
+- 关闭或合并前的交付评审
+
+### 评审问题
+
+至少，评审应考虑：
+
+- 是否达成了预期目标
+- 结果是否连贯
+- 风险是否变化
+- 阻塞是否明确
+- 下一步是否清晰
+- 交付物是否真正可用
+
+---
+
+## 失败与恢复规则
+
+失败不应立即导致整个层级崩溃，除非失败确实向上传播。
+
+### 步骤失败
+
+默认下一个动作：
+
+- 如果有界且合理则重试
+- 否则重规划步骤或任务路径
+
+### 任务失败
+
+默认下一个动作：
+
+- 重规划任务
+- 或如果任务无法在当前路径上负责任地解决则升级
+
+### 里程碑失败
+
+默认下一个动作：
+
+- 重规划里程碑
+
+里程碑失败不自动意味着史诗失败。
+
+### 史诗失败
+
+史诗失败应保留给在当前约束或治理姿态下更广泛目标不再可行的情况。
+
+---
+
+## 重试规则
+
+重试是有界的。
+
+默认最大值：
 
 `max_retry = 2`
 
-This should be interpreted as bounded repetition of the same or near-identical failing path, not an invitation to rename the same failure repeatedly.
+这应被解释为相同或近似相同失败路径的有界重复，而非重复重命名相同失败的邀请。
 
-After retry limit is reached, the default next action is:
+达到重试限制后，默认下一个动作是：
 
-- replan
-- or escalate if necessary
-
----
-
-## Replan Rule
-
-Replan is the normal recovery posture after bounded failure.
-
-Replan should preserve:
-
-- still-valid work
-- still-valid assumptions
-- useful artifacts
-- useful lessons
-
-Replan should replace:
-
-- broken path logic
-- failing execution shape
-- poor executor fit
-- invalid assumptions
-
-Replan is not panic reset.
-It is controlled redesign.
+- 重规划
+- 或如有必要则升级
 
 ---
 
-## Escalation Rule
+## 重规划规则
 
-Escalation should be used when:
+重规划是有界失败后的正常恢复姿态。
 
-- authority is insufficient
-- risk is too high
-- repeated recovery fails
-- review conflict cannot be resolved locally
-- milestone or task direction is no longer trustworthy
-- human intervention is required by policy
+重规划应保留：
 
-Escalation is a governance mechanism, not a dramatic label.
+- 仍然有效的工作
+- 仍然有效的假设
+- 有用的制品
+- 有用的教训
 
----
+重规划应替换：
 
-## Long-Running Development Window
+- 破损的路径逻辑
+- 失败的执行形态
+- 糟糕的执行器适配
+- 无效的假设
 
-A single active run window for long-running development is treated as bounded.
-
-Default active window:
-
-`24 hours`
-
-This means long-running development should be checkpointed and reviewed periodically rather than treated as one endless uninterrupted block.
-
-Typical expectations after a long active window:
-
-- progress summary
-- checkpoint or commit
-- blocker identification
-- continuation decision
+重规划不是恐慌重置。
+它是受控重新设计。
 
 ---
 
-## Reporting Expectations
+## 升级规则
 
-Long-running development must remain reportable.
+当以下情况时应使用升级：
 
-At minimum, reporting should support visibility into:
+- 权限不足
+- 风险过高
+- 重复恢复失败
+- 评审冲突无法在本地解决
+- 里程碑或任务方向不再可信
+- 策略要求人工干预
 
-- active epics
-- active milestones
-- active tasks
-- running executors
-- blockers
-- stalled work
-- recently completed work
-- review outcomes
-- replan or escalation events
-
-The task model exists partly to make these reports meaningful.
+升级是治理机制，不是戏剧性标签。
 
 ---
 
-## Development Unit Selection Guidance
+## 长期开发窗口
 
-### Use only `task -> step` when:
+长期开发的单一活跃运行窗口是限定范围的。
 
-- the work is small and bounded
-- failure does not require strategic regrouping
-- review can happen at task level
-- hierarchy would mostly add ceremony
+默认活跃窗口：
 
-### Use `milestone -> task -> step` when:
+`24 小时`
 
-- the work has multiple bounded delivery checkpoints
-- review quality matters between work slices
-- task grouping meaningfully improves control
+这意味着长期开发应周期性检查点和评审，而非作为一个无尽的不间断块。
 
-### Use full `epic -> milestone -> task -> step` when:
+长时间活跃窗口后的典型期望：
 
-- the work is long-running
-- the work spans multiple meaningful phases
-- governance continuity matters across many sessions
-- strategic checkpointing is necessary
-
-Hierarchy should be earned by control value.
+- 进展摘要
+- 检查点或提交
+- 阻塞识别
+- 继续决策
 
 ---
 
-## Relation to Other Documents
+## 汇报期望
 
-This document should align with:
+长期开发必须保持可汇报。
+
+至少，汇报应支持以下可见性：
+
+- 活跃史诗
+- 活跃里程碑
+- 活跃任务
+- 运行中的执行器
+- 阻塞
+- 停滞的工作
+- 近期完成的工作
+- 评审结果
+- 重规划或升级事件
+
+任务模型的存在部分是为了使这些汇报有意义。
+
+---
+
+## 开发单元选择指导
+
+### 仅使用 `任务 -> 步骤` 当：
+
+- 工作小型且有界
+- 失败不需要战略重组
+- 评审可在任务级别进行
+- 层级主要增加仪式
+
+### 使用 `里程碑 -> 任务 -> 步骤` 当：
+
+- 工作有多个有界交付检查点
+- 工作切片之间的评审质量重要
+- 任务分组有意义地改善控制
+
+### 使用完整 `史诗 -> 里程碑 -> 任务 -> 步骤` 当：
+
+- 工作是长期的
+- 工作跨越多个有意义的阶段
+- 治理连续性在多个会话中重要
+- 战略检查点是必要的
+
+层级应通过控制价值获得。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文档对齐：
 
 - `STATE_MACHINE.md`
 - `RISK_MODEL.md`
@@ -528,34 +528,34 @@ This document should align with:
 - `contracts/dev_task_packet.schema.json`
 - `contracts/dev_result_packet.schema.json`
 
-This document defines development-unit meaning.
+本文档定义开发单元含义。
 
-State behavior belongs in the state machine.
-Risk posture belongs in the risk model.
-Trace behavior belongs in the trace specification.
-
----
-
-## Failure Modes This Model Should Prevent
-
-This model exists partly to prevent:
-
-- flat unstructured long-running work
-- fake hierarchy with no control purpose
-- milestone-less drift
-- executor overload at the top layer
-- repeated failure without bounded recovery
-- work that cannot be summarized or reviewed coherently
-- development progress that cannot be checkpointed
+状态行为属于状态机。
+风险姿态属于风险模型。
+追踪行为属于追踪规范。
 
 ---
 
-## Final Principle
+## 本模型应防止的失败模式
 
-A good development task model makes long-running work easier to govern, easier to recover, and easier to review.
+本模型的存在部分是为了防止：
 
-If hierarchy does not improve control, it should not exist.
+- 平面无结构的长期工作
+- 没有控制目的的虚假层级
+- 无里程碑的漂移
+- 顶层执行器过载
+- 没有有界恢复的重复失败
+- 无法连贯汇总或评审的工作
+- 无法检查点的开发进展
 
-The correct model is not the most elaborate one.
+---
 
-It is the one that keeps development legible, delegated, and recoverable.
+## 最终原则
+
+一个好的开发任务模型使长期工作更易于治理、更易于恢复、更易于评审。
+
+如果层级不改善控制，它就不应存在。
+
+正确的模型不是最复杂的那个。
+
+它是使开发可读、可委托且可恢复的那个。

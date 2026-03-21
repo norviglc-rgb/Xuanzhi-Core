@@ -1,488 +1,488 @@
 # CLAUDE_CODE_EXECUTION_SPEC.md
 
-## Purpose
+## 文档目的
 
-This document defines how Claude Code is used as the default development executor in the Xuanzhi workspace.
+本文档定义 Claude Code 如何作为 Xuanzhi 工作空间中的默认开发执行器使用。
 
-Its purpose is to provide a stable execution integration baseline for:
+其目的是为以下场景提供稳定的执行集成基线：
 
-- long-running development work
-- repository-local implementation
-- structured handoff from Xuanzhi
-- bounded execution and reporting
-- development checkpointing
-- recovery after failure
-- alignment with repo, review, and merge flow
+- 长周期开发工作
+- 仓库本地实现
+- 从 Xuanzhi 的结构化交接
+- 受控的执行与汇报
+- 开发检查点管理
+- 失败后的恢复
+- 与仓库、评审、合并流程的对齐
 
-This document is normative for Claude Code execution posture.
+本文档对 Claude Code 执行姿态具有规范性约束。
 
-It is not a prompt file.
-It is not a full Claude Code product manual.
-It is not a substitute for repository governance, risk policy, or runtime trace.
+它不是提示词文件。
+它不是完整的 Claude Code 产品手册。
+它不能替代仓库治理、风险策略或运行时追踪。
 
-Its job is to define how Claude Code should fit into the governed execution model.
-
----
-
-## Core Principle
-
-Claude Code is the default development executor, not the governance core.
-
-Xuanzhi governs.
-Claude Code executes development.
-
-A good integration should make it clear:
-
-- when work should be delegated to Claude Code
-- what information Claude Code should receive
-- what Claude Code should be expected to produce
-- when checkpoints, review, or escalation should happen
-- how long-running development remains governable
-
-A bad integration turns Claude Code into either:
-
-- an unbounded autonomous black box
-or
-- a tightly micromanaged top-layer burden
-
-This workspace prefers bounded delegated execution.
+它的职责是定义 Claude Code 应如何融入受治理的执行模型。
 
 ---
 
-## Role of Claude Code
+## 核心原则
 
-Claude Code is the default executor for implementation-heavy development work.
+Claude Code 是默认的开发执行器，而非治理核心。
 
-It is best suited for:
+Xuanzhi 负责治理。
+Claude Code 负责执行开发。
 
-- long-running software development
-- code changes inside repositories
-- iterative implementation and testing
-- bounded refactor work
-- development milestone progression
-- internal development-team style coordination where useful
+良好的集成应当明确：
 
-Claude Code is not the final governance authority.
+- 何时应将工作委托给 Claude Code
+- Claude Code 应接收什么信息
+- 应期待 Claude Code 产出什么
+- 何时应进行检查点、评审或升级
+- 长周期开发如何保持可治理性
 
-Claude Code does not replace:
+糟糕的集成会将 Claude Code 变成：
 
-- Xuanzhi task framing
-- Xuanzhi routing
-- Xuanzhi risk-aware control posture
-- Xuanzhi summary and reporting role
-- approval or escalation gates
+- 一个无边界自主的黑盒
+- 或者
+- 一个被紧密微观管理的顶层负担
 
----
-
-## When to Use Claude Code
-
-Claude Code should usually be selected when work is mainly:
-
-- development-heavy
-- repository-centered
-- long-running
-- implementation-focused
-- iterative and test-driven
-- likely to benefit from subtask decomposition or internal execution coordination
-
-Examples:
-
-- implementing a feature
-- fixing a bug
-- performing a non-trivial refactor
-- updating code plus tests
-- carrying out a multi-step development milestone
-- executing a bounded development spike or prototype
-
-Claude Code should not be the default choice for:
-
-- pure governance reasoning
-- lightweight summarization
-- low-risk read-only inspection
-- simple planning with no heavy execution
-- tasks better handled by existing workflow systems
-- tasks that are primarily publishing, media generation, or narrow external automation
+本工作空间采用受控的委托执行模式。
 
 ---
 
-## Relationship to Xuanzhi
+## Claude Code 的角色
 
-Xuanzhi remains the control plane.
+Claude Code 是实现密集型开发工作的默认执行器。
 
-### Xuanzhi responsibilities
+它最适合：
 
-Xuanzhi is responsible for:
+- 长周期软件开发
+- 仓库内的代码变更
+- 迭代式实现与测试
+- 限定范围的重构工作
+- 开发里程碑推进
+- 内部开发团队风格的协调（在有用时）
 
-- understanding the user's real task
-- framing the development work
-- selecting Claude Code when appropriate
-- assigning risk and approval posture
-- deciding what success means
-- summarizing progress and outcomes
-- deciding when to review, replan, escalate, or stop
-- maintaining summary-level memory and reporting
+Claude Code 不是最终治理权威。
 
-### Claude Code responsibilities
+Claude Code 不能替代：
 
-Claude Code is responsible for:
-
-- executing delegated development work
-- operating inside the repo-local work context
-- producing code and related artifacts
-- checkpointing meaningful progress
-- reporting bounded results back to Xuanzhi
-- surfacing blockers clearly
-- proposing next steps when useful
-
-### Principle
-
-Xuanzhi should not micromanage every keystroke.
-
-Claude Code should not silently become self-governing.
+- Xuanzhi 的任务框架
+- Xuanzhi 的路由
+- Xuanzhi 的风险感知控制姿态
+- Xuanzhi 的汇总与汇报角色
+- 审批或升级关卡
 
 ---
 
-## Canonical Handoff Model
+## 何时使用 Claude Code
 
-The preferred handoff path is:
+当工作主要具备以下特征时，通常应选择 Claude Code：
 
-Xuanzhi -> development task packet -> Claude Code -> development result packet -> Xuanzhi review
+- 开发密集型
+- 以仓库为中心
+- 长周期
+- 以实现为核心
+- 迭代式且测试驱动
+- 可能受益于子任务分解或内部执行协调
 
-### Preferred packet contracts
+示例：
 
-This integration should align with:
+- 实现一个功能
+- 修复一个缺陷
+- 执行非平凡的重构
+- 更新代码及测试
+- 执行多步骤开发里程碑
+- 执行限定范围的开发探索或原型
+
+Claude Code 不应作为以下场景的默认选择：
+
+- 纯治理推理
+- 轻量级汇总
+- 低风险的只读检查
+- 无繁重执行的简单规划
+- 更适合由现有工作流系统处理的任务
+- 主要涉及发布、媒体生成或狭窄外部自动化的任务
+
+---
+
+## 与 Xuanzhi 的关系
+
+Xuanzhi 保持控制平面地位。
+
+### Xuanzhi 的职责
+
+Xuanzhi 负责：
+
+- 理解用户的真实任务
+- 框架化开发工作
+- 在适当时选择 Claude Code
+- 分配风险与审批姿态
+- 决定成功的定义
+- 汇总进度与结果
+- 决定何时评审、重规划、升级或停止
+- 维护摘要级记忆与汇报
+
+### Claude Code 的职责
+
+Claude Code 负责：
+
+- 执行委托的开发工作
+- 在仓库本地工作上下文内操作
+- 产出代码及相关产物
+- 对有意义的进度设置检查点
+- 向 Xuanzhi 汇报界定清晰的结果
+- 清晰地暴露阻塞点
+- 在有用时提出后续步骤建议
+
+### 原则
+
+Xuanzhi 不应微观管理每一次按键。
+
+Claude Code 不应默默地自我治理。
+
+---
+
+## 标准交接模型
+
+首选的交接路径是：
+
+Xuanzhi -> 开发任务包 -> Claude Code -> 开发结果包 -> Xuanzhi 评审
+
+### 首选包契约
+
+此集成应与以下文件对齐：
 
 - `contracts/dev_task_packet.schema.json`
 - `contracts/dev_result_packet.schema.json`
 
-### Optional step-level structure
+### 可选步骤级结构
 
-Where finer-grained controller-routable step planning is used, it should align with:
+当使用更细粒度的可路由步骤规划时，应与以下文件对齐：
 
 - `main-agent-step.schema.json`
 
-### Handoff principle
+### 交接原则
 
-Xuanzhi should pass:
+Xuanzhi 应传递：
 
-- what the task is
-- what the goal is
-- what the deliverable is
-- what constraints apply
-- what approval or risk posture applies
-- what reporting is required
+- 任务是什么
+- 目标是什么
+- 交付物是什么
+- 适用什么约束
+- 适用什么审批或风险姿态
+- 需要什么汇报
 
-Claude Code should return:
+Claude Code 应返回：
 
-- what was done
-- current status
-- changed artifacts
-- test/build results when relevant
-- blockers
-- next-step recommendation when useful
-
----
-
-## Repository Execution Posture
-
-Claude Code should operate inside a clear repository context.
-
-### Repo-local clarity expectations
-
-The repo should make it easy for Claude Code to identify:
-
-- code location
-- test location
-- docs location
-- scripts location
-- repo-local governance location
-
-This should align with the repository template baseline.
-
-### Repo-local execution principle
-
-Claude Code should work inside the repo shape rather than forcing the repo to adapt to improvisational execution behavior.
-
-Where project structure is unclear, Xuanzhi should prefer clarifying or normalizing the repo structure rather than allowing silent structural drift.
+- 做了什么
+- 当前状态
+- 变更的产物
+- 相关的测试/构建结果
+- 阻塞点
+- 有用时的后续步骤建议
 
 ---
 
-## Stage Commit Policy
+## 仓库执行姿态
 
-Meaningful development progression should be checkpointed.
+Claude Code 应在清晰的仓库上下文内操作。
 
-### Default rule
+### 仓库本地清晰度期望
 
-Each meaningful stage should commit.
+仓库应使 Claude Code 易于识别：
 
-This does not mean every tiny edit requires a commit.
+- 代码位置
+- 测试位置
+- 文档位置
+- 脚本位置
+- 仓库本地治理位置
 
-It means that meaningful work slices should not remain uncheckpointed for too long during long-running development.
+这应与仓库模板基线对齐。
 
-### Why
+### 仓库本地执行原则
 
-Stage commits improve:
+Claude Code 应在仓库形态内工作，而非强迫仓库适应即兴的执行行为。
 
-- recoverability
-- reviewability
-- traceability
-- comparison against prior state
-- replan quality after failure
-
-### Practical interpretation
-
-A meaningful stage is usually one that changes one of the following:
-
-- behavior
-- structure
-- tests
-- integration surface
-- milestone progress posture
+当项目结构不清晰时，Xuanzhi 应优先澄清或规范化仓库结构，而非允许静默的结构漂移。
 
 ---
 
-## Milestone Summary Policy
+## 阶段提交策略
 
-When a milestone boundary is reached, Claude Code should be able to produce a bounded milestone summary.
+有意义的开发进展应当设置检查点。
 
-A milestone summary should make it clear:
+### 默认规则
 
-- what was attempted
-- what was completed
-- what artifacts changed
-- what was validated
-- what remains blocked or uncertain
-- what the next decision point is
+每个有意义的阶段都应提交。
 
-The summary should be concise and reviewable.
+这不意味着每个微小编辑都需要一次提交。
 
-It should not be a giant development diary.
+它意味着有意义的切片不应在长周期开发中长时间不设检查点。
 
----
+### 为什么
 
-## Review Integration
+阶段提交改善：
 
-Claude Code execution output should be suitable for later review.
+- 可恢复性
+- 可评审性
+- 可追溯性
+- 与先前状态的对比
+- 失败后的重规划质量
 
-### Review expectations
+### 实践解读
 
-Results from Claude Code should support review of:
+一个有意义的阶段通常是改变以下内容之一：
 
-- objective fit
-- code or artifact coherence
-- validation status
-- blocker clarity
-- risk changes
-- continuation readiness
-
-### Review principle
-
-Claude Code should produce development output that can be reviewed.
-
-It should not require Xuanzhi to reconstruct the entire context from raw sprawl.
+- 行为
+- 结构
+- 测试
+- 集成面
+- 里程碑进展姿态
 
 ---
 
-## Failure and Recovery Posture
+## 里程碑汇总策略
 
-Claude Code is part of a bounded recovery model.
+当达到里程碑边界时，Claude Code 应能够产出界定清晰的里程碑汇总。
 
-### Step or task failure
+里程碑汇总应明确：
 
-If execution fails at a bounded level, the default next action is usually:
+- 尝试了什么
+- 完成了什么
+- 哪些产物发生了变化
+- 验证了什么
+- 什么仍然阻塞或不确定
+- 下一个决策点是什么
 
-- retry if the path is still justified and within retry bounds
-- otherwise replan
+汇总应简洁且可评审。
 
-### Milestone failure
-
-Default next action:
-
-- replan the milestone
-
-Milestone failure does not automatically imply whole-project failure.
-
-### Repeated failure
-
-When bounded retries are exhausted, the normal next action is not blind persistence.
-
-The normal next action is:
-
-- replan
-- or escalate if the path is too risky or too unclear
-
-### Principle
-
-Claude Code is expected to surface failure clearly, not hide it inside narrative optimism.
+它不应是冗长的开发日志。
 
 ---
 
-## Long-Running Development Window
+## 评审集成
 
-Long-running development should be treated as bounded active windows, not endless uninterrupted flow.
+Claude Code 的执行输出应适合后续评审。
 
-Default active window:
+### 评审期望
 
-`24 hours`
+来自 Claude Code 的结果应支持以下方面的评审：
 
-After a long active window, the system should expect:
+- 目标契合度
+- 代码或产物的连贯性
+- 验证状态
+- 阻塞点清晰度
+- 风险变化
+- 继续准备度
 
-- checkpoint or commit
-- progress summary
-- blocker status
-- continuation decision
+### 评审原则
 
-Claude Code does not need to stop existing work at exactly the boundary,
-but the governance model expects periodic reviewable checkpoints.
+Claude Code 应产出可评审的开发输出。
 
----
-
-## Reporting Expectations
-
-Claude Code should return results in a structure that supports Xuanzhi's reporting role.
-
-At minimum, reporting should be able to preserve:
-
-- task summary
-- status summary
-- changed files or artifact references
-- tests/checks run
-- blockers
-- next-step recommendation where useful
-
-### Reporting principle
-
-Prefer:
-
-- concise summaries
-- artifact references
-- bounded notes
-
-Avoid:
-
-- giant raw transcripts
-- unfiltered implementation chatter
-- verbose self-justification dumps
+它不应要求 Xuanzhi 从原始混乱中重建整个上下文。
 
 ---
 
-## Branch and Merge Posture
+## 失败与恢复姿态
 
-Claude Code should operate in a branch-aware development flow.
+Claude Code 是受控恢复模型的一部分。
 
-The default governed path remains:
+### 步骤或任务失败
 
-Issue -> Branch -> MR -> CI -> Review -> Merge
+如果执行在限定级别失败，默认的下一步操作通常是：
 
-### Branch expectations
+- 如果路径仍然合理且在重试边界内，则重试
+- 否则重规划
 
-Where branch policy applies, Claude Code should follow the relevant branch family and work in a branch-scoped path rather than mutating shared surfaces carelessly.
+### 里程碑失败
 
-### Merge principle
+默认下一步操作：
 
-Claude Code may prepare work for merge,
-but merge remains governed by CI, review, and approval posture where applicable.
+- 重规划里程碑
 
----
+里程碑失败不自动意味着整个项目失败。
 
-## Testing and Validation Posture
+### 重复失败
 
-Claude Code should validate development output whenever validation is relevant and feasible.
+当有限次数的重试耗尽时，正常的下一步操作不是盲目坚持。
 
-Typical validation expectations include:
+正常的下一步操作是：
 
-- tests
-- lint
-- build checks
-- bounded verification commands
-- explicit note when validation could not be completed
+- 重规划
+- 或者如果路径风险太高或太不清晰，则升级
 
-### Principle
+### 原则
 
-A development result without validation signal is weaker than one with explicit validation posture.
-
-If validation is not run, that should be stated clearly rather than implied away.
+预期 Claude Code 清晰地暴露失败，而非将其隐藏在叙事性的乐观中。
 
 ---
 
-## Internal Teaming Inside Claude Code
+## 长周期开发窗口
 
-Internal task decomposition or development-team style coordination may happen inside Claude Code when it improves execution.
+长周期开发应被视为限定范围的活跃窗口，而非无尽的不间断流。
 
-This is acceptable as long as:
+默认活跃窗口：
 
-- Xuanzhi remains the governance control plane
-- Claude Code remains inside bounded execution scope
-- outputs remain structured and reviewable
-- authority does not silently expand
-- trace and summary quality remain adequate
+`24 小时`
 
-### Principle
+在长活跃窗口后，系统应预期：
 
-Internal coordination is a tool of execution quality,
-not an excuse to move governance upward or sideways.
+- 检查点或提交
+- 进度汇总
+- 阻塞状态
+- 继续决策
 
----
-
-## Risk and Approval Interaction
-
-Claude Code execution does not bypass risk or approval posture.
-
-If a delegated task carries:
-
-- elevated risk
-- destructive potential
-- authority-sensitive consequences
-- merge or activation gates
-- structurally important change
-
-then execution should remain subject to the relevant review, approval, or escalation path.
-
-### Principle
-
-Executor competence is not permission.
+Claude Code 不需要在边界处精确停止现有工作，
+但治理模型预期周期性的可评审检查点。
 
 ---
 
-## Repo-Local Governance Awareness
+## 汇报期望
 
-Where a repo contains project-local governance under `/.governance`,
-Claude Code should treat it as repo-local operational context rather than global workspace policy.
+Claude Code 应以支持 Xuanzhi 汇报角色的结构返回结果。
 
-### Layer distinction
+至少，汇报应能够保留：
 
-- workspace-level governance -> main Xuanzhi workspace
-- repo-local governance -> target repository
+- 任务摘要
+- 状态摘要
+- 变更的文件或产物引用
+- 运行的测试/检查
+- 阻塞点
+- 有用时的后续步骤建议
 
-Claude Code should not silently rewrite governance layers without explicit task fit and permission.
+### 汇报原则
 
----
+优先：
 
-## Integration Boundary
+- 简洁的摘要
+- 产物引用
+- 简洁的备注
 
-This document intentionally does not define:
+避免：
 
-- full Claude Code prompt content
-- full Claude Code installation process
-- all Claude Code commands or flags
-- low-level runtime container details
-- controller implementation code
-- GitLab API specifics
-
-Those belong in:
-
-- product documentation
-- operational runbooks
-- GitLab integration specs
-- implementation-level setup or deployment docs
-
-This document stays useful only if it remains execution-posture focused.
+- 冗长的原始记录
+- 未过滤的实现闲谈
+- 冗长的自我辩护堆砌
 
 ---
 
-## Relation to Other Documents
+## 分支与合并姿态
 
-This document should align with:
+Claude Code 应在分支感知的开发流程中操作。
+
+默认受治理路径保持：
+
+议题 -> 分支 -> 合并请求 -> CI -> 评审 -> 合并
+
+### 分支期望
+
+当分支策略适用时，Claude Code 应遵循相关的分支族并在分支范围内工作，而非随意修改共享面。
+
+### 合并原则
+
+Claude Code 可以为合并准备工作，
+但合并仍受 CI、评审和审批姿态（在适用时）的治理。
+
+---
+
+## 测试与验证姿态
+
+Claude Code 应在验证相关且可行时验证开发输出。
+
+典型的验证期望包括：
+
+- 测试
+- 代码检查
+- 构建检查
+- 限定范围的验证命令
+- 当验证无法完成时的明确说明
+
+### 原则
+
+没有验证信号的开发结果弱于有明确验证姿态的结果。
+
+如果未运行验证，应清晰说明，而非暗示忽略。
+
+---
+
+## Claude Code 内部的团队协作
+
+当内部任务分解或开发团队风格的协调能改善执行时，可以在 Claude Code 内部进行。
+
+这是可接受的，只要：
+
+- Xuanzhi 保持治理控制平面地位
+- Claude Code 保持在受控的执行范围内
+- 输出保持结构化且可评审
+- 权限不静默扩展
+- 追踪和汇总质量保持充分
+
+### 原则
+
+内部协调是执行质量的工具，
+而非将治理向上或向侧面移动的借口。
+
+---
+
+## 风险与审批交互
+
+Claude Code 执行不绕过风险或审批姿态。
+
+如果委托的任务涉及：
+
+- 升高的风险
+- 破坏性潜力
+- 权限敏感的后果
+- 合并或激活关卡
+- 结构上重要的变更
+
+则执行仍应遵循相关的评审、审批或升级路径。
+
+### 原则
+
+执行器能力不是许可。
+
+---
+
+## 仓库本地治理感知
+
+当仓库在 `/.governance` 下包含项目本地治理时，
+Claude Code 应将其视为仓库本地的操作上下文，而非全局工作空间策略。
+
+### 层级区分
+
+- 工作空间级治理 -> 主 Xuanzhi 工作空间
+- 仓库本地治理 -> 目标仓库
+
+Claude Code 不应在没有明确任务契合和许可的情况下静默重写治理层。
+
+---
+
+## 集成边界
+
+本文档有意不定义：
+
+- 完整的 Claude Code 提示词内容
+- 完整的 Claude Code 安装过程
+- 所有 Claude Code 命令或标志
+- 低级运行时容器细节
+- 控制器实现代码
+- GitLab API 细节
+
+这些属于：
+
+- 产品文档
+- 运维手册
+- GitLab 集成规范
+- 实现级的设置或部署文档
+
+本文档只有保持聚焦于执行姿态才能保持有用。
+
+---
+
+## 与其他文档的关系
+
+本文档应与以下文件对齐：
 
 - `DEV_TASK_MODEL.md`
 - `STATE_MACHINE.md`
@@ -492,28 +492,28 @@ This document should align with:
 - `contracts/dev_task_packet.schema.json`
 - `contracts/dev_result_packet.schema.json`
 
-This document defines Claude Code execution posture.
+本文档定义 Claude Code 执行姿态。
 
-It does not replace risk, state, packet, or repo governance documents.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- top-layer execution overload
-- repo-local development without governance framing
-- long-running development with no checkpoints
-- development output too noisy to review
-- repeated failure without bounded recovery
-- branchless or structure-blind execution drift
-- executor capability being mistaken for approval authority
+它不替代风险、状态、包或仓库治理文档。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-Claude Code should carry the heavy development work, not the governance burden.
+本规范的存在部分是为了防止：
 
-The correct integration keeps Xuanzhi in control, keeps Claude Code effective, and keeps long-running development legible, checkpointed, and reviewable.
+- 顶层执行过载
+- 没有治理框架的仓库本地开发
+- 没有检查点的长周期开发
+- 太嘈杂而无法评审的开发输出
+- 没有受控恢复的重复失败
+- 无分支或无视结构的执行漂移
+- 执行器能力被误认为审批权限
+
+---
+
+## 最终原则
+
+Claude Code 应承担繁重的开发工作，而非治理负担。
+
+正确的集成使 Xuanzhi 保持控制，使 Claude Code 保持有效，使长周期开发保持可读、有检查点且可评审。

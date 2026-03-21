@@ -1,52 +1,55 @@
 # MEMORY.md
 
-## Stable Preferences
+## 稳定偏好
 
-- The user prefers critical, first-principles, anti-drift reasoning.
-- The user prefers strong architectural bones in the first version.
-- The user prefers root-layer files to remain thin and high-signal.
-- The user prefers detailed rules to move downward into retrieval layers rather than inflate always-loaded context.
-- The user prefers important governance rules to be progressively hardened into machine-readable constraints when justified.
-- The user prefers disciplined cooperation over obedience theater.
-
----
-
-## System Shape
-
-- 玄织 is the governance core and top-layer control surface.
-- OpenClaw is the main workspace for intake, routing, summary, memory discipline, and reporting.
-- Claude Code is the default executor for long-running development work.
-- FastGPT and other workflow systems may be used for workflow-facing or low-code execution, but they do not replace top-layer governance.
-- Specialized external systems may perform narrow execution and report upward.
-- The workspace should grow downward before it grows outward.
-- Root-layer files should remain narrow, stable, and session-critical.
+- 用户偏好批判性、第一性原理、反漂移的推理。
+- 用户偏好首版具有强健的架构骨架。
+- 用户偏好根层文件保持精简且高信号。
+- 用户偏好详细规则向下移动到检索层，而非膨胀始终加载的上下文。
+- 用户偏好重要的治理规则在有理由时逐步硬化为机器可读约束。
+- 用户偏好有纪律的合作而非服从表演。
 
 ---
 
-## Current Strategic Focus
+## 系统形态
 
-- Build an OpenClaw-compatible first-version workspace with a thin root layer.
-- Establish anti-drift guardrails before expanding the governance set.
-- Separate root-layer files, retrieval-layer specs, and machine-readable constraints cleanly.
-- Create a stable structured interface between 玄织 and Claude Code for long-running development.
-- Gradually convert critical governance rules from prose-only form into contracts, policies, validators, or state tables.
-
----
-
-## Durable Lessons
-
-- Root-layer prompt inflation is a primary architectural risk.
-- Prose-only governance becomes soft and contradictory over time.
-- Retrieval should absorb detail pressure instead of pushing detail upward.
-- Heavy execution should be delegated to the executor that best fits the work.
-- Phase review is necessary because design drift often appears as reasonable incremental additions.
-- System maturity depends more on boundary quality than on document quantity.
+- 玄织是治理核心与顶层控制面。
+- OpenClaw 是用于接收、分发、摘要、记忆纪律与报告的主工作空间。
+- Claude Code 是长时运行开发工作的默认执行器。
+- FastGPT 及其他工作流系统可用于工作流面向或低代码执行，但不替代顶层治理。
+- 专业外部系统可执行窄域执行并向上报告。
+- 工作空间应先向下生长，再向外生长。
+- 根层文件应保持精简、稳定且会话关键。
 
 ---
 
-## Navigation
+## 当前战略焦点
 
-- Root-layer operating files:
+- 构建一个与 OpenClaw 兼容的精简根层首版工作空间。
+- 在扩展治理集之前建立反漂移护栏。
+- 清晰分离根层文件、检索层规范与机器可读约束。
+- 在玄织与 Claude Code 之间为长时运行开发创建稳定的结构化接口。
+- 逐步将关键治理规则从纯文本形式转换为契约、策略、验证器或状态表。
+
+---
+
+## 持久教训
+
+- 根层提示膨胀是主要架构风险。
+- 纯文本治理随时间推移会变得软弱且自相矛盾。
+- 检索应吸收细节压力，而非将细节向上推。
+- 重型执行应委托给最适合该工作的执行器。
+- 阶段审查是必要的，因为设计漂移常以合理的增量添加形式出现。
+- 系统成熟度更依赖于边界质量而非文档数量。
+
+---
+
+## 导航
+
+- **项目索引** (快速检索所有文件用途)：
+  - `.claude/PROJECT_INDEX.md`
+
+- 根层运行文件：
   - `AGENTS.md`
   - `SOUL.md`
   - `USER.md`
@@ -55,30 +58,30 @@
   - `HEARTBEAT.md`
   - `BOOT.md`
 
-- Detailed governance specifications:
+- 详细治理规范：
   - `governance/`
 
-- Machine-readable contracts:
+- 机器可读契约：
   - `contracts/`
 
-- Machine-readable policy artifacts:
+- 机器可读策略制品：
   - `policies/`
 
-- Integration and executor-specific documents:
+- 集成与执行器特定文档：
   - `integrations/`
 
-- Workflow assets and pipeline materials:
+- 工作流资产与流水线材料：
   - `workflows/`
 
-- Daily or temporary notes:
+- 日常或临时笔记：
   - `memory/YYYY-MM-DD.md`
 
 ---
 
-## Final Rule
+## 最终规则
 
-This file is a long-term memory summary and navigation layer.
+本文件是长期记忆摘要与导航层。
 
-It should remain short, durable, and high-signal.
+它应保持简短、持久且高信号。
 
-If content becomes noisy, process-heavy, or overly detailed, it should be moved downward rather than accumulated here.
+如果内容变得噪杂、过程繁重或过于详细，应向下移动而非在此累积。

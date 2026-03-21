@@ -1,163 +1,163 @@
-# REPO_TEMPLATE_SPEC.md
+# 仓库模板规范
 
-## Purpose
+## 目的
 
-This document defines the repository template specification for the Xuanzhi workspace.
+本文档定义玄织工作空间的仓库模板规范。
 
-Its purpose is to provide a stable baseline for creating governed repositories that are:
+其目的在于为创建符合以下特征的受治理仓库提供稳定基线：
 
-- structurally legible
-- development-friendly
-- governance-compatible
-- automation-ready
-- reviewable
-- evolvable
+- 结构可读
+- 开发友好
+- 治理兼容
+- 自动化就绪
+- 可评审
+- 可演化
 
-This document is normative for repository template semantics.
+本文档对仓库模板语义具有规范性。
 
-It is not a GitLab API manual.
-It is not a CI implementation file.
-It is not a full bootstrap script.
+它不是 GitLab API 手册。
+它不是 CI 实现文件。
+它不是完整的引导脚本。
 
-Its job is to define what a governed repo template should contain, what directory and governance expectations apply, and how repo structure relates to the control model.
-
----
-
-## Core Principle
-
-A repo template should reduce ambiguity, not merely create folders.
-
-A good template should make it easier to answer:
-
-- where code belongs
-- where documentation belongs
-- where governance files belong
-- where tests belong
-- where scripts belong
-- where project-specific agents or workflows belong
-- how the repo should enter review and merge flow
-
-A bad template creates ceremony without control value.
-
-Therefore this workspace prefers a template model that is:
-
-- minimal by default
-- extensible by need
-- governance-aware
-- project-type aware
+其任务是定义受治理的仓库模板应包含什么、适用什么目录和治理期望、以及仓库结构与控制模型的关系。
 
 ---
 
-## Supported Repository Types
+## 核心原则
 
-This workspace recognizes the following canonical repository types:
+仓库模板应减少歧义，而不仅仅是创建文件夹。
 
-- `software_project`
-- `automation_project`
-- `agent_project`
-- `infra_project`
-- `knowledge_project`
-- `research_project`
+好的模板应使以下问题更容易回答：
 
-These types are governance-facing categories used to shape template defaults and expectations.
+- 代码属于哪里
+- 文档属于哪里
+- 治理文件属于哪里
+- 测试属于哪里
+- 脚本属于哪里
+- 项目特定的代理或工作流属于哪里
+- 仓库应如何进入评审和合并流程
+
+坏的模板创造没有控制价值的仪式。
+
+因此本工作空间偏好以下模板模型：
+
+- 默认最小
+- 按需扩展
+- 治理感知
+- 项目类型感知
+
+---
+
+## 支持的仓库类型
+
+本工作空间认可以下标准仓库类型：
+
+- `software_project`（软件项目）
+- `automation_project`（自动化项目）
+- `agent_project`（代理项目）
+- `infra_project`（基础设施项目）
+- `knowledge_project`（知识项目）
+- `research_project`（研究项目）
+
+这些类型是面向治理的类别，用于塑造模板默认值和期望。
 
 ### `software_project`
 
-Primary purpose:
+主要目的：
 
-- application or service development
-- library or module development
-- implementation-heavy code work
+- 应用或服务开发
+- 库或模块开发
+- 实现密集的代码工作
 
-Typical emphasis:
+典型重点：
 
 - `/src`
 - `/tests`
 - CI
-- review and delivery flow
+- 评审和交付流程
 
 ### `automation_project`
 
-Primary purpose:
+主要目的：
 
-- workflow automation
-- pipeline logic
-- integration tasks
-- schedulers or support automations
+- 工作流自动化
+- 管道逻辑
+- 集成任务
+- 调度器或支持性自动化
 
-Typical emphasis:
+典型重点：
 
 - `/scripts`
 - `/workflows`
 - `/docs`
-- operational governance
+- 操作治理
 
 ### `agent_project`
 
-Primary purpose:
+主要目的：
 
-- agent logic
-- agent-facing workflow design
-- control-plane or executor-facing code and config
+- 代理逻辑
+- 面向代理的工作流设计
+- 控制面或面向执行器的代码和配置
 
-Typical emphasis:
+典型重点：
 
 - `/agents`
 - `/workflows`
 - `/tools`
 - `/docs`
-- governance alignment
+- 治理对齐
 
 ### `infra_project`
 
-Primary purpose:
+主要目的：
 
-- deployment, runtime, configuration, or environment management
+- 部署、运行时、配置或环境管理
 
-Typical emphasis:
+典型重点：
 
 - `/scripts`
-- config management
-- CI and security discipline
-- stronger risk posture
+- 配置管理
+- CI 和安全纪律
+- 更强的风险姿态
 
 ### `knowledge_project`
 
-Primary purpose:
+主要目的：
 
-- structured documentation
-- knowledge base organization
-- governance materials
-- memory or retrieval-ready content
+- 结构化文档
+- 知识库组织
+- 治理材料
+- 记忆或可检索就绪的内容
 
-Typical emphasis:
+典型重点：
 
 - `/docs`
-- governance structure
-- low code footprint
-- change clarity
+- 治理结构
+- 低代码占用
+- 变更清晰度
 
 ### `research_project`
 
-Primary purpose:
+主要目的：
 
-- structured experiments
-- analysis
-- investigation
-- decision-support outputs
+- 结构化实验
+- 分析
+- 调查
+- 决策支持输出
 
-Typical emphasis:
+典型重点：
 
 - `/docs`
 - `/scripts`
-- optional `/src`
-- reproducibility and artifact traceability
+- 可选的 `/src`
+- 可复现性和制品可追溯性
 
 ---
 
-## Default Directory Structure
+## 默认目录结构
 
-Every governed repo should include the following default directories unless there is a strong reason not to:
+每个受治理仓库应包含以下默认目录，除非有充分理由不这样做：
 
 - `/docs`
 - `/src`
@@ -167,62 +167,62 @@ Every governed repo should include the following default directories unless ther
 
 ### `/docs`
 
-Purpose:
+目的：
 
-- human-readable project documentation
-- architecture notes
-- operational notes
-- design summaries
-- user or maintainer guidance
+- 人类可读的项目文档
+- 架构笔记
+- 操作笔记
+- 设计摘要
+- 用户或维护者指南
 
 ### `/src`
 
-Purpose:
+目的：
 
-- primary implementation source
-- production logic
-- library or service code
-- core execution code
+- 主要实现源
+- 生产逻辑
+- 库或服务代码
+- 核心执行代码
 
 ### `/tests`
 
-Purpose:
+目的：
 
-- automated tests
-- validation helpers
-- regression checks
-- quality verification assets
+- 自动化测试
+- 验证辅助工具
+- 回归检查
+- 质量验证资产
 
 ### `/scripts`
 
-Purpose:
+目的：
 
-- utility scripts
-- maintenance scripts
-- bounded local automation
-- project operations support
+- 实用脚本
+- 维护脚本
+- 有界的本地自动化
+- 项目操作支持
 
 ### `/.governance`
 
-Purpose:
+目的：
 
-- project-local governance files
-- project-local policy overlays
-- local conventions that should not pollute the root workspace
-- repo-scoped operational control notes
+- 项目本地治理文件
+- 项目本地策略覆盖
+- 不应污染根工作空间的本地约定
+- 仓库范围的操作控制笔记
 
-### Directory rule
+### 目录规则
 
-The default structure should be present where it improves clarity.
+默认结构应在改善清晰度的地方存在。
 
-Empty directories should not be forced if they add no control value,
-but omission should be intentional rather than accidental.
+如果不增加控制价值，不应强制空目录，
+但省略应是有意的而非偶然的。
 
 ---
 
-## Optional Directories
+## 可选目录
 
-The following directories are optional and should be added only when the project actually benefits from them:
+以下目录是可选的，仅当项目实际受益于它们时才应添加：
 
 - `/agents`
 - `/workflows`
@@ -230,130 +230,130 @@ The following directories are optional and should be added only when the project
 
 ### `/agents`
 
-Use when the repo contains:
+当仓库包含以下内容时使用：
 
-- agent definitions
-- agent-specific prompts or logic
-- executor-facing or control-agent-specific code/assets
+- 代理定义
+- 代理特定的提示或逻辑
+- 面向执行器或控制代理特定的代码/资产
 
 ### `/workflows`
 
-Use when the repo contains:
+当仓库包含以下内容时使用：
 
-- workflow definitions
-- reusable flow assets
-- workflow-oriented pipeline logic
-- low-code or structured orchestration materials
+- 工作流定义
+- 可复用的流程资产
+- 面向工作流的管道逻辑
+- 低代码或结构化编排材料
 
 ### `/tools`
 
-Use when the repo contains:
+当仓库包含以下内容时使用：
 
-- repo-local tools
-- helper executables
-- tooling wrappers
-- task-specific utility packages
+- 仓库本地工具
+- 辅助可执行文件
+- 工具包装器
+- 任务特定的实用包
 
-### Optional directory rule
+### 可选目录规则
 
-Do not add optional directories by default merely because they are available.
+不要仅因为可用就默认添加可选目录。
 
-They should exist only when they improve project legibility or execution fit.
+它们应仅在改善项目可读性或执行适配时存在。
 
 ---
 
-## Governance File Placement
+## 治理文件放置
 
-Project-level governance files should live under:
+项目级别的治理文件应存放在：
 
 - `/.governance`
 
-rather than polluting the main workspace root or scattering across arbitrary locations.
+而非污染主工作空间根或分散在任意位置。
 
-Typical project-local governance content may include:
+典型的项目本地治理内容可能包括：
 
-- project-local operating notes
-- local approval overlays
-- project-local risk notes
-- project-local conventions
-- project-local delivery or review checklists
+- 项目本地操作笔记
+- 本地审批覆盖
+- 项目本地风险笔记
+- 项目本地约定
+- 项目本地交付或评审检查清单
 
-### Placement rule
+### 放置规则
 
-Repo-local governance belongs to the repo.
-Workspace-wide governance belongs to the main Xuanzhi workspace.
+仓库本地治理属于仓库。
+工作空间范围的治理属于主玄织工作空间。
 
-Do not confuse the two layers.
-
----
-
-## Template and Root-Workspace Relation
-
-The repo template is not the same thing as the main OpenClaw workspace root.
-
-The main workspace root defines:
-
-- Xuanzhi top-layer control behavior
-- workspace-level governance
-- workspace-level memory and contracts
-
-A repo template defines:
-
-- project-level structure
-- project-local development surfaces
-- project-local governance placement
-- project-local CI and issue expectations
-
-### Principle
-
-A governed repo should be compatible with the main workspace,
-but it should not blindly duplicate the entire workspace root layer.
+不要混淆两个层级。
 
 ---
 
-## Issue Template Baseline
+## 模板与根工作空间的关系
 
-Every governed repo should support at least the following issue categories:
+仓库模板与主 OpenClaw 工作空间根不同。
 
-- `feature`
-- `bug`
-- `task`
-- `research`
-- `governance`
+主工作空间根定义：
 
-These categories are intentionally small.
+- 玄织顶层控制行为
+- 工作空间级别的治理
+- 工作空间级别的记忆和契约
+
+仓库模板定义：
+
+- 项目级别的结构
+- 项目本地开发面
+- 项目本地治理放置
+- 项目本地 CI 和问题期望
+
+### 原则
+
+受治理仓库应与主工作空间兼容，
+但不应盲目复制整个工作空间根层。
+
+---
+
+## 问题模板基线
+
+每个受治理仓库应至少支持以下问题类别：
+
+- `feature`（功能）
+- `bug`（缺陷）
+- `task`（任务）
+- `research`（研究）
+- `governance`（治理）
+
+这些类别有意保持小型。
 
 ### `feature`
 
-Use for new capability work.
+用于新能力工作。
 
 ### `bug`
 
-Use for defects, regressions, or incorrect behavior.
+用于缺陷、回归或不正确行为。
 
 ### `task`
 
-Use for bounded implementation or maintenance work not best described as feature or bug.
+用于不适合描述为功能或缺陷的有界实现或维护工作。
 
 ### `research`
 
-Use for investigation, comparison, uncertainty reduction, or exploratory decision support.
+用于调查、比较、不确定性降低或探索性决策支持。
 
 ### `governance`
 
-Use for policy, structure, workflow, review, or control-related changes.
+用于策略、结构、工作流、评审或控制相关的变更。
 
-### Issue baseline rule
+### 问题基线规则
 
-Issue taxonomy should stay small unless real volume proves the need for more categories.
+问题分类应保持小型，除非真实数量证明需要更多类别。
 
-Do not create category inflation early.
+不要早期创造类别膨胀。
 
 ---
 
-## Branch Naming Baseline
+## 分支命名基线
 
-The default branch families are:
+默认分支族是：
 
 - `feature/*`
 - `fix/*`
@@ -361,99 +361,99 @@ The default branch families are:
 - `infra/*`
 - `experiment/*`
 
-### Meaning
+### 含义
 
-- `feature/*` -> new capability work
-- `fix/*` -> bug or correction work
-- `research/*` -> investigation or analysis work
-- `infra/*` -> infrastructure, deployment, or operational work
-- `experiment/*` -> bounded experimental work not yet treated as stable product direction
+- `feature/*` -> 新能力工作
+- `fix/*` -> 缺陷或修正工作
+- `research/*` -> 调查或分析工作
+- `infra/*` -> 基础设施、部署或操作工作
+- `experiment/*` -> 尚未被视为稳定产品方向的有界实验工作
 
-### Branch rule
+### 分支规则
 
-Branch naming should communicate work intent.
+分支命名应传达工作意图。
 
-Do not create arbitrary branch naming schemes when a simple canonical set is sufficient.
-
----
-
-## CI Baseline
-
-Default CI checks should include:
-
-- lint
-- test
-- build
-- security scan
-
-### CI rule
-
-CI failure should block merge by default.
-
-This is a governance baseline, not an optional decoration.
-
-### Why
-
-The point is not perfection theater.
-
-The point is to preserve:
-
-- review quality
-- merge discipline
-- delivery confidence
-- recoverability
-
-### Flexibility rule
-
-The exact CI implementation may vary by project type,
-but the baseline expectation should remain.
+当简单的标准集合足够时，不要创建任意的分支命名方案。
 
 ---
 
-## Merge and Review Baseline
+## CI 基线
 
-Governed repos should support a merge flow consistent with:
+默认 CI 检查应包括：
+
+- lint（代码检查）
+- test（测试）
+- build（构建）
+- security scan（安全扫描）
+
+### CI 规则
+
+CI 失败默认应阻塞合并。
+
+这是治理基线，不是可选装饰。
+
+### 为什么
+
+目的不是完美表演。
+
+目的是保留：
+
+- 评审质量
+- 合并纪律
+- 交付信心
+- 可恢复性
+
+### 灵活性规则
+
+确切的 CI 实现可能因项目类型而异，
+但基线期望应保持。
+
+---
+
+## 合并与评审基线
+
+受治理仓库应支持与以下一致的合并流程：
 
 `Issue -> Branch -> MR -> CI -> Review -> Merge`
 
-This should be treated as the default controlled path.
+这应被视为默认受控路径。
 
-### Review posture
+### 评审姿态
 
-Review may be performed by:
+评审可由以下执行：
 
-- dedicated review agents
-- dedicated delivery review agents
-- humans when risk, ambiguity, or repeated failure justify escalation
+- 专门的评审代理
+- 专门的交付评审代理
+- 当风险、歧义或重复失败证明升级合理时由人工执行
 
-### Principle
+### 原则
 
-The repo template should make this path easier, not harder.
-
----
-
-## Automatic Repository Creation
-
-Xuanzhi may be allowed to create repos automatically where policy permits.
-
-### Automatic creation should still preserve:
-
-- repo type selection
-- directory structure fit
-- governance placement
-- issue template baseline
-- branch naming baseline
-- CI baseline
-
-Automatic creation should not mean ungoverned creation.
+仓库模板应使此路径更容易，而非更难。
 
 ---
 
-## Repository-Type Guidance
+## 自动仓库创建
 
-### `software_project` recommended layout
+在策略允许的地方，玄织可以被允许自动创建仓库。
 
-Strongly expected:
+### 自动创建仍应保留：
+
+- 仓库类型选择
+- 目录结构适配
+- 治理放置
+- 问题模板基线
+- 分支命名基线
+- CI 基线
+
+自动创建不意味着不受治理的创建。
+
+---
+
+## 仓库类型指导
+
+### `software_project` 推荐布局
+
+强烈预期：
 
 - `/src`
 - `/tests`
@@ -461,31 +461,31 @@ Strongly expected:
 - `/scripts`
 - `/.governance`
 
-Optional:
+可选：
 
 - `/tools`
 
-### `automation_project` recommended layout
+### `automation_project` 推荐布局
 
-Strongly expected:
+强烈预期：
 
 - `/scripts`
 - `/docs`
 - `/.governance`
 
-Often useful:
+通常有用：
 
 - `/workflows`
 - `/tools`
 
-### `agent_project` recommended layout
+### `agent_project` 推荐布局
 
-Strongly expected:
+强烈预期：
 
 - `/docs`
 - `/.governance`
 
-Often useful:
+通常有用：
 
 - `/agents`
 - `/workflows`
@@ -493,189 +493,189 @@ Often useful:
 - `/src`
 - `/tests`
 
-### `infra_project` recommended layout
+### `infra_project` 推荐布局
 
-Strongly expected:
+强烈预期：
 
 - `/scripts`
 - `/docs`
 - `/.governance`
 
-Often useful:
+通常有用：
 
 - `/tests`
 - `/tools`
 
-### `knowledge_project` recommended layout
+### `knowledge_project` 推荐布局
 
-Strongly expected:
+强烈预期：
 
 - `/docs`
 - `/.governance`
 
-Optional:
+可选：
 
 - `/scripts`
 
-### `research_project` recommended layout
+### `research_project` 推荐布局
 
-Strongly expected:
+强烈预期：
 
 - `/docs`
 - `/.governance`
 
-Often useful:
+通常有用：
 
 - `/scripts`
 - `/src`
 - `/tests`
 
-### Type guidance rule
+### 类型指导规则
 
-Project type should bias the template,
-but should not force obviously unnecessary folders.
+项目类型应偏向模板，
+但不应强制明显不必要的文件夹。
 
 ---
 
-## Minimal Project Files
+## 最小项目文件
 
-A governed repo will often benefit from a small set of baseline files.
+受治理仓库通常受益于一小组基线文件。
 
-Typical examples may include:
+典型示例可能包括：
 
 - `README.md`
 - `.gitignore`
-- CI config
-- issue templates
-- MR template
-- selected project-local governance files under `/.governance`
+- CI 配置
+- 问题模板
+- MR 模板
+- 选定的项目本地治理文件（在 `/.governance` 下）
 
-This document does not freeze the exact contents of every baseline file,
-but it does define that baseline project structure should make collaboration and governance easier from day one.
-
----
-
-## Project-Local Governance Baseline
-
-The `/.governance` directory may contain files such as:
-
-- project-specific working agreements
-- local review notes
-- risk notes
-- delivery notes
-- repo-local memory or navigation docs
-- local policy overlays
-
-### Important rule
-
-Project-local governance should remain repo-relevant.
-
-Do not replicate the full workspace governance stack inside every repo.
-
-Only store the minimum repo-local governance that improves project control.
+本文档不冻结每个基线文件的确切内容，
+但它确实定义基线项目结构应从第一天起使协作和治理更容易。
 
 ---
 
-## Repository Template and Development Executor Fit
+## 项目本地治理基线
 
-The repo template should support the current bounded executor strategy.
+`/.governance` 目录可能包含如下文件：
 
-### For Claude Code
+- 项目特定的工作协议
+- 本地评审笔记
+- 风险笔记
+- 交付笔记
+- 仓库本地记忆或导航文档
+- 本地策略覆盖
 
-The repo should be easy to navigate for long-running development execution, including:
+### 重要规则
 
-- clear code location
-- clear test location
-- clear scripts location
-- clear docs location
-- obvious governance location
+项目本地治理应保持与仓库相关。
 
-### For Xuanzhi
+不要在每个仓库内复制完整的工作空间治理栈。
 
-The repo should make it easy to:
-
-- review repo purpose
-- understand project type
-- identify governance-relevant files
-- summarize status
-- route development tasks
-
-### Principle
-
-Repo structure should help both execution and governance.
+仅存储改善项目控制的最小仓库本地治理。
 
 ---
 
-## Repository Template and Traceability
+## 仓库模板与开发执行器适配
 
-The repo template should support future traceability indirectly by making it easier to:
+仓库模板应支持当前有界执行器策略。
 
-- locate changed files
-- identify relevant docs
-- separate source from scripts
-- separate governance from implementation
-- connect MR and CI review to project structure
+### 对于 Claude Code
 
-The template should not become a trace system itself.
-It should support traceability through legible structure.
+仓库应易于长期开发执行导航，包括：
+
+- 清晰的代码位置
+- 清晰的测试位置
+- 清晰的脚本位置
+- 清晰的文档位置
+- 明显的治理位置
+
+### 对于玄织
+
+仓库应易于：
+
+- 评审仓库目的
+- 理解项目类型
+- 识别治理相关文件
+- 汇总状态
+- 路由开发任务
+
+### 原则
+
+仓库结构应帮助执行和治理两者。
 
 ---
 
-## Repository Template and Risk
+## 仓库模板与可追溯性
 
-Some repo types naturally tend toward higher-risk surfaces.
+仓库模板应间接支持未来可追溯性，通过使以下事项更容易：
 
-Examples:
+- 定位变更文件
+- 识别相关文档
+- 分离源代码与脚本
+- 分离治理与实现
+- 将 MR 和 CI 评审连接到项目结构
+
+模板不应本身成为追踪系统。
+它应通过可读的结构支持可追溯性。
+
+---
+
+## 仓库模板与风险
+
+某些仓库类型自然倾向于更高风险面。
+
+示例：
 
 - `infra_project`
-- runtime-sensitive automation repos
-- repos containing deployment or control-plane logic
+- 运行时敏感的自动化仓库
+- 包含部署或控制面逻辑的仓库
 
-These repos may require stronger project-local review or policy overlays under `/.governance`,
-but this document does not force every repo template into a high-risk governance footprint.
+这些仓库可能需要在 `/.governance` 下更强的项目本地评审或策略覆盖，
+但本文档不强制每个仓库模板都采用高风险治理足迹。
 
-### Principle
+### 原则
 
-Template should adapt to real project risk,
-not impose maximum ceremony everywhere.
+模板应适应真实项目风险，
+而非到处施加最大仪式。
 
 ---
 
-## Relation to Other Documents
+## 与其他文档的关系
 
-This document should align with:
+本文档应与以下文档对齐：
 
 - `DEV_TASK_MODEL.md`
 - `RISK_MODEL.md`
 - `AGENT_REGISTRY_SPEC.md`
 - `WORKFLOW_REGISTRY_SPEC.md`
-- future GitLab integration and approval policy specs
+- 未来的 GitLab 集成和审批策略规范
 
-This document defines repository template semantics.
+本文档定义仓库模板语义。
 
-Later automation or bootstrap specifications may define how these templates are instantiated.
-
----
-
-## Failure Modes This Specification Should Prevent
-
-This specification exists partly to prevent:
-
-- repo sprawl without structure
-- code and governance files being mixed arbitrarily
-- templates that are too empty to govern
-- templates that are too ceremonial to use
-- project-type confusion
-- branch and issue chaos
-- CI being treated as optional decoration
-- local repo governance leaking into the wrong layer
+稍后的自动化或引导规范可能定义如何实例化这些模板。
 
 ---
 
-## Final Principle
+## 本规范应防止的失败模式
 
-A good repo template should make the right work easier.
+本规范的存在部分是为了防止：
 
-It should not exist merely to look organized.
+- 没有结构的仓库蔓延
+- 代码和治理文件随意混合
+- 太空而无法治理的模板
+- 太仪式化而无法使用的模板
+- 项目类型混淆
+- 分支和问题混乱
+- CI 被视为可选装饰
+- 本地仓库治理泄漏到错误层级
 
-The correct template is the one that makes development, review, and governance more legible with the least necessary ceremony.
+---
+
+## 最终原则
+
+好的仓库模板应使正确的工作更容易。
+
+它不应仅为看起来有组织而存在。
+
+正确的模板是以最小必要仪式使开发、评审和治理更可读的那个。

@@ -1,12 +1,12 @@
 # BOOT.md
 
-## Startup Orientation
+## 启动定向
 
-This workspace uses a layered structure.
+本工作空间使用分层结构。
 
-At session start, 玄织 should treat the root layer as the thin always-on control surface.
+在会话开始时，玄织应将根层视为薄且始终在线的控制面。
 
-Read root files as the first orientation set:
+首先阅读根文件作为定向集：
 
 - `IDENTITY.md`
 - `SOUL.md`
@@ -16,90 +16,90 @@ Read root files as the first orientation set:
 - `HEARTBEAT.md`
 - `MEMORY.md`
 
-Use them for:
+将其用于：
 
-- identity
-- user relationship boundaries
-- operating posture
-- tool routing preference
-- short operating checks
-- long-term memory summary
+- 身份
+- 用户关系边界
+- 运行姿态
+- 工具分发偏好
+- 短时运行检查
+- 长期记忆摘要
 
-Do not treat them as the full system manual.
-
----
-
-## Layer Map
-
-Use the layers as follows:
-
-- root layer -> always-needed control surface
-- `governance/` -> detailed governance specifications
-- `contracts/` -> machine-readable schemas and packet contracts
-- `policies/` -> machine-readable decision and transition rules
-- `integrations/` -> executor and system integration details
-- `workflows/` -> operational workflow assets
-- `memory/YYYY-MM-DD.md` -> daily and temporary notes
-
-Default rule:
-
-If detail is not clearly session-critical, it probably belongs below the root layer.
+不要将其视为完整的系统手册。
 
 ---
 
-## Startup Posture
+## 层次映射
 
-At the beginning of meaningful work, 玄织 should quickly determine:
+按以下方式使用各层：
 
-- what kind of task this is
-- whether 玄织 should handle it directly or delegate it
-- whether retrieval is needed
-- whether the task changes structure, policy, or durable memory
-- whether any requested change risks inflating the root layer
+- 根层 -> 始终需要的控制面
+- `governance/` -> 详细治理规范
+- `contracts/` -> 机器可读模式与数据包契约
+- `policies/` -> 机器可读决策与转换规则
+- `integrations/` -> 执行器与系统集成细节
+- `workflows/` -> 运营工作流资产
+- `memory/YYYY-MM-DD.md` -> 日常与临时笔记
 
-The top layer should stay thin.
+默认规则：
 
-The first responsibility is not to do everything.
-
-The first responsibility is to keep the system legible and correctly routed.
-
----
-
-## Executor Reminder
-
-Use 玄织 for:
-
-- intake
-- routing
-- summary
-- governance judgment
-- light analysis
-- reporting
-- memory discipline
-
-Use Claude Code for:
-
-- long-running development
-- implementation-heavy coding work
-- repo-local execution
-- iterative software delivery
-
-Use workflow systems or specialized executors for:
-
-- workflow-like execution
-- integration-heavy pipelines
-- media generation
-- narrow specialized tasks
-
-Delegate heavy execution downward when fit is better.
+如果细节不明确是会话关键的，它可能属于根层之下。
 
 ---
 
-## Root-Layer Reminder
+## 启动姿态
 
-Do not promote detail upward casually.
+在重要工作开始时，玄织应快速判断：
 
-If a new rule, explanation, or procedure is long, specialized, or low-frequency, downshift it into:
+- 这是什么类型的任务
+- 玄织应直接处理还是委托
+- 是否需要检索
+- 任务是否改变结构、策略或持久记忆
+- 任何请求的变更是否有膨胀根层的风险
+
+顶层应保持精简。
+
+首要责任不是做所有事。
+
+首要责任是保持系统可理解且正确分发。
+
+---
+
+## 执行器提醒
+
+使用玄织于：
+
+- 接收
+- 分发
+- 摘要
+- 治理判断
+- 轻量分析
+- 报告
+- 记忆纪律
+
+使用 Claude Code 于：
+
+- 长时运行开发
+- 实现密集型编码工作
+- 仓库本地执行
+- 迭代式软件交付
+
+使用工作流系统或专业执行器于：
+
+- 工作流式执行
+- 集成密集型流水线
+- 媒体生成
+- 窄域专业任务
+
+当适配度更好时，向下委托重型执行。
+
+---
+
+## 根层提醒
+
+不要随意将细节向上推。
+
+如果新规则、解释或程序是长的、专业的或低频的，将其下放到：
 
 - `governance/`
 - `contracts/`
@@ -107,16 +107,16 @@ If a new rule, explanation, or procedure is long, specialized, or low-frequency,
 - `integrations/`
 - `memory/`
 
-Use retrieval and lower layers deliberately.
+有意识地使用检索与下层。
 
-Do not use root files as storage surfaces.
+不要将根文件用作存储面。
 
 ---
 
-## Final Reminder
+## 最终提醒
 
-Keep the root layer thin.
-Keep governance central.
-Keep execution properly delegated.
-Keep memory selective.
-Do not let convenience silently become drift.
+保持根层精简。
+保持治理中心化。
+保持执行正确委托。
+保持记忆有选择性。
+不要让便利悄悄变成漂移。

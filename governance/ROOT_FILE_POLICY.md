@@ -1,53 +1,53 @@
 # ROOT_FILE_POLICY.md
 
-## Purpose
+## 用途
 
-This document defines the write policy, scope boundaries, and change control rules for root-level standard files in the OpenClaw workspace.
+本文档定义 OpenClaw 工作空间中根层标准文件的写入策略、范围边界与变更控制规则。
 
-Its goal is to keep the root workspace stable, short, high-signal, and compatible with OpenClaw's standard file injection model.
+其目标是保持根工作空间稳定、精简、高信号，并与 OpenClaw 的标准文件注入模型兼容。
 
-This policy exists to prevent:
+本策略的存在是为了防止：
 
-- root file sprawl
-- prompt bloat
-- concept duplication
-- governance drift
-- accidental promotion of low-frequency detail into always-loaded context
-- misuse of root files as long-form documentation storage
+- 根文件蔓延
+- 提示膨胀
+- 概念重复
+- 治理漂移
+- 低频细节意外提升为始终加载的上下文
+- 滥用根文件作为长文档存储
 
-This document is normative for root-level standard files.
+本文档对根层标准文件具有规范性。
 
-If another document suggests adding substantial detail to a root file, this policy takes precedence unless an explicit exception is approved and recorded.
-
----
-
-## Design Principle
-
-Root files are not general documentation.
-
-Root files are the thin always-needed control surface of the workspace.
-
-They exist to hold only the smallest set of rules and information that must be available at session start with high probability.
-
-Everything else should default to one of these destinations:
-
-- `governance/` for detailed governance specifications
-- `contracts/` for machine-readable contracts and schemas
-- `policies/` for machine-readable rules and policy tables
-- `integrations/` for execution and external tool integration details
-- `memory/` for daily memory and contextual records
-- `workflows/` for execution flow assets and related implementation materials
-
-Default rule:
-
-When in doubt, do not add content to a root file.
-Prefer downshifting the content into a lower layer.
+如果另一文档建议向根文件添加实质性细节，本策略优先，除非明确批准并记录了例外。
 
 ---
 
-## Scope
+## 设计原则
 
-This policy applies to the following root-level files:
+根文件不是通用文档。
+
+根文件是工作空间的薄且始终需要的控制面。
+
+它们的存在仅是为了保存必须在会话开始时高概率可用的最小规则和信息集。
+
+其他一切应默认到以下目的地之一：
+
+- `governance/` 用于详细治理规范
+- `contracts/` 用于机器可读契约与模式
+- `policies/` 用于机器可读规则与策略表
+- `integrations/` 用于执行与外部工具集成细节
+- `memory/` 用于日常记忆与上下文记录
+- `workflows/` 用于执行流程资产与相关实现材料
+
+默认规则：
+
+当有疑问时，不要向根文件添加内容。
+偏好将内容下放到下层。
+
+---
+
+## 范围
+
+本策略适用于以下根层文件：
 
 - `AGENTS.md`
 - `SOUL.md`
@@ -59,7 +59,7 @@ This policy applies to the following root-level files:
 - `BOOT.md`
 - `BOOTSTRAP.md`
 
-This policy does not directly govern lower-layer files under:
+本策略不直接管理以下下层文件：
 
 - `governance/`
 - `contracts/`
@@ -68,629 +68,629 @@ This policy does not directly govern lower-layer files under:
 - `memory/`
 - `workflows/`
 
-However, it does govern when content should be moved from root files into those locations.
+然而，它确实管理内容何时应从根文件移动到那些位置。
 
 ---
 
-## Root File Role Model
+## 根文件角色模型
 
-### Root files are for high-frequency, high-stability, session-critical information
+### 根文件用于高频、高稳定性、会话关键的信息
 
-Content is eligible for a root file only if it is all of the following:
+内容只有同时满足以下条件才有资格进入根文件：
 
-- high-frequency
-- stable across many sessions
-- short enough to remain legible and inexpensive
-- important at session start
-- inappropriate to rely on pure retrieval for every use
+- 高频
+- 跨多会话稳定
+- 足够短以保持可读且低成本
+- 会话开始时重要
+- 不适合每次使用都依赖纯检索
 
-If any of the above is not clearly true, the content should not be promoted into a root file.
+如果以上任一不明确为真，内容不应提升到根文件。
 
-### Root files are not for complete detail
+### 根文件不用于完整细节
 
-Root files must not become:
+根文件绝不能变成：
 
-- full governance manuals
-- long-form project archives
-- registry field references
-- complete workflow handbooks
-- exhaustive tool documentation
-- large knowledge base indexes
-- historical logs
-- execution traces
-- long postmortems
-- large prompt libraries
+- 完整的治理手册
+- 长篇项目档案
+- 注册表字段参考
+- 完整的工作流手册
+- 详尽的工具文档
+- 大型知识库索引
+- 历史日志
+- 执行追踪
+- 长篇事后分析
+- 大型提示库
 
 ---
 
-## Canonical Root File Responsibilities
+## 规范根文件职责
 
 ### `AGENTS.md`
 
-Purpose:
+用途：
 
-Defines the main agent operating contract.
+定义主代理运行契约。
 
-Allowed content:
+允许的内容：
 
-- the main role of the agent
-- execution routing principles
-- when to clarify
-- when to escalate
-- when to write memory
-- when to hand off to a specialized executor
-- high-level behavior rules
+- 代理的主要角色
+- 执行分发原则
+- 何时澄清
+- 何时升级
+- 何时写入记忆
+- 何时移交给专业执行器
+- 高层行为规则
 
-Disallowed content:
+不允许的内容：
 
-- complete state machine definitions
-- full risk matrix
-- complete trace schema
-- registry field lists
-- complete repo template details
-- long workflow instructions
-- per-integration operational playbooks
-- detailed branching and CI policy tables
+- 完整的状态机定义
+- 完整的风险矩阵
+- 完整的追踪模式
+- 注册表字段列表
+- 完整的仓库模板细节
+- 长工作流指令
+- 每集成的操作手册
+- 详细的分支与 CI 策略表
 
-Guiding rule:
+指导规则：
 
-`AGENTS.md` should tell the agent how to operate at a high level, not contain the entire system manual.
+`AGENTS.md` 应告诉代理如何在高层次上运行，而非包含整个系统手册。
 
 ### `SOUL.md`
 
-Purpose:
+用途：
 
-Defines identity, values, tone, and non-negotiable persona boundaries.
+定义身份、价值观、语调与不可协商的人格边界。
 
-Allowed content:
+允许的内容：
 
-- who 玄织 is
-- who 玄织 is not
-- core values
-- communication style
-- core governance stance
-- anti-role-drift boundaries
+- 玄织是谁
+- 玄织不是谁
+- 核心价值观
+- 沟通风格
+- 核心治理立场
+- 反角色漂移边界
 
-Disallowed content:
+不允许的内容：
 
-- procedural workflow instructions
-- detailed approval logic
-- tool routing tables
-- implementation policy
-- project-specific technical detail
-- large examples
+- 程序性工作流指令
+- 详细的审批逻辑
+- 工具分发表
+- 实现策略
+- 项目特定的技术细节
+- 大型示例
 
-Guiding rule:
+指导规则：
 
-`SOUL.md` should shape character and stance, not act as a control handbook.
+`SOUL.md` 应塑造性格与立场，而非作为控制手册。
 
 ### `USER.md`
 
-Purpose:
+用途：
 
-Defines stable user relationship and interaction boundaries.
+定义稳定的用户关系与交互边界。
 
-Allowed content:
+允许的内容：
 
-- user relationship stance
-- confirmation rules for sensitive operations
-- stable user preferences
-- user-facing cooperation norms
+- 用户关系姿态
+- 敏感操作的确认规则
+- 稳定的用户偏好
+- 面向用户的合作规范
 
-Disallowed content:
+不允许的内容：
 
-- task history
-- long-term work logs
-- full project context
-- large preference catalogs
-- execution process detail
-- detailed approval matrix
-- system governance principles disguised as user preference
+- 任务历史
+- 长期工作日志
+- 完整的项目上下文
+- 大型偏好目录
+- 执行过程细节
+- 详细的审批矩阵
+- 伪装成用户偏好的系统治理原则
 
-Guiding rule:
+指导规则：
 
-`USER.md` should hold durable interaction boundaries, not evolving task context or broad system doctrine.
+`USER.md` 应保持持久的交互边界，而非演进的任务上下文或广泛的系统原则。
 
 ### `IDENTITY.md`
 
-Purpose:
+用途：
 
-Defines concise identity metadata.
+定义简洁的身份元数据。
 
-Allowed content:
+允许的内容：
 
-- name
-- short role description
-- concise positioning statement
+- 名称
+- 简短的角色描述
+- 简洁的定位声明
 
-Disallowed content:
+不允许的内容：
 
-- long persona definitions
-- behavioral manuals
-- tool policy
-- workflow detail
+- 长人格定义
+- 行为手册
+- 工具策略
+- 工作流细节
 
-Guiding rule:
+指导规则：
 
-`IDENTITY.md` should remain extremely short.
+`IDENTITY.md` 应保持极其精简。
 
 ### `TOOLS.md`
 
-Purpose:
+用途：
 
-Defines preferred tool usage posture and high-level routing guidance.
+定义首选的工具使用姿态与高层分发指导。
 
-Allowed content:
+允许的内容：
 
-- which tool classes are preferred for which task classes
-- default executor statements
-- high-level usage cautions
-- concise output expectations
-- tool selection guidance
+- 哪类任务偏好哪类工具
+- 默认执行器声明
+- 高层使用注意事项
+- 简洁的输出期望
+- 工具选择指导
 
-Disallowed content:
+不允许的内容：
 
-- copied tool documentation
-- full API specifications
-- long argument references
-- integration implementation guides
-- detailed workflow DSL
-- per-tool troubleshooting manuals
-- broad governance philosophy unrelated to tool selection
+- 复制的工具文档
+- 完整的 API 规范
+- 长参数参考
+- 集成实现指南
+- 详细的工作流 DSL
+- 每工具的故障排除手册
+- 与工具选择无关的广泛治理哲学
 
-Guiding rule:
+指导规则：
 
-`TOOLS.md` should explain how the workspace prefers to use tools, not document the tools completely or become a tool-governance manifesto.
+`TOOLS.md` 应解释工作空间偏好如何使用工具，而非完整记录工具或成为工具治理宣言。
 
 ### `HEARTBEAT.md`
 
-Purpose:
+用途：
 
-Defines an extremely short operating checklist.
+定义极其精简的运行检查清单。
 
-Allowed content:
+允许的内容：
 
-- start-of-session reminders
-- pre-response checks
-- post-task summary checks
-- minimal memory update reminders
+- 会话开始提醒
+- 响应前检查
+- 任务后摘要检查
+- 最小的记忆更新提醒
 
-Disallowed content:
+不允许的内容：
 
-- long procedures
-- detailed review processes
-- long escalation logic
-- project history
+- 长程序
+- 详细的审查过程
+- 长升级逻辑
+- 项目历史
 
-Guiding rule:
+指导规则：
 
-`HEARTBEAT.md` should be tiny, mechanical, and stable.
+`HEARTBEAT.md` 应是微小的、机械的、稳定的。
 
 ### `MEMORY.md`
 
-Purpose:
+用途：
 
-Defines long-term memory summary and navigation.
+定义长期记忆摘要与导航。
 
-Allowed content:
+允许的内容：
 
-- stable preferences
-- major active initiatives
-- durable decisions
-- compact strategic memory
-- navigation pointers to detail sources
+- 稳定偏好
+- 主要活跃倡议
+- 持久决策
+- 紧凑的战略记忆
+- 指向细节来源的导航指针
 
-Disallowed content:
+不允许的内容：
 
-- large daily logs
-- detailed execution history
-- full knowledge base catalogs
-- full project document indexes
-- large report bodies
-- repetitive progress logs
-- memory-writing policy explanations
+- 大型日常日志
+- 详细的执行历史
+- 完整的知识库目录
+- 完整的项目文档索引
+- 大型报告正文
+- 重复的进展日志
+- 记忆写入策略解释
 
-Guiding rule:
+指导规则：
 
-`MEMORY.md` is an index and summary layer, not a dumping ground.
+`MEMORY.md` 是索引与摘要层，而非堆放场。
 
 ### `BOOT.md`
 
-Purpose:
+用途：
 
-Defines a very short startup orientation.
+定义极短的启动定向。
 
-Allowed content:
+允许的内容：
 
-- what to read first
-- how the workspace is layered
-- where detailed specs live
+- 首先阅读什么
+- 工作空间如何分层
+- 详细规范在哪里
 
-Disallowed content:
+不允许的内容：
 
-- long training material
-- full system handbook
-- repeated content already present in root files
+- 长训练材料
+- 完整的系统手册
+- 根文件中已存在的重复内容
 
-Guiding rule:
+指导规则：
 
-`BOOT.md` should help orientation, not duplicate the system.
+`BOOT.md` 应帮助定向，而非复制系统。
 
 ### `BOOTSTRAP.md`
 
-Purpose:
+用途：
 
-Defines one-time initialization guidance.
+定义一次性初始化指导。
 
-Allowed content:
+允许的内容：
 
-- initial setup steps
-- first-run questions
-- initialization notes
-- cleanup instructions after setup
+- 初始设置步骤
+- 首次运行问题
+- 初始化笔记
+- 设置后的清理指令
 
-Disallowed content:
+不允许的内容：
 
-- long-term operational policy
-- evolving governance rules
-- detailed technical playbooks
+- 长期运行策略
+- 演进的治理规则
+- 详细的技术手册
 
-Guiding rule:
+指导规则：
 
-`BOOTSTRAP.md` should be temporary and disposable.
-
----
-
-## Default Downshift Rule
-
-Any new governance or operational content must default to a lower layer unless it clearly qualifies for root-level presence.
-
-Preferred destinations:
-
-- terminology and cross-file semantics -> `governance/GOVERNANCE_GLOSSARY.md`
-- field naming standards -> `governance/FIELD_CANON.md`
-- state logic -> `governance/STATE_MACHINE.md`
-- risk logic -> `governance/RISK_MODEL.md`
-- trace detail -> `governance/TRACE_SPEC.md`
-- write thresholds and memory rules -> `governance/MEMORY_WRITE_POLICY.md`
-- structured object rules -> `contracts/*.json`
-- decision rules and gates -> `policies/*.yaml`
-- executor and system integration details -> `integrations/*.md`
-- daily and historical notes -> `memory/*.md`
-
-Default principle:
-
-New detail should move downward, not upward.
+`BOOTSTRAP.md` 应是临时的且可抛弃的。
 
 ---
 
-## Root File Admission Test
+## 默认下放规则
 
-Before adding any content to a root file, all of the following questions must be checked.
+任何新的治理或操作内容必须默认到下层，除非明确符合根层存在条件。
 
-### Test 1: Session-Critical
+偏好的目的地：
 
-Is this information likely to be needed at session start across many sessions?
+- 术语与跨文件语义 -> `governance/GOVERNANCE_GLOSSARY.md`
+- 字段命名标准 -> `governance/FIELD_CANON.md`
+- 状态逻辑 -> `governance/STATE_MACHINE.md`
+- 风险逻辑 -> `governance/RISK_MODEL.md`
+- 追踪细节 -> `governance/TRACE_SPEC.md`
+- 写入阈值与记忆规则 -> `governance/MEMORY_WRITE_POLICY.md`
+- 结构化对象规则 -> `contracts/*.json`
+- 决策规则与门控 -> `policies/*.yaml`
+- 执行器与系统集成细节 -> `integrations/*.md`
+- 日常与历史笔记 -> `memory/*.md`
 
-If no, do not place it in a root file.
+默认原则：
 
-### Test 2: High-Frequency
-
-Will this information materially shape behavior often enough to justify constant injection?
-
-If no, do not place it in a root file.
-
-### Test 3: Stability
-
-Is this content stable enough that frequent edits are unlikely?
-
-If no, do not place it in a root file.
-
-### Test 4: Compactness
-
-Can this content be expressed concisely without becoming vague or lossy?
-
-If no, do not place it in a root file.
-
-### Test 5: Non-Retrievability
-
-Would relying on on-demand retrieval here materially harm performance or consistency?
-
-If no, do not place it in a root file.
-
-### Admission Rule
-
-Content should be promoted to a root file only if the answer is effectively yes to all five tests.
-
-If uncertainty remains, the content must be downshifted.
+新细节应向下移动，而非向上。
 
 ---
 
-## Root File Budget Model
+## 根文件准入测试
 
-These budgets are internal engineering targets, not official OpenClaw hard limits.
+在向根文件添加任何内容前，必须检查以下所有问题。
 
-Officially, OpenClaw injects standard workspace files into session context and truncates large injected files using bootstrap file limits. OpenClaw also explicitly advises keeping some root files short, especially `HEARTBEAT.md` and `BOOT.md`. Community practice similarly favors auditing workspace size and trimming large injected files.
+### 测试 1：会话关键
 
-Therefore this workspace uses three budget levels:
+此信息是否可能跨多会话在会话开始时需要？
 
-- Target
-- Review
-- Refactor
+如果否，不要放入根文件。
 
-### Budget interpretation
+### 测试 2：高频
 
-#### Target
+此信息是否足够频繁地实质性塑造行为以证明持续注入的合理性？
 
-Healthy operating range.
+如果否，不要放入根文件。
 
-A file in this range is likely thin enough to remain practical as an injected root-layer file.
+### 测试 3：稳定性
 
-#### Review
+此内容是否足够稳定，不太可能频繁编辑？
 
-The file may still be acceptable, but must be reviewed for:
+如果否，不要放入根文件。
 
-- duplication
-- prose-heavy explanation
-- layer pollution
-- policy or schema detail that should move downward
-- repeated concepts already stated elsewhere
+### 测试 4：紧凑性
 
-#### Refactor
+此内容是否可以简洁表达而不变得模糊或有损？
 
-The default response is:
+如果否，不要放入根文件。
 
-- downshift
-- split by layer
-- remove explanation
-- compress signal
-- eliminate duplication
+### 测试 5：不可检索性
 
-Do not rely on prompt compression, truncation, or model goodwill as the primary fix.
+在此依赖按需检索是否会实质性损害性能或一致性？
 
-### Recommended ranges
+如果否，不要放入根文件。
+
+### 准入规则
+
+内容只有在五个测试的答案实际上都是是时才应提升到根文件。
+
+如果仍有不确定性，内容必须下放。
+
+---
+
+## 根文件预算模型
+
+这些预算是内部工程目标，而非官方 OpenClaw 硬限制。
+
+官方地，OpenClaw 将标准工作空间文件注入会话上下文，并使用引导文件限制截断大型注入文件。OpenClaw 也明确建议保持某些根文件精简，尤其是 `HEARTBEAT.md` 与 `BOOT.md`。社区实践同样偏好审查工作空间大小并修剪大型注入文件。
+
+因此本工作空间使用三个预算级别：
+
+- 目标
+- 审查
+- 重构
+
+### 预算解释
+
+#### 目标
+
+健康运行范围。
+
+在此范围的文件可能足够精简以作为注入的根层文件保持实用。
+
+#### 审查
+
+文件可能仍可接受，但必须审查：
+
+- 重复
+- 文本过重的解释
+- 层污染
+- 应向下移动的策略或模式细节
+- 其他地方已陈述的重复概念
+
+#### 重构
+
+默认响应是：
+
+- 下放
+- 按层拆分
+- 移除解释
+- 压缩信号
+- 消除重复
+
+不要依赖提示压缩、截断或模型善意作为主要修复。
+
+### 推荐范围
 
 #### `AGENTS.md`
 
-- Target: 300-700 tokens
-- Review: 700-1100 tokens
-- Refactor: >1100 tokens
+- 目标：300-700 tokens
+- 审查：700-1100 tokens
+- 重构：>1100 tokens
 
 #### `SOUL.md`
 
-- Target: 180-400 tokens
-- Review: 400-650 tokens
-- Refactor: >650 tokens
+- 目标：180-400 tokens
+- 审查：400-650 tokens
+- 重构：>650 tokens
 
 #### `USER.md`
 
-- Target: 120-280 tokens
-- Review: 280-450 tokens
-- Refactor: >450 tokens
+- 目标：120-280 tokens
+- 审查：280-450 tokens
+- 重构：>450 tokens
 
 #### `IDENTITY.md`
 
-- Target: 40-120 tokens
-- Review: 120-200 tokens
-- Refactor: >200 tokens
+- 目标：40-120 tokens
+- 审查：120-200 tokens
+- 重构：>200 tokens
 
 #### `TOOLS.md`
 
-- Target: 180-420 tokens
-- Review: 420-700 tokens
-- Refactor: >700 tokens
+- 目标：180-420 tokens
+- 审查：420-700 tokens
+- 重构：>700 tokens
 
 #### `HEARTBEAT.md`
 
-- Target: 60-160 tokens
-- Review: 160-250 tokens
-- Refactor: >250 tokens
+- 目标：60-160 tokens
+- 审查：160-250 tokens
+- 重构：>250 tokens
 
 #### `MEMORY.md`
 
-- Target: 180-500 tokens
-- Review: 500-900 tokens
-- Refactor: >900 tokens
+- 目标：180-500 tokens
+- 审查：500-900 tokens
+- 重构：>900 tokens
 
 #### `BOOT.md`
 
-- Target: 80-180 tokens
-- Review: 180-280 tokens
-- Refactor: >280 tokens
+- 目标：80-180 tokens
+- 审查：180-280 tokens
+- 重构：>280 tokens
 
 #### `BOOTSTRAP.md`
 
-- Target: 100-250 tokens
-- Review: 250-450 tokens
-- Refactor: >450 tokens
+- 目标：100-250 tokens
+- 审查：250-450 tokens
+- 重构：>450 tokens
 
-### Character-level backstop
+### 字符级后备
 
-Even when token estimates look acceptable, root files should still be audited at the character level.
+即使 token 估计看起来可接受，根文件仍应在字符级审查。
 
-As a practical backstop:
+作为实际后备：
 
-- files above approximately 5000 characters deserve review
-- files above approximately 10000 characters should be treated as strong refactor candidates unless unusually well justified
+- 约 5000 字符以上的文件值得审查
+- 约 10000 字符以上的文件应被视为强烈重构候选，除非有异常充分的理由
 
-This is a practical anti-bloat rule, not a replacement for judgment.
-
----
-
-## Prohibited Root File Growth Patterns
-
-The following patterns are considered root-layer anti-patterns.
-
-### Anti-pattern 1: Full manual inflation
-
-A root file grows into a multi-topic handbook.
-
-### Anti-pattern 2: Duplicate detail spread
-
-The same rule appears in root and lower-layer files with slightly different wording.
-
-### Anti-pattern 3: History dumping
-
-A root file becomes a running archive of events, decisions, or progress logs.
-
-### Anti-pattern 4: Technical annex creep
-
-A root file starts to absorb schema detail, API detail, implementation notes, or long examples.
-
-### Anti-pattern 5: Retrieval avoidance
-
-A root file is expanded simply to avoid using the retrieval layer.
-
-### Anti-pattern 6: Prompt superstition
-
-Content is added to a root file only because it feels safer to keep it always visible, without evidence that it truly needs constant presence.
+这是实际的防膨胀规则，而非判断的替代。
 
 ---
 
-## Root File Change Control
+## 禁止的根文件增长模式
 
-### Default change posture
+以下模式被视为根层反模式。
 
-Changes to root files are allowed, but expansion is not presumed beneficial.
+### 反模式 1：完整手册膨胀
 
-Root files should be treated as narrow interfaces.
+根文件增长为多主题手册。
 
-### Required justification for expansion
+### 反模式 2：重复细节蔓延
 
-Any change that increases a root file's scope, length, or specificity must explicitly answer:
+同一规则以略微不同的措辞出现在根与下层文件中。
 
-- Why must this be always available at session start?
-- Why can this not live in `governance/`, `memory/`, `integrations/`, `contracts/`, or `policies/`?
-- Which file specifically requires the addition?
-- What lower-layer alternative was considered?
-- Does this create duplication elsewhere?
+### 反模式 3：历史堆放
 
-If these questions are not answered convincingly, the change should be rejected.
+根文件变成事件、决策或进展日志的运行档案。
 
-### Default approval stance
+### 反模式 4：技术附录蔓延
 
-For root file expansion:
+根文件开始吸收模式细节、API 细节、实现笔记或长示例。
 
-- default stance = reject unless justified
-- default alternative = downshift
-- default fix for ambiguity = place in lower layer first
+### 反模式 5：检索回避
 
----
+根文件被扩展仅是为了避免使用检索层。
 
-## Root File Refactoring Rule
+### 反模式 6：提示迷信
 
-When a root file becomes too long, too specific, or too unstable, the system should not attempt to preserve the shape by compression alone.
-
-The first preferred action is structural refactoring:
-
-- remove duplication
-- extract details into lower-layer documents
-- replace long lists with concise principles
-- move procedural detail into `governance/` or `integrations/`
-- move machine-oriented detail into `contracts/` or `policies/`
-
-Compression without boundary correction is not sufficient.
+内容被添加到根文件仅因为保持其始终可见感觉更安全，而无证据表明它真正需要持续存在。
 
 ---
 
-## Relation to Retrieval Layer
+## 根文件变更控制
 
-Root files are not the same as the retrieval layer.
+### 默认变更姿态
 
-The existence of search and QMD-backed recall is a reason to keep root files smaller, not larger.
+允许对根文件的变更，但不假定扩展是有益的。
 
-Detailed and lower-frequency material should be placed where it can be found on demand rather than injected by default.
+根文件应被视为窄接口。
 
-Therefore:
+### 扩展的必需理由
 
-- root files should remain thin
-- lower layers should remain searchable
-- retrieval should absorb detail pressure
-- root files should not be used to bypass retrieval design
+任何增加根文件范围、长度或特异性的变更必须明确回答：
+
+- 为什么这必须始终在会话开始时可用？
+- 为什么这不能存在于 `governance/`、`memory/`、`integrations/`、`contracts/` 或 `policies/`？
+- 具体哪个文件需要此添加？
+- 考虑了什么下层替代方案？
+- 这是否在其他地方创建重复？
+
+如果这些问题没有得到令人信服的回答，变更应被拒绝。
+
+### 默认批准姿态
+
+对于根文件扩展：
+
+- 默认姿态 = 除非有理由否则拒绝
+- 默认替代 = 下放
+- 默认的模糊修复 = 先放入下层
 
 ---
 
-## Relation to Machine-Readable Constraints
+## 根文件重构规则
 
-Root files are primarily human-readable behavioral and governance surfaces.
+当根文件变得过长、过于具体或过于不稳定时，系统不应仅通过压缩来尝试保持形状。
 
-They are not the preferred destination for strong executable constraints.
+第一个偏好的行动是结构重构：
 
-If a rule is structurally important enough to require enforcement, it should usually also be represented in one or more of the following:
+- 移除重复
+- 提取细节到下层文档
+- 用简洁原则替换长列表
+- 将程序性细节移入 `governance/` 或 `integrations/`
+- 将面向机器的细节移入 `contracts/` 或 `policies/`
+
+没有边界控制的压缩是不够的。
+
+---
+
+## 与检索层的关系
+
+根文件与检索层不同。
+
+搜索与 QMD 支持的回忆的存在是保持根文件更小而非更大的理由。
+
+详细与较低频的材料应放置在可按需找到的位置，而非默认注入。
+
+因此：
+
+- 根文件应保持精简
+- 下层应保持可搜索
+- 检索应吸收细节压力
+- 根文件不应用于绕过检索设计
+
+---
+
+## 与机器可读约束的关系
+
+根文件主要是人类可读的行为与治理面。
+
+它们不是强可执行约束的首选目的地。
+
+如果规则在结构上足够重要需要强制执行，它通常也应表示为以下之一或多个：
 
 - JSON Schema
-- YAML policy
-- validator logic
-- state transition table
+- YAML 策略
+- 验证器逻辑
+- 状态转换表
 
-Root files may reference those constraints at a high level, but should not substitute for them.
-
----
-
-## Operational Rule for the Main Agent
-
-The main agent must not directly promote detailed content into root files merely because the content seems useful.
-
-When considering any root-file change, the main agent must first evaluate:
-
-- whether the content is truly session-critical
-- whether the content belongs to a lower layer
-- whether the change introduces duplication
-- whether the change should instead trigger a contract or policy update
-
-If uncertainty remains, the main agent should propose a lower-layer change rather than a root-layer expansion.
-
-Default behavior:
-
-propose downshift first
+根文件可在高层引用这些约束，但不应替代它们。
 
 ---
 
-## Exception Handling
+## 主代理的运行规则
 
-Exceptions are allowed only when all of the following are true:
+主代理不得仅因内容似乎有用就直接将详细内容提升到根文件。
 
-- the content is essential at session start
-- retrieval would be too slow or too unreliable for the use case
-- the content is stable
-- the content remains concise
-- the content does not materially duplicate lower-layer detail
+在考虑任何根文件变更时，主代理必须首先评估：
 
-Any exception should be recorded with:
+- 内容是否真正会话关键
+- 内容是否属于下层
+- 变更是否引入重复
+- 变更是否应改为触发契约或策略更新
 
-- rationale
-- affected file
-- expected persistence duration
-- review date if temporary
+如果仍有不确定性，主代理应提议下层变更而非根层扩展。
 
-Temporary exceptions should be actively revisited and removed if they stop justifying root-level presence.
+默认行为：
+
+先提议下放
 
 ---
 
-## Compliance Signals
+## 例外处理
 
-Healthy root layer signals:
+仅在以下所有条件为真时允许例外：
 
-- files remain short
-- responsibilities remain distinct
-- retrieval handles most detail
-- lower layers grow more than root files
-- policy and contract layers absorb enforcement logic
+- 内容在会话开始时至关重要
+- 检索对用例来说太慢或太不可靠
+- 内容稳定
+- 内容保持简洁
+- 内容不实质性重复下层细节
 
-Unhealthy root layer signals:
+任何例外应记录：
 
-- repeated truncation pressure
-- frequent expansion of `AGENTS.md`
-- root files used as documentation storage
-- duplication between root and governance layers
-- increasing ambiguity about where new content belongs
+- 理由
+- 受影响文件
+- 预期持续时间
+- 如果临时则有审查日期
+
+临时例外应被主动重访，如果它们停止证明根层存在的合理性则移除。
 
 ---
 
-## Final Principle
+## 合规信号
 
-Root files are governance interfaces, not storage surfaces.
+健康的根层信号：
 
-If everything rises to the root, the root stops guiding and starts drowning.
+- 文件保持精简
+- 职责保持分明
+- 检索处理大多数细节
+- 下层比根文件增长更多
+- 策略与契约层吸收强制逻辑
 
-The correct default is disciplined thinness.
+不健康的根层信号：
+
+- 重复的截断压力
+- `AGENTS.md` 的频繁扩展
+- 根文件被用作文档存储
+- 根与治理层之间的重复
+- 关于新内容属于哪里的日益模糊
+
+---
+
+## 最终原则
+
+根文件是治理接口，而非存储面。
+
+如果一切都上升到根层，根层就停止引导并开始淹没。
+
+正确的默认是有纪律的精简。

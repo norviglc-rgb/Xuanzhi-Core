@@ -1,71 +1,71 @@
-# RISK_MODEL.md
+# 风险模型
 
-## Purpose
+## 目的
 
-This document defines the risk model of the Xuanzhi workspace.
+本文档定义玄织工作空间的风险模型。
 
-Its purpose is to provide a stable baseline for:
+其目的在于为以下事项提供稳定基线：
 
-- risk classification
-- bounded execution
-- approval posture
-- escalation posture
-- veto conditions
-- sensitive-object handling
-- future machine-readable risk policy
+- 风险分类
+- 有界执行
+- 审批姿态
+- 升级姿态
+- 否决条件
+- 敏感对象处理
+- 未来机器可读风险策略
 
-This document is normative for risk semantics.
+本文档对风险语义具有规范性。
 
-It is not a full policy engine implementation.
-It is not a substitute for machine-readable policy.
-It is not a generic essay about danger.
+它不是完整的策略引擎实现。
+它不是机器可读策略的替代品。
+它不是关于危险的一般性文章。
 
-Its job is to define what risk means in this workspace and how the system should respond to it.
-
----
-
-## Core Principle
-
-Risk is not an ornament attached after execution planning.
-
-Risk is part of task framing.
-
-A useful risk model should help the system answer:
-
-- how dangerous is this path
-- how reversible is this path
-- how sensitive is the target
-- how much authority is required
-- whether execution should proceed, pause, replan, escalate, or stop
-
-A bad risk model creates labels without changing behavior.
-
-Therefore this workspace treats risk as behavior-shaping, not merely descriptive.
+其任务是定义风险在本工作空间中的含义，以及系统应如何响应它。
 
 ---
 
-## Risk Dimensions
+## 核心原则
 
-Risk should be judged from a combination of factors, including:
+风险不是执行规划后附加的装饰。
 
-- reversibility
-- destructive potential
-- sensitivity of the target
-- authority implications
-- scope of impact
-- cost and resource impact
-- uncertainty level
-- recoverability
-- downstream maintenance burden
+风险是任务界定的一部分。
 
-Not every risk judgment requires a formal score,
-but all meaningful risk judgments should reflect these dimensions implicitly or explicitly.
+一个有用的风险模型应帮助系统回答：
+
+- 这条路径有多危险
+- 这条路径可逆性如何
+- 目标有多敏感
+- 需要多少权限
+- 执行应该继续、暂停、重规划、升级还是停止
+
+一个坏的风险模型创造标签却不改变行为。
+
+因此，本工作空间将风险视为行为塑造因素，而非仅仅描述性的。
 
 ---
 
-## Canonical Risk Levels
+## 风险维度
 
-This workspace recognizes five categorical risk levels:
+风险应从以下因素组合来判断，包括：
+
+- 可逆性
+- 破坏潜力
+- 目标敏感度
+- 权限影响
+- 影响范围
+- 成本和资源影响
+- 不确定性水平
+- 可恢复性
+- 下游维护负担
+
+并非每个风险判断都需要正式评分，
+但所有有意义的风险判断应隐式或显式地反映这些维度。
+
+---
+
+## 标准风险等级
+
+本工作空间认可五个分类风险等级：
 
 - `R0`
 - `R1`
@@ -73,490 +73,493 @@ This workspace recognizes five categorical risk levels:
 - `R3`
 - `R4`
 
-These levels are governance categories, not mere descriptive decorations.
+这些等级是治理类别，不仅仅是描述性装饰。
 
-They are expected to influence routing, approval, escalation, and execution posture.
+它们预期会影响路由、审批、升级和执行姿态。
 
 ---
 
-## Risk Level Meanings
+## 风险等级含义
 
 ### `R0`
 
-Read-only, low-impact, or near-zero-side-effect work.
+只读、低影响或近乎零副作用的工作。
 
-Typical examples:
+典型示例：
 
-- retrieval
-- lightweight summarization
-- low-stakes planning
-- non-destructive analysis
-- metadata inspection
-- review without mutation
+- 检索
+- 轻量级摘要
+- 低风险规划
+- 非破坏性分析
+- 元数据检查
+- 不带变更的评审
 
-Typical posture:
+典型姿态：
 
-- proceed normally
-- approval usually not required
-- escalation usually not required
+- 正常继续
+- 通常不需要审批
+- 通常不需要升级
 
 ### `R1`
 
-Low-risk reversible modification with bounded local impact.
+低风险可逆修改，具有有界的本地影响。
 
-Typical examples:
+典型示例：
 
-- small reversible edits
-- local non-sensitive file changes
-- low-risk draft generation
-- low-risk task shaping
-- internal organization changes with easy rollback
+- 小型可逆编辑
+- 本地非敏感文件变更
+- 低风险草稿生成
+- 低风险任务塑造
+- 具有简单回滚的内部组织变更
 
-Typical posture:
+典型姿态：
 
-- proceed with ordinary caution
-- approval may still be unnecessary
-- rollback should be straightforward
+- 以普通谨慎继续
+- 可能仍不需要审批
+- 回滚应简单直接
 
 ### `R2`
 
-Meaningful change with non-trivial impact, broader scope, or moderate uncertainty.
+有意义变更，具有非平凡影响、更广范围或中等不确定性。
 
-Typical examples:
+典型示例：
 
-- substantial code changes
-- workflow changes with visible downstream effects
-- memory writes with durable influence
-- changes that affect project behavior or cost
-- non-trivial structural refactors
-- integration changes with moderate blast radius
+- 实质性代码变更
+- 具有可见下游影响的工作流变更
+- 具有持久影响的记忆写入
+- 影响项目行为或成本的变更
+- 非平凡的结构重构
+- 具有中等影响范围的集成变更
 
-Typical posture:
+典型姿态：
 
-- review is often appropriate
-- approval may be required depending on sensitivity
-- executor fit matters more strongly
-- rollback and trace should be clearer
+- 评审通常是适当的
+- 根据敏感度可能需要审批
+- 执行器适配更重要
+- 回滚和追踪应更清晰
 
 ### `R3`
 
-High-risk, sensitive, destructive, authority-heavy, or hard-to-reverse work.
+高风险、敏感、破坏性、权限重大或难以逆转的工作。
 
-Typical examples:
+典型示例：
 
-- changes to critical configuration
-- changes affecting registries, durable governance, or control surfaces
-- sensitive memory deletion or rewrite
-- workflow activation or permission-sensitive transitions
-- high-cost actions with significant downside
-- actions touching security-relevant or runtime-critical infrastructure
-- actions with broad blast radius or low recoverability
+- 关键配置变更
+- 影响注册表、持久治理或控制面的变更
+- 敏感记忆删除或重写
+- 工作流激活或权限敏感转换
+- 具有重大负面影响的高成本动作
+- 触及安全相关或运行时关键基础设施的动作
+- 具有广泛影响范围或低可恢复性的动作
 
-Typical posture:
+典型姿态：
 
-- elevated caution required
-- approval is often required
-- governance review is stronger
-- escalation becomes more likely
-- execution should not proceed casually
+- 需要提高警惕
+- 通常需要审批
+- 治理评审更强
+- 升级变得更可能
+- 执行不应随意继续
 
 ### `R4`
 
-Emergency block class.
+紧急阻塞类别。
 
-`R4` is used for actions that should not proceed on the normal execution path.
+`R4` 用于不应在正常执行路径上继续的动作。
 
-Typical examples:
+典型示例：
 
-- clearly destructive and unjustified actions
-- clearly unauthorized or overreach actions
-- actions with extreme downside and inadequate information
-- actions that materially threaten system integrity or authority boundaries
-- paths that require human intervention before any execution should continue
+- 明显破坏性且无正当理由的动作
+- 明显未经授权或越权的动作
+- 具有极端负面影响且信息不足的动作
+- 实质性威胁系统完整性或权限边界的动作
+- 在任何执行继续之前需要人工干预的路径
 
-Typical posture:
+典型姿态：
 
-- immediate stop
-- do not continue as a normal executable path
-- escalate
-- require human or stricter governance resolution
-
----
-
-## Risk Score
-
-`risk_score` is the more granular companion to `risk_level`.
-
-### Role of `risk_score`
-
-Use `risk_score` when a finer distinction is useful.
-
-Examples:
-
-- ranking alternatives
-- deciding between low and medium caution within a risk class
-- future policy or reporting support
-
-### Role of `risk_score_hint`
-
-Use `risk_score_hint` when the score is advisory and estimated by the main agent rather than final and authoritative.
-
-### Principle
-
-Categorical risk drives posture.
-Numeric risk refines judgment.
-
-Do not use a numeric score as camouflage for unclear reasoning.
+- 立即停止
+- 不作为正常可执行路径继续
+- 升级
+- 需要人工或更严格的治理解决
 
 ---
 
-## Sensitive Objects
+## 风险评分
 
-The following are considered sensitive object classes in this workspace:
+`risk_score` 是 `risk_level` 的更细粒度伴侣。
 
-- memory
-- knowledge
-- configuration
+### `risk_score` 的作用
+
+当需要更精细区分时使用 `risk_score`。
+
+示例：
+
+- 对替代方案进行排序
+- 在风险类别内决定低谨慎还是中等谨慎
+- 未来策略或汇报支持
+
+### `risk_score_hint` 的作用
+
+当评分是建议性的且由主代理估计而非最终权威时使用 `risk_score_hint`。
+
+### 原则
+
+分类风险驱动姿态。
+数值风险细化判断。
+
+不要使用数值评分来掩盖不清楚的推理。
+
+---
+
+## 敏感对象
+
+以下被视为本工作空间中的敏感对象类别：
+
+- 记忆
+- 知识
+- 配置
 - CI/CD
-- nginx or equivalent gateway/runtime configuration
-- docker runtime or equivalent execution substrate
-- registries
-- workflow activation surfaces
-- permission-bearing objects
-- sub-agent authority expansion
+- nginx 或等效网关/运行时配置
+- docker 运行时或等效执行底座
+- 注册表
+- 工作流激活面
+- 权限承载对象
+- 子代理权限扩展
 
-This list may expand later,
-but these categories are already sensitive enough to justify explicit caution.
+此列表可能稍后扩展，
+但这些类别已足够敏感以证明明确谨慎是合理的。
 
-### Sensitive object rule
+### 敏感对象规则
 
-Touching a sensitive object does not automatically make a task `R4`.
+触及敏感对象不会自动使任务成为 `R4`。
 
-But it should raise scrutiny and often increases the minimum likely risk level.
-
----
-
-## Destructive Actions
-
-A destructive action is any action that may:
-
-- delete
-- overwrite
-- revoke
-- corrupt
-- disable
-- misconfigure
-- materially reduce recoverability
-- irreversibly degrade useful state
-
-Examples:
-
-- deleting durable memory
-- changing critical runtime configuration
-- removing or replacing important workflow definitions
-- modifying sensitive registries without proper review
-- broad destructive file operations
-
-### Destructive action rule
-
-The presence of destructive potential should raise risk posture significantly.
-
-A destructive action with poor justification, poor reversibility, or poor authority fit may trigger veto or `R4`.
+但它应提高审查力度，且通常会提高最低可能风险等级。
 
 ---
 
-## Authority-Sensitive Actions
+## 破坏性动作
 
-An action is authority-sensitive when it affects:
+破坏性动作是任何可能：
 
-- permissions
-- registry admission
-- lifecycle activation
-- durable governance state
-- approval requirements
-- executor authority boundaries
-- sub-agent creation or expansion with meaningful capability changes
+- 删除
+- 覆盖
+- 撤销
+- 损坏
+- 禁用
+- 错误配置
+- 实质性降低可恢复性
+- 不可逆地降级有用状态
 
-These actions should not be treated as ordinary low-risk edits.
+的动作。
 
----
+示例：
 
-## Risk and Uncertainty
+- 删除持久记忆
+- 更改关键运行时配置
+- 移除或替换重要工作流定义
+- 未经适当审查修改敏感注册表
+- 广泛的破坏性文件操作
 
-Uncertainty is itself a risk multiplier.
+### 破坏性动作规则
 
-If the system does not adequately know:
+存在破坏性潜力应显著提高风险姿态。
 
-- what will change
-- what the blast radius is
-- who owns the target
-- how to reverse the action
-- whether the action is authorized
-- whether the requested outcome is actually beneficial
-
-then risk posture should rise, not fall.
-
-### Principle
-
-Low information plus high impact is not normal execution.
-It is a caution or escalation case.
+具有糟糕理由、糟糕可逆性或糟糕权限适配的破坏性动作可能触发否决或 `R4`。
 
 ---
 
-## Veto Rule
+## 权限敏感动作
 
-Xuanzhi may veto a proposed path when the path is:
+当动作影响以下内容时，它是权限敏感的：
 
-- clearly destructive without sufficient justification
-- clearly unauthorized or overreaching
-- clearly low-ROI relative to cost and complexity
-- clearly under-specified with meaningful downside
-- clearly in conflict with durable system integrity
+- 权限
+- 注册表准入
+- 生命周期激活
+- 持久治理状态
+- 审批要求
+- 执行器权限边界
+- 具有实质性能力变更的子代理创建或扩展
 
-A veto is not the same as ordinary rejection.
-
-A veto means:
-
-- the current path should not proceed as proposed
-- normal execution should stop
-- a safer alternative, replan, or escalation is required
-
-### Review-agent limitation
-
-A review-oriented actor may recommend blocking or escalation,
-but does not hold final veto authority by default.
-
-Final veto authority belongs to the governance core or stricter governance path.
+这些动作不应被视为普通低风险编辑。
 
 ---
 
-## Approval Posture by Risk Level
+## 风险与不确定性
 
-These are default tendencies, not a substitute for policy detail.
+不确定性本身就是风险乘数。
+
+如果系统不充分了解：
+
+- 将发生什么变更
+- 影响范围是什么
+- 谁拥有目标
+- 如何撤销动作
+- 动作是否被授权
+- 请求的结果是否真正有益
+
+那么风险姿态应提高，而非降低。
+
+### 原则
+
+低信息加上高影响不是正常执行。
+
+它是谨慎或升级案例。
+
+---
+
+## 否决规则
+
+当路径具有以下特征时，玄织可以否决提议的路径：
+
+- 明显破坏性且无充分理由
+- 明显未经授权或越权
+- 相对于成本和复杂性明显低投资回报率
+- 明显规格不足且具有实质性负面影响
+- 明显与持久系统完整性冲突
+
+否决与普通拒绝不同。
+
+否决意味着：
+
+- 当前路径不应按提议继续
+- 正常执行应停止
+- 需要更安全的替代方案、重规划或升级
+
+### 评审代理限制
+
+面向评审的行动者可以建议阻塞或升级，
+但默认不持有最终否决权限。
+
+最终否决权限属于治理核心或更严格的治理路径。
+
+---
+
+## 按风险等级的审批姿态
+
+这些是默认倾向，不是策略细节的替代品。
 
 ### `R0`
 
-- approval usually not required
-- ordinary execution posture
+- 通常不需要审批
+- 普通执行姿态
 
 ### `R1`
 
-- approval often not required
-- normal caution
-- easy rollback expected
+- 通常不需要审批
+- 正常谨慎
+- 预期简单回滚
 
 ### `R2`
 
-- approval may be required depending on sensitivity and durability
-- review is often useful
-- more structured reporting is appropriate
+- 根据敏感度和持久性可能需要审批
+- 评审通常有用
+- 更结构化的汇报是适当的
 
 ### `R3`
 
-- approval commonly required
-- stronger governance review expected
-- routing and executor fit matter strongly
-- escalation becomes more likely
+- 通常需要审批
+- 预期更强的治理评审
+- 路由和执行器适配强烈重要
+- 升级变得更可能
 
 ### `R4`
 
-- do not treat as normal approvable execution
-- immediate stop and escalate
-- human or stricter governance intervention is typically required
+- 不作为正常可审批执行处理
+- 立即停止并升级
+- 通常需要人工或更严格的治理干预
 
 ---
 
-## Escalation Triggers
+## 升级触发条件
 
-Escalation should be strongly considered when:
+当以下情况时应强烈考虑升级：
 
-- the action is `R4`
-- the action is `R3` with unresolved uncertainty
-- the action touches highly sensitive objects with weak information
-- repeated attempts fail after bounded recovery
-- authority cannot be established clearly
-- review results are materially conflicted
-- approval cannot be resolved in the current path
-- the system may be about to overreach its allowed role
+- 动作是 `R4`
+- 动作是 `R3` 且有未解决的不确定性
+- 动作触及高度敏感对象且信息薄弱
+- 有界恢复后重复尝试失败
+- 权限无法明确建立
+- 评审结果存在实质性冲突
+- 审批无法在当前路径上解决
+- 系统可能即将越出其允许角色
 
-Escalation is not failure theatre.
-It is a governance control response.
-
----
-
-## Replan Triggers
-
-Replan is preferred over blind repetition when:
-
-- the current path failed
-- review failed
-- approval was rejected
-- assumptions proved wrong
-- the selected executor was a poor fit
-- risk increased materially
-- the original scope was unrealistic
-
-Risk should not merely classify outcomes.
-It should shape better next paths.
+升级不是失败表演。
+它是治理控制响应。
 
 ---
 
-## Risk and Executor Fit
+## 重规划触发条件
 
-Risk is partly about who performs the action.
+当以下情况时，重规划优于盲目重复：
 
-The same action may carry different practical risk depending on the executor.
+- 当前路径失败
+- 评审失败
+- 审批被拒绝
+- 假设被证明错误
+- 选择的执行器是糟糕适配
+- 风险实质性增加
+- 原始范围不现实
 
-Examples:
-
-- top-layer handling may be too weak for heavy development execution
-- a specialized executor may reduce operational risk through better fit
-- a poorly matched executor may increase risk even for a nominally moderate task
-
-Therefore:
-
-risk is not only about the action  
-it is also about action-executor fit
+风险不应仅仅分类结果。
+它应塑造更好的下一路径。
 
 ---
 
-## Risk and Memory
+## 风险与执行器适配
 
-Memory-related operations deserve special caution because they affect future judgment.
+风险部分关于谁执行动作。
 
-### Low-risk memory actions
+同一动作根据执行器可能具有不同的实际风险。
 
-Examples:
+示例：
 
-- adding a compact stable preference
-- adding a small durable navigation summary
+- 顶层处理对于重度开发执行可能太弱
+- 专门的执行器可能通过更好适配降低操作风险
+- 糟糕匹配的执行器即使对于名义上的中等任务也可能增加风险
 
-These may be `R1` or `R2` depending on impact.
+因此：
 
-### Higher-risk memory actions
-
-Examples:
-
-- deleting durable memory
-- rewriting long-term memory categories
-- changing strategic lessons
-- altering memory in ways that affect governance posture
-
-These are more likely to be `R2` or `R3`.
-
-Poorly justified destructive memory action may rise to `R4`.
+风险不仅关于动作
+它也关于动作-执行器适配
 
 ---
 
-## Risk and Registries
+## 风险与记忆
 
-Registry and activation-related work is sensitive by default.
+与记忆相关的操作值得特别谨慎，因为它们影响未来判断。
 
-Examples:
+### 低风险记忆动作
 
-- admitting a new governed agent
-- changing authority-relevant metadata
-- activating workflows
-- changing workflow permissions
-- modifying lifecycle state of durable controlled objects
+示例：
 
-These should usually not be treated as casual low-risk edits.
+- 添加紧凑稳定的偏好
+- 添加小型持久导航摘要
 
-Risk classification should consider:
+这些可能是 `R1` 或 `R2`，取决于影响。
 
-- authority
-- blast radius
-- reversibility
-- reporting requirements
+### 较高风险记忆动作
 
----
+示例：
 
-## Risk and Runtime/Infrastructure
+- 删除持久记忆
+- 重写长期记忆类别
+- 更改战略性教训
+- 以影响治理姿态的方式更改记忆
 
-Changes affecting runtime or infrastructure surfaces should be treated with elevated caution.
+这些更可能是 `R2` 或 `R3`。
 
-Examples:
-
-- nginx or gateway routing changes
-- Docker runtime changes
-- CI/CD pipeline changes
-- sensitive environment or deployment configuration changes
-
-These often justify `R2` or `R3`,
-and in some cases may justify `R4` if the path is clearly unsafe or unauthorized.
+理由不充分的破坏性记忆动作可能升至 `R4`。
 
 ---
 
-## Reporting Expectations
+## 风险与注册表
 
-Risk should influence reporting intensity.
+注册表和激活相关的工作默认是敏感的。
 
-As risk rises, the system should generally increase:
+示例：
 
-- explicit summary quality
-- trace clarity
-- rationale visibility
-- review visibility
-- escalation visibility
+- 准入新的受治理代理
+- 更改权限相关元数据
+- 激活工作流
+- 更改工作流权限
+- 修改持久受控对象的生命周期状态
 
-High-risk action without strong reporting is governance weakness.
+这些通常不应被视为随意的低风险编辑。
 
-This does not mean verbose storytelling.
-It means clearer structured accountability.
+风险分类应考虑：
+
+- 权限
+- 影响范围
+- 可逆性
+- 汇报要求
 
 ---
 
-## Relation to Step and Packet Contracts
+## 风险与运行时/基础设施
 
-This document should align with:
+影响运行时或基础设施面的变更应以提高的谨慎对待。
+
+示例：
+
+- nginx 或网关路由变更
+- Docker 运行时变更
+- CI/CD 管道变更
+- 敏感环境或部署配置变更
+
+这些通常证明 `R2` 或 `R3` 是合理的，
+在某些情况下，如果路径明显不安全或未经授权，可能证明 `R4` 是合理的。
+
+---
+
+## 汇报期望
+
+风险应影响汇报强度。
+
+随着风险上升，系统通常应增加：
+
+- 明确的摘要质量
+- 追踪清晰度
+- 理由可见性
+- 评审可见性
+- 升级可见性
+
+没有强汇报的高风险动作是治理弱点。
+
+这不意味着冗长的叙述。
+它意味着更清晰的结构化问责。
+
+---
+
+## 与步骤和包契约的关系
+
+本文档应与以下文档对齐：
 
 - `main-agent-step.schema.json`
 - `contracts/dev_task_packet.schema.json`
 - `contracts/dev_result_packet.schema.json`
 
-### Important note about `R4`
+### 关于 `R4` 的重要说明
 
-The workspace recognizes `R4` at the overall risk-model level.
+工作空间在整体风险模型层面认可 `R4`。
 
-However, some executable step contracts may intentionally exclude `R4` because `R4` is a block/escalation class rather than a normal executable-step class.
+然而，某些可执行步骤契约可能有意排除 `R4`，因为 `R4` 是阻塞/升级类别而非正常可执行步骤类别。
 
-This is an intentional design distinction, not a contradiction.
+这是有意的设计区分，而非矛盾。
 
 ---
 
-## Relation to Future Policy
+## 与未来策略的关系
 
-This document defines risk meaning and governance posture.
+本文档定义风险含义和治理姿态。
 
-Future machine-readable artifacts should define enforceable rules such as:
+未来机器可读制品应定义可执行规则，例如：
 
 - `risk_policy.yaml`
-- approval rules
-- validator checks
-- executor gating logic
+- 审批规则
+- 验证器检查
+- 执行器门控逻辑
 
-This document is the semantic baseline, not the final enforcement layer.
-
----
-
-## Failure Modes This Model Should Prevent
-
-This model exists partly to prevent the following:
-
-- treating all execution as equivalent
-- using risk labels without changing behavior
-- normalizing destructive or authority-sensitive actions
-- mistaking uncertainty for safety
-- continuing obviously bad paths because an executor exists
-- allowing high-risk work to proceed with weak review or reporting
-- confusing veto with ordinary task failure
+本文档是语义基线，不是最终执行层。
 
 ---
 
-## Final Principle
+## 本模型应防止的失败模式
 
-A useful risk model changes behavior.
+本模型的存在部分是为了防止以下情况：
 
-If a risk classification does not affect routing, approval, review, escalation, or execution posture, it is only decoration.
+- 将所有执行视为等效
+- 使用风险标签却不改变行为
+- 将破坏性或权限敏感动作正常化
+- 将不确定性误认为安全
+- 因为存在执行器而继续明显糟糕的路径
+- 允许高风险工作以弱评审或汇报继续
+- 将否决与普通任务失败混淆
 
-This workspace treats risk as a control surface, not a label collection.
+---
+
+## 最终原则
+
+一个有用的风险模型会改变行为。
+
+如果风险分类不影响路由、审批、评审、升级或执行姿态，它只是装饰。
+
+本工作空间将风险视为控制面，而非标签集合。

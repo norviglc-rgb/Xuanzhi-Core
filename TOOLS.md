@@ -1,160 +1,160 @@
 # TOOLS.md
 
-## Purpose
+## 用途
 
-This file defines the preferred tool-use posture of the 玄织 workspace.
+本文件定义玄织工作空间的首选工具使用姿态。
 
-It is a root-layer routing aid.
+它是根层分发辅助。
 
-It does not replace official tool documentation.
-It does not contain detailed integration manuals.
-
----
-
-## Core Rule
-
-Use the simplest tool or executor that fits the real task.
-
-Do not centralize heavy execution at the top layer when a lower-layer executor is clearly a better fit.
-
-Do not inflate root-layer context with detailed tool explanations.
+它不替代官方工具文档。
+它不包含详细的集成手册。
 
 ---
 
-## Preferred Roles
+## 核心规则
 
-### 玄织 / OpenClaw main agent
+使用匹配真实任务的最简单工具或执行器。
 
-Use for:
+当下层执行器明显更适合时，不要在顶层集中重型执行。
 
-- intake
-- routing
-- summary
-- governance judgment
-- light analysis
-- reporting
-- memory discipline
-- retrieval-guided responses without heavy execution
+不要用详细的工具解释膨胀根层上下文。
+
+---
+
+## 偏好的角色
+
+### 玄织 / OpenClaw 主代理
+
+用于：
+
+- 接收
+- 分发
+- 摘要
+- 治理判断
+- 轻量分析
+- 报告
+- 记忆纪律
+- 检索引导的响应（无需重型执行）
 
 ### Claude Code
 
-Default development executor.
+默认开发执行器。
 
-Use for:
+用于：
 
-- long-running software development
-- repository changes
-- implementation-heavy tasks
-- iterative coding and testing
-- structured development execution
+- 长时运行的软件开发
+- 仓库变更
+- 实现密集型任务
+- 迭代式编码与测试
+- 结构化开发执行
 
-### FastGPT or other workflow systems
+### FastGPT 或其他工作流系统
 
-Use for:
+用于：
 
-- workflow-facing tasks
-- low-code or user-facing process flows
-- lightweight structured execution
-- some information collection or dispatch tasks
+- 工作流面向的任务
+- 低代码或面向用户的流程
+- 轻量结构化执行
+- 一些信息收集或分发任务
 
-### Specialized external systems
+### 专业外部系统
 
-Use for:
+用于：
 
-- media generation
-- integration-heavy pipelines
-- narrow specialized execution
-- tasks better handled by dedicated external services
-
----
-
-## Routing Preference
-
-Route to 玄织 when the task is mainly:
-
-- interpretive
-- governance-related
-- summary or review oriented
-- planning or routing oriented
-- retrieval-guided without heavy execution
-
-Route to Claude Code when the task is mainly:
-
-- development-heavy
-- repository-centered
-- long-running
-- implementation-focused
-- iterative software delivery work
-
-Route to workflow or specialized systems when the task is mainly:
-
-- repetitive
-- pipeline-like
-- media-generation oriented
-- integration-heavy
-- better served by an existing execution system
+- 媒体生成
+- 集成密集型流水线
+- 窄域专业执行
+- 更适合由专用外部服务处理的任务
 
 ---
 
-## Retrieval Rule
+## 分发偏好
 
-If information is detailed, long, or specialized, prefer retrieval over expanding root files.
+当任务主要是以下类型时，分发到玄织：
 
-Detailed governance, integration, historical, or reference material should usually be found on demand rather than kept in always-loaded root files.
+- 解释性
+- 治理相关
+- 摘要或审查导向
+- 规划或分发导向
+- 检索引导且无需重型执行
 
----
+当任务主要是以下类型时，分发到 Claude Code：
 
-## Delegation Rule
+- 开发密集型
+- 仓库为中心
+- 长时运行
+- 实现导向
+- 迭代式软件交付工作
 
-Delegation is normal.
+当任务主要是以下类型时，分发到工作流或专业系统：
 
-玄织 should retain:
-
-- framing
-- routing
-- review posture
-- summary
-- memory discipline
-- governance judgment
-
-Heavy execution should move downward when that improves fit, quality, or context efficiency.
-
----
-
-## Output Preference
-
-When tools or executors are used, prefer outputs that are:
-
-- concise
-- structured
-- reviewable
-- easy to summarize
-- easy to reference later
-
-Prefer summaries and artifact references over large raw output.
+- 重复性
+- 流水线式
+- 媒体生成导向
+- 集成密集型
+- 更适合由现有执行系统处理
 
 ---
 
-## Boundary Reminder
+## 检索规则
 
-This file should not absorb:
+如果信息是详细的、长的或专业的，偏好检索而非扩展根文件。
 
-- full API references
-- detailed executor manuals
-- installation procedures
-- troubleshooting guides
-- workflow implementation detail
-- broad governance doctrine unrelated to tool use
-
-Those belong in lower layers.
+详细的治理、集成、历史或参考材料通常应按需查找，而非保存在始终加载的根文件中。
 
 ---
 
-## Final Principle
+## 委托规则
 
-Choose the executor that matches the work.
+委托是正常的。
 
-Keep the top layer thin.
-Delegate heavy execution downward.
-Use retrieval for detail.
-Retain governance at the center.
+玄织应保留：
+
+- 框定
+- 分发
+- 审查姿态
+- 摘要
+- 记忆纪律
+- 治理判断
+
+当委托改善适配度、质量或上下文效率时，重型执行应向下移动。
+
+---
+
+## 输出偏好
+
+当使用工具或执行器时，偏好以下输出：
+
+- 简洁
+- 结构化
+- 可审查
+- 易于摘要
+- 易于后续引用
+
+偏好摘要与制品引用而非大型原始输出。
+
+---
+
+## 边界提醒
+
+本文件不应吸收：
+
+- 完整 API 参考
+- 详细执行器手册
+- 安装程序
+- 故障排除指南
+- 工作流实现细节
+- 与工具使用无关的广泛治理原则
+
+那些属于下层。
+
+---
+
+## 最终原则
+
+选择匹配工作的执行器。
+
+保持顶层精简。
+向下委托重型执行。
+用检索获取细节。
+将治理保留在中心。

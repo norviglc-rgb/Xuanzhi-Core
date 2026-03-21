@@ -1,435 +1,435 @@
 # MEMORY_WRITE_POLICY.md
 
-## Purpose
+## 用途
 
-This document defines the write, rewrite, promotion, and deletion policy for memory in the 玄织 workspace.
+本文档定义玄织工作空间中记忆的写入、重写、晋升与删除策略。
 
-Its purpose is to keep memory useful, low-noise, and structurally disciplined.
+其目的是保持记忆有用、低噪音且结构有纪律。
 
-This policy exists to prevent:
+本策略的存在是为了防止：
 
-- memory bloat
-- noisy long-term recall
-- accidental storage of process chatter
-- confusion between durable memory and temporary context
-- promotion of unverified observations into long-term guidance
-- root-layer memory pollution
+- 记忆膨胀
+- 噪杂的长期回忆
+- 意外存储过程絮叨
+- 持久记忆与临时上下文的混淆
+- 未经验证的观察被晋升为长期指导
+- 根层记忆污染
 
-This document is normative for memory-writing behavior.
-
----
-
-## Core Principle
-
-Memory is not a transcript store.
-
-Memory is a selective continuity system.
-
-A memory item should be kept only if it improves future judgment, future routing, future collaboration quality, or future architectural coherence.
-
-If a piece of information is unlikely to matter again, it should not be promoted into durable memory.
-
-If a piece of information is useful only for the current moment, it should remain in a temporary layer.
+本文档对记忆写入行为具有规范性。
 
 ---
 
-## Memory Layers
+## 核心原则
+
+记忆不是对话存储。
+
+记忆是选择性连续性系统。
+
+只有当记忆条目能改善未来判断、未来分发、未来合作质量或未来架构一致性时，才应保留。
+
+如果一条信息不太可能再次重要，它不应被晋升到持久记忆。
+
+如果一条信息仅对当前时刻有用，它应保持在临时层。
+
+---
+
+## 记忆层
 
 ### 1. `MEMORY.md`
 
-Role:
+角色：
 
-Long-term summary and navigation layer.
+长期摘要与导航层。
 
-Use for:
+用于：
 
-- stable preferences
-- durable system-shape decisions
-- major strategic focus
-- durable lessons
-- navigation pointers
+- 稳定偏好
+- 持久的系统形态决策
+- 主要战略焦点
+- 持久教训
+- 导航指针
 
-Do not use for:
+不用于：
 
-- daily execution logs
-- long historical narratives
-- verbose planning notes
-- repeated progress updates
-- full project summaries
-- copied reference materials
+- 日常执行日志
+- 长历史叙述
+- 冗长的规划笔记
+- 重复的进展更新
+- 完整的项目摘要
+- 复制的参考材料
 
 ### 2. `memory/YYYY-MM-DD.md`
 
-Role:
+角色：
 
-Daily running context layer.
+日常运行上下文层。
 
-Use for:
+用于：
 
-- bounded short-term notes
-- daily observations
-- temporary context
-- small reminders
-- brief status notes
-- candidate lessons not yet promoted
+- 限定范围的短期笔记
+- 日常观察
+- 临时上下文
+- 小型提醒
+- 简短的状态笔记
+- 尚未晋升的候选教训
 
-Do not use for:
+不用于：
 
-- full transcripts
-- large dumps of source content
-- permanent policy
-- durable architectural canon unless later promoted
+- 完整对话记录
+- 大量源内容堆放
+- 永久策略
+- 持久的架构准则（除非后续晋升）
 
-### 3. Lower-layer governance or integration documents
+### 3. 下层治理或集成文档
 
-Role:
+角色：
 
-Detailed durable knowledge that is too long or too specialized for long-term memory summary.
+对于长期记忆摘要而言过长或过于专业的详细持久知识。
 
-Use for:
+用于：
 
-- detailed governance rules
-- operational playbooks
-- integration procedures
-- postmortems
-- spec detail
-- lessons that need full elaboration before abstraction
+- 详细治理规则
+- 操作手册
+- 集成程序
+- 事后分析
+- 规范细节
+- 需要抽象前完整阐述的教训
 
-Long-term memory may point to these documents,
-but should not absorb all of their content.
+长期记忆可指向这些文档，
+但不应吸收其所有内容。
 
 ---
 
-## Memory Write Test
+## 记忆写入测试
 
-Before writing any memory, 玄织 should check all of the following.
+在写入任何记忆前，玄织应检查以下所有内容。
 
-### Test 1: Durability
+### 测试 1：持久性
 
-Is this likely to matter again beyond the current session or current day?
+这是否可能超越当前会话或当前天再次重要？
 
-If no, do not write to durable memory.
+如果否，不要写入持久记忆。
 
-### Test 2: Reusability
+### 测试 2：可复用性
 
-Will this information likely improve future judgment, routing, review, or cooperation?
+此信息是否可能改善未来判断、分发、审查或合作？
 
-If no, do not write to durable memory.
+如果否，不要写入持久记忆。
 
-### Test 3: Signal Quality
+### 测试 3：信号质量
 
-Is this information concise enough and meaningful enough to improve recall without adding noise?
+此信息是否足够简洁且足够有意义以改善回忆而不增加噪音？
 
-If no, either compress it or do not write it.
+如果否，要么压缩它，要么不写入。
 
-### Test 4: Layer Fit
+### 测试 4：层适配
 
-Does this belong in:
+这属于：
 
 - `MEMORY.md`
 - `memory/YYYY-MM-DD.md`
-- a lower-layer governance file
-- a contract or policy artifact
-- nowhere
+- 下层治理文件
+- 契约或策略制品
+- 无处
 
-If the correct layer is not `MEMORY.md`, do not force it into `MEMORY.md`.
+如果正确的层不是 `MEMORY.md`，不要强行放入 `MEMORY.md`。
 
-### Test 5: Stability
+### 测试 5：稳定性
 
-Is this sufficiently stable, or is it still too provisional, emotional, local, or process-bound?
+这是否足够稳定，还是仍然过于临时、情绪化、本地化或过程绑定？
 
-If it is still unstable, keep it temporary or do not write it.
-
----
-
-## Write Destinations
-
-### Write to `MEMORY.md` when the item is:
-
-- stable
-- high-value
-- cross-session useful
-- summary-level
-- likely to shape future decisions repeatedly
-
-Typical examples:
-
-- the user prefers anti-drift critique
-- the system uses Claude Code as default development executor
-- root-layer files must remain thin
-- detailed governance belongs in retrieval layers
-- a repeatedly confirmed architectural lesson
-
-### Write to `memory/YYYY-MM-DD.md` when the item is:
-
-- recent
-- provisional
-- likely useful for a short period
-- context-specific
-- too raw to become durable memory yet
-
-Typical examples:
-
-- today's phase progress
-- a temporary blocker
-- a note about what was just revised
-- a candidate lesson still being tested
-- a short reminder tied to current work
-
-### Write to lower-layer documents when the item is:
-
-- long
-- detailed
-- procedural
-- policy-heavy
-- implementation-specific
-- better represented as a formal spec or guideline
-
-Typical examples:
-
-- full memory write policy
-- detailed postmortem
-- governance rationale requiring sectioned explanation
-- integration-specific retention rules
+如果仍然不稳定，保持临时或不写入。
 
 ---
 
-## What Should Be Written Conservatively
+## 写入目的地
 
-The following categories should be written with strong restraint:
+### 当条目是以下情况时写入 `MEMORY.md`：
 
-- user preference claims based on one occurrence
-- architectural conclusions from a single short discussion
-- emotionally colored interpretation
-- tentative lessons
-- broad generalizations not yet validated
-- highly detailed process observations
-- raw brainstorming fragments
+- 稳定
+- 高价值
+- 跨会话有用
+- 摘要级
+- 可能反复塑造未来决策
 
-These may belong in daily notes first,
-and only later be promoted if they remain valid.
+典型示例：
 
----
+- 用户偏好反漂移批判
+- 系统使用 Claude Code 作为默认开发执行器
+- 根层文件必须保持精简
+- 详细治理属于检索层
+- 反复确认的架构教训
 
-## What Should Usually Not Be Written
+### 当条目是以下情况时写入 `memory/YYYY-MM-DD.md`：
 
-The following should usually not be written into memory at all:
+- 近期
+- 临时
+- 可能短期有用
+- 上下文特定
+- 过于原始尚不能成为持久记忆
 
-- raw chain-of-thought style content
-- repetitive status chatter
-- transient implementation noise
-- copied large excerpts from source documents
-- obvious facts recoverable elsewhere
-- low-value micro-preferences
-- temporary frustrations with no durable lesson
-- verbose summaries of routine progress
-- one-off stylistic choices that are unlikely to recur
+典型示例：
 
-Memory should not become a junk drawer.
+- 今日的阶段进展
+- 临时阻塞点
+- 关于刚修订内容的笔记
+- 仍在测试的候选教训
+- 与当前工作相关的简短提醒
 
----
+### 当条目是以下情况时写入下层文档：
 
-## Promotion Rule
+- 长
+- 详细
+- 程序性
+- 策略繁重
+- 实现特定
+- 更适合表示为正式规范或指南
 
-A note may be promoted from temporary memory into durable memory only when it shows evidence of persistence or repeated relevance.
+典型示例：
 
-Promotion is appropriate when at least one of the following is true:
-
-- the same preference or lesson has appeared multiple times
-- the decision changes future routing or architecture
-- the lesson materially reduces future error
-- the information affects system shape over multiple sessions
-- the item has already survived beyond the immediate task context
-
-Promotion should usually involve compression and abstraction.
-
-Do not promote raw notes unchanged.
-
-Preferred promotion pattern:
-
-temporary note -> compressed insight -> durable memory entry
+- 完整的记忆写入策略
+- 详细的事后分析
+- 需要分节解释的治理理由
+- 集成特定的保留规则
 
 ---
 
-## Incident and Lesson Promotion
+## 应保守写入的内容
 
-When failures or incidents occur, use the following progression where appropriate:
+以下类别应以强烈克制写入：
 
-incident -> postmortem -> lessons_learned -> strategy_update
+- 基于一次事件的用户偏好声明
+- 来自单次简短讨论的架构结论
+- 带有情绪色彩的解读
+- 暂定的教训
+- 尚未验证的广泛概括
+- 高度详细的过程观察
+- 原始头脑风暴片段
 
-Not every incident deserves durable memory.
-
-Promotion is appropriate only when the lesson is:
-
-- generalizable
-- reusable
-- important enough to influence future governance or execution
-
-A painful event alone is not enough.
-It must become a reusable lesson.
+这些可能先属于日常笔记，
+只有在持续有效时才后续晋升。
 
 ---
 
-## Rewrite Rule
+## 通常不应写入的内容
 
-When updating an existing memory item, prefer:
+以下通常根本不应写入记忆：
 
-- replacing outdated phrasing
-- compressing repeated entries
-- merging duplicates
-- sharpening the lesson
-- removing expired context
+- 原始思维链式内容
+- 重复的状态絮叨
+- 短暂的实现噪音
+- 从源文档复制的大段摘录
+- 可在其他地方恢复的明显事实
+- 低价值的微偏好
+- 无持久教训的临时挫折
+- 常规进展的冗长摘要
+- 不太可能重复的一次性风格选择
 
-Memory should become clearer over time, not just longer.
-
-If a new entry substantially overlaps with an existing entry, prefer revision of the old entry rather than accumulation of a second nearly identical entry.
-
----
-
-## Deletion Rule
-
-A memory item should be removed or demoted when it becomes:
-
-- obsolete
-- contradicted by a stable newer decision
-- too noisy to justify retention
-- too local to one past task
-- redundant with another sharper memory entry
-- better represented in another layer
-
-Deletion is not memory loss.
-Deletion is memory hygiene.
+记忆不应成为垃圾抽屉。
 
 ---
 
-## Compression Rule
+## 晋升规则
 
-When a memory item is useful but verbose, compress it before storing it.
+笔记只有在显示持久性或重复相关性证据时才可从临时记忆晋升到持久记忆。
 
-Compression should preserve:
+当以下至少一个为真时晋升是合适的：
 
-- the durable signal
-- the future-use value
-- the correct level of abstraction
+- 同一偏好或教训已多次出现
+- 决策改变未来分发或架构
+- 教训实质性减少未来错误
+- 信息跨多会话影响系统形态
+- 条目已经超越当前任务上下文存活
 
-Compression should remove:
+晋升通常应涉及压缩与抽象。
 
-- process detail
-- temporary framing
-- narrative padding
-- repeated justification
-- local context that will soon expire
+不要原样晋升原始笔记。
 
-Good memory entries are usually shorter than the discussion that produced them.
+偏好的晋升模式：
 
----
-
-## Memory and Root-Layer Discipline
-
-`MEMORY.md` is a root-layer file and must obey root-layer constraints.
-
-Therefore:
-
-- keep it high-signal
-- keep it summary-level
-- keep it compact
-- keep it navigational
-- move detail downward
-
-If a memory-related idea requires long explanation, it belongs in a lower-layer file, not in `MEMORY.md`.
+临时笔记 -> 压缩洞见 -> 持久记忆条目
 
 ---
 
-## Memory and Hardening
+## 事件与教训晋升
 
-Some memory-related rules should remain prose-level.
-Others should be hardened.
+当失败或事件发生时，在适当时使用以下进展：
 
-Hardening review is recommended when a memory rule affects:
+事件 -> 事后分析 -> 经验教训 -> 策略更新
 
-- destructive deletion
-- promotion thresholds tied to governance
-- trace requirements for memory actions
-- protected memory categories
-- automation around write or rewrite behavior
+并非每个事件都值得持久记忆。
 
-Potential hardening destinations include:
+晋升仅在教训是以下情况时合适：
+
+- 可泛化
+- 可复用
+- 足够重要以影响未来治理或执行
+
+仅有一个痛苦事件是不够的。
+它必须成为可复用的教训。
+
+---
+
+## 重写规则
+
+在更新现有记忆条目时，偏好：
+
+- 替换过时的措辞
+- 压缩重复条目
+- 合并重复
+- 锐化教训
+- 移除过期上下文
+
+记忆应随时间变得更清晰，而非仅仅变长。
+
+如果新条目与现有条目实质性重叠，偏好修订旧条目而非累积第二个几乎相同的条目。
+
+---
+
+## 删除规则
+
+记忆条目在变得以下情况时应被移除或降级：
+
+- 过时
+- 被稳定的更新决策矛盾
+- 过于噪杂以证明保留合理
+- 过于局限于一个过去任务
+- 与另一个更锐利的记忆条目重复
+- 在另一层中更好地表示
+
+删除不是记忆丢失。
+删除是记忆卫生。
+
+---
+
+## 压缩规则
+
+当记忆条目有用但冗长时，在存储前压缩它。
+
+压缩应保留：
+
+- 持久信号
+- 未来使用价值
+- 正确的抽象级别
+
+压缩应移除：
+
+- 过程细节
+- 临时框架
+- 叙述填充
+- 重复理由
+- 即将过期的本地上下文
+
+好的记忆条目通常比产生它们的讨论更短。
+
+---
+
+## 记忆与根层纪律
+
+`MEMORY.md` 是根层文件，必须遵守根层约束。
+
+因此：
+
+- 保持高信号
+- 保持摘要级
+- 保持紧凑
+- 保持导航性
+- 向下移动细节
+
+如果记忆相关想法需要长解释，它属于下层文件，而非 `MEMORY.md`。
+
+---
+
+## 记忆与硬化
+
+一些记忆相关规则应保持文本级别。
+其他应硬化。
+
+当记忆规则影响以下内容时建议硬化审查：
+
+- 破坏性删除
+- 与治理相关的晋升阈值
+- 记忆行动的追踪要求
+- 受保护的记忆类别
+- 围绕写入或重写行为的自动化
+
+潜在硬化目的地包括：
 
 - `memory_write_rules.yaml`
-- validator logic
-- trace event requirements
+- 验证器逻辑
+- 追踪事件要求
 
-Do not assume all memory behavior should remain manual forever.
-
----
-
-## Review Cadence
-
-Memory should be reviewed periodically for hygiene.
-
-Review goals:
-
-- remove noise
-- merge overlap
-- sharpen durable lessons
-- demote expired temporary material
-- confirm that `MEMORY.md` remains summary-level
-- confirm that daily notes are not silently becoming permanent archives
-
-Memory review does not need to be constant,
-but it should be regular enough to prevent quiet accumulation.
+不要假设所有记忆行为应永远保持手动。
 
 ---
 
-## Operational Rule for 玄织
+## 审查节奏
 
-When deciding whether to write memory, 玄织 should prefer caution over accumulation.
+记忆应定期审查以保持卫生。
 
-Default posture:
+审查目标：
 
-- write less
-- compress more
-- promote slowly
-- revise instead of stacking
-- downshift detail
-- preserve only what improves future control
+- 移除噪音
+- 合并重叠
+- 锐化持久教训
+- 降级过期的临时材料
+- 确认 `MEMORY.md` 保持摘要级
+- 确认日常笔记没有静默成为永久档案
 
-If uncertain, do not write to `MEMORY.md`.
-
-If mildly useful but unstable, use daily notes.
-
-If detailed and durable, store it in a lower-layer document and keep only a short pointer in long-term memory.
+记忆审查不需要持续，
+但应足够规律以防止静默累积。
 
 ---
 
-## Typical Healthy Outcomes
+## 玄织的运行规则
 
-Healthy memory behavior looks like:
+在决定是否写入记忆时，玄织应偏好谨慎而非累积。
 
-- `MEMORY.md` stays short and useful
-- daily notes remain bounded
-- durable lessons become clearer over time
-- repeated noise is compressed rather than duplicated
-- strategy-level continuity improves
-- retrieval quality remains high
+默认姿态：
 
----
+- 少写
+- 多压缩
+- 慢晋升
+- 修订而非堆叠
+- 下放细节
+- 仅保留改善未来控制的内容
 
-## Typical Failure Modes
+如果不确定，不要写入 `MEMORY.md`。
 
-Unhealthy memory behavior looks like:
+如果轻度有用但不稳定，使用日常笔记。
 
-- `MEMORY.md` becoming a running archive
-- daily files becoming unbounded dumps
-- one-off thoughts being promoted into durable truth
-- repeated duplication instead of revision
-- memory being used as a substitute for proper specs
-- high-noise notes degrading future retrieval
+如果详细且持久，存储在下层文档并在长期记忆中仅保留简短指针。
 
 ---
 
-## Final Principle
+## 典型健康结果
 
-Memory should preserve what deserves to survive.
+健康的记忆行为看起来像：
 
-Everything else should either stay temporary, move downward, or disappear.
+- `MEMORY.md` 保持精简且有用
+- 日常笔记保持限定范围
+- 持久教训随时间变得更清晰
+- 重复噪音被压缩而非重复
+- 战略级连续性改善
+- 检索质量保持高
+
+---
+
+## 典型失败模式
+
+不健康的记忆行为看起来像：
+
+- `MEMORY.md` 变成运行档案
+- 日常文件变成无边界堆放
+- 一次性想法被晋升为持久真理
+- 重复而非修订
+- 记忆被用作正式规范的替代
+- 高噪音笔记降低未来检索
+
+---
+
+## 最终原则
+
+记忆应保存值得存活的内容。
+
+其他一切应要么保持临时，要么向下移动，要么消失。
